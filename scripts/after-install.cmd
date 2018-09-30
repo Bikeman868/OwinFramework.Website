@@ -1,3 +1,3 @@
-echo After install
+echo After install script
 
-echo Download NuGet packages using Paket
+echo Downloading NuGet packages using Paket
