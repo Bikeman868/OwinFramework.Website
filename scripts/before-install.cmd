@@ -1,7 +1,6 @@
 echo Before install script
 
-echo Deleting prior version of website files
-del /s /q /f c:\inetpub\wwwroot
+echo Deleting prior version of website files ignoring errors
+del /s /q /f c:\inetpub\wwwroot 2>nul
 
-echo Returning success in the case where no files were deleted - initial install
-exit /b 0
+
