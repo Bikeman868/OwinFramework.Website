@@ -1,0 +1,22 @@
+version: 0.0
+os: windows
+files:
+  - source: web\index.html
+    destination: c:\inetpub\wwwroot
+  - source: web\web.config
+    destination: c:\inetpub\wwwroot
+  - source: web\bin
+    destination: c:\inetpub\wwwroot\bin
+hooks:
+  BeforeInstall:
+    - location: scripts/before-install.cmd
+      timeout: 300
+  AfterInstall:
+    - location: scripts/after-install.cmd
+      timeout: 300
+  ApplicationStart:
+    - location: scripts/appliation-start.cmd
+      timeout: 300
+  ApplicationStop:
+    - location: scripts/application-stop.cmd
+      timeout: 300
