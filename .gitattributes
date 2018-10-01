@@ -1,0 +1,19 @@
+.gitignore         text=auto
+.gitattributes     text=auto
+
+*.csproj           text eol=crlf
+*.sln              text eol=crlf
+
+*.cs               text eol=crlf
+
+*.html             text
+*.css              text
+*.less             text
+*.js               text
+
+*.cmd              text eol=crlf0
+
+*.png              binary
+*.jpg              binary
+*.dll              binary
+*.pdb              binary
