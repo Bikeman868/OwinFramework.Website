@@ -12,6 +12,8 @@
 *.js               text
 
 *.cmd              text eol=crlf0
+*.yml              text=auto
+*.md               text=auto
 
 *.png              binary
 *.jpg              binary

@@ -9,7 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		scripts\after-install.cmd = scripts\after-install.cmd
+		scripts\appliation-start.cmd = scripts\appliation-start.cmd
+		scripts\application-stop.cmd = scripts\application-stop.cmd
 		appspec.yml = appspec.yml
+		scripts\before-install.cmd = scripts\before-install.cmd
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
