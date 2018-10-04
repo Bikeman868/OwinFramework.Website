@@ -7,6 +7,8 @@ files:
     destination: c:\inetpub\wwwroot
   - source: web\bin
     destination: c:\inetpub\wwwroot\bin
+  - source: .paket\paket.exe
+    destination: c:\inetpub\wwwroot\.paket\paket.exe
 hooks:
   BeforeInstall:
     - location: scripts/before-install.cmd
