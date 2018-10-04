@@ -5,7 +5,7 @@ using System.Web;
 
 namespace web
 {
-    public class Test
+    public class Startup
     {
     }
 }

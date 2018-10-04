@@ -1,0 +1,16 @@
+framework: net40
+storage: packages
+source https://nuget.org/api/v2
+
+nuget Ioc.Modules
+nuget Urchin.Client
+nuget Ioc.Modules.Ninject
+
+nuget Microsoft.Owin.Host.SystemWeb = 2.1.0
+
+nuget Owin.Framework.NotFound
+nuget Owin.Framework.Urchin
+nuget Owin.Framework.Pages.Core
+nuget Owin.Framework.Pages.Framework
+nuget Owin.Framework.Pages.Html
+nuget Owin.Framework.Pages.DebugMiddleware

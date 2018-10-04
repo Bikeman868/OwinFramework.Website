@@ -1,0 +1,13 @@
+﻿Ioc.Modules
+Urchin.Client
+
+Ioc.Modules.Ninject
+Ninject
+
+Microsoft.Owin.Host.SystemWeb
+Owin.Framework.NotFound
+Owin.Framework.Urchin
+Owin.Framework.Pages.Core
+Owin.Framework.Pages.Framework
+Owin.Framework.Pages.Html
+Owin.Framework.Pages.DebugMiddleware

@@ -1,0 +1,10 @@
+﻿{
+    "owin": {
+        "middleware": {
+            "pages": { },
+            "notFound": { }
+        },
+        "framework": { 
+        }
+    }
+}

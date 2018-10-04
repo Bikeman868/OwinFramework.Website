@@ -1,7 +1,13 @@
 *.suo
 *.user
+*.err
+*.log
+*.exe
 
 web/bin/*
-!/web/bin/web.dll
+!/web/bin/website.dll
 
 web/obj/*
+
+packages/*
+.paket/*

@@ -1,9 +1,9 @@
 version: 0.0
 os: windows
 files:
-  - source: web\index.html
-    destination: c:\inetpub\wwwroot
   - source: web\web.config
+    destination: c:\inetpub\wwwroot
+  - source: web\config.json
     destination: c:\inetpub\wwwroot
   - source: web\bin
     destination: c:\inetpub\wwwroot\bin

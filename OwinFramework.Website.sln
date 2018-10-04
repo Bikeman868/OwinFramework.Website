@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web", "web\web.csproj", "{D5D9B9BC-A91E-48E7-942A-C7849EB255AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "web\Website.csproj", "{D5D9B9BC-A91E-48E7-942A-C7849EB255AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{33B6CABD-D18C-49E4-94F7-EBF099ED79DE}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,8 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		scripts\application-stop.cmd = scripts\application-stop.cmd
 		appspec.yml = appspec.yml
 		scripts\before-install.cmd = scripts\before-install.cmd
+		install.cmd = install.cmd
 		LICENSE = LICENSE
+		paket.dependencies = paket.dependencies
+		paket.lock = paket.lock
 		README.md = README.md
+		restore.cmd = restore.cmd
+		update.cmd = update.cmd
 	EndProjectSection
 EndProject
 Global
