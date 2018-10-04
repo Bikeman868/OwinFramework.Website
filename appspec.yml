@@ -9,6 +9,12 @@ files:
     destination: c:\inetpub\wwwroot\bin
   - source: .paket\paket.exe
     destination: c:\inetpub\wwwroot\.paket
+  - source: paket.lock
+    destination: c:\inetpub\wwwroot
+  - source: web\paket.references
+    destination: c:\inetpub\wwwroot
+  - source: web\Website.csproj
+    destination: c:\inetpub\wwwroot
 hooks:
   BeforeInstall:
     - location: scripts/before-install.cmd
