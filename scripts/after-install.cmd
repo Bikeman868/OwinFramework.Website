@@ -8,3 +8,7 @@ cd c:\inetpub\wwwroot
 echo Copying NuGet packages to the bin folder
 
 DeployPackages net40 packages web\bin
+
+echo Pointing IIS to this deployment
+
+%systemroot%\system32\inetserv\appcmd set vdir "Default Web Site/" /physicalPath:c:\inetpub\wwwroot\web
