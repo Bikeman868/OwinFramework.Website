@@ -3,11 +3,15 @@
 *.err
 *.log
 *.exe
+*.pdb
+*.manifest
 
 web/bin/*
 !/web/bin/website.dll
 
 web/obj/*
+DeployPackages/obj/*
 
 packages/*
 .paket/*
+paket-files/*

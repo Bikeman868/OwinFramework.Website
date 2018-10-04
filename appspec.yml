@@ -2,34 +2,38 @@ version: 0.0
 os: windows
 files:
   - source: web\web.config
-    destination: c:\inetpub\wwwroot
+    destination: c:\inetpub\wwwroot\web
   - source: web\config.json
-    destination: c:\inetpub\wwwroot
+    destination: c:\inetpub\wwwroot\web
   - source: web\bin
-    destination: c:\inetpub\wwwroot\bin
+    destination: c:\inetpub\wwwroot\web\bin
+  - source: web\paket.references
+    destination: c:\inetpub\wwwroot\web
+  - source: web\Website.csproj
+    destination: c:\inetpub\wwwroot\web
 
   - source: .paket\paket.exe
     destination: c:\inetpub\wwwroot\.paket
-
   - source: paket.lock
     destination: c:\inetpub\wwwroot
   - source: paket.dependencies
     destination: c:\inetpub\wwwroot
+  - source: DeployPackages.exe
+    destination: c:\inetpub\wwwroot
 
-  - source: web\paket.references
-    destination: c:\inetpub\wwwroot
-  - source: web\Website.csproj
-    destination: c:\inetpub\wwwroot
 hooks:
   BeforeInstall:
     - location: scripts/before-install.cmd
       timeout: 300
+
   AfterInstall:
     - location: scripts/after-install.cmd
       timeout: 300
+
   ApplicationStart:
     - location: scripts/appliation-start.cmd
       timeout: 300
+
   ApplicationStop:
     - location: scripts/application-stop.cmd
       timeout: 300
