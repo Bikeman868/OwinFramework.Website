@@ -1,1 +1,1 @@
-.paket\paket.exe install > install.log 2> install.err
+.paket\paket.exe install > install.log

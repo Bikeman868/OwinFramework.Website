@@ -62,9 +62,16 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Menus\MenuDataProvider.cs" />
-    <Compile Include="Menus\MenuPackage.cs" />
+    <Compile Include="Navigation\MenuDataProvider.cs" />
+    <Compile Include="Navigation\MenuPackage.cs" />
+    <Compile Include="Packaging\ApplicationPackage.cs" />
+    <Compile Include="Packaging\ContentModule.cs" />
+    <Compile Include="Packaging\NavigationModule.cs" />
+    <Compile Include="Pages\BlankMasterPage.cs" />
+    <Compile Include="Pages\HomePage.cs" />
+    <Compile Include="Pages\NavigationMasterPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Regions\FullPageContentRegion.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="paket.references" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -177,6 +181,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
+        <Reference Include="Ninject">
+          <HintPath>..\packages\Ninject\lib\net40\Ninject.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
         <Reference Include="Owin">
           <HintPath>..\packages\Owin\lib\net40\Owin.dll</HintPath>
           <Private>True</Private>
@@ -190,6 +205,17 @@
       <ItemGroup>
         <Reference Include="OwinFramework">
           <HintPath>..\packages\Owin.Framework\lib\net40\OwinFramework.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="OwinFramework.ExceptionReporter">
+          <HintPath>..\packages\Owin.Framework.ExceptionReporter\lib\net40\OwinFramework.ExceptionReporter.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -256,6 +282,17 @@
       <ItemGroup>
         <Reference Include="OwinFramework.Configuration.Urchin">
           <HintPath>..\packages\Owin.Framework.Urchin\lib\net40\OwinFramework.Configuration.Urchin.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="Svg">
+          <HintPath>..\packages\Svg\lib\net35\Svg.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

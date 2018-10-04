@@ -1,12 +1,15 @@
-﻿Ioc.Modules
+Ioc.Modules
 Urchin.Client
-
 Ioc.Modules.Ninject
 Ninject
+Svg
 
 Microsoft.Owin.Host.SystemWeb
+
 Owin.Framework.NotFound
 Owin.Framework.Urchin
+Owin.Framework.ExceptionReporter
+
 Owin.Framework.Pages.Core
 Owin.Framework.Pages.Framework
 Owin.Framework.Pages.Html

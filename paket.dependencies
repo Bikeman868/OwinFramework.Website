@@ -5,11 +5,16 @@ source https://nuget.org/api/v2
 nuget Ioc.Modules
 nuget Urchin.Client
 nuget Ioc.Modules.Ninject
+nuget Ninject = 3.2.2
+nuget Newtonsoft.Json ~> 7.0
+nuget Svg
 
 nuget Microsoft.Owin.Host.SystemWeb = 2.1.0
 
 nuget Owin.Framework.NotFound
 nuget Owin.Framework.Urchin
+nuget Owin.Framework.ExceptionReporter
+
 nuget Owin.Framework.Pages.Core
 nuget Owin.Framework.Pages.Framework
 nuget Owin.Framework.Pages.Html

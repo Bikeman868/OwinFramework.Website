@@ -7,7 +7,7 @@ using OwinFramework.Pages.Core.Interfaces.Runtime;
 using OwinFramework.Pages.Html.Elements;
 using OwinFramework.Pages.Html.Runtime;
 
-namespace Website.Menus
+namespace Website.Navigation
 {
     [IsPackage("menu")]
     public class MenuPackage : OwinFramework.Pages.Framework.Runtime.Package
@@ -19,6 +19,7 @@ namespace Website.Menus
         {
             public string Name { get; set; }
             public string Url { get; set; }
+            public string Target { get; set; }
             public IList<MenuItem> SubMenu { get; set; }
         }
 
@@ -38,7 +39,10 @@ namespace Website.Menus
                 {
                     var menuItem = context.Data.Get<MenuItem>();
                     var url = string.IsNullOrEmpty(menuItem.Url) ? "javascript:void(0);" : menuItem.Url;
-                    context.Html.WriteElementLine("a", menuItem.Name, "href", url);
+                    var attributes = string.IsNullOrEmpty(menuItem.Target)
+                        ? new[] { "href", url }
+                        : new[] { "href", url, "target", menuItem.Target };
+                    context.Html.WriteElementLine("a", menuItem.Name, attributes);
                 }
                 return WriteResult.Continue();
             }

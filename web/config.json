@@ -1,10 +1,10 @@
 ﻿{
-    "owin": {
-        "middleware": {
-            "pages": { },
-            "notFound": { }
-        },
-        "framework": { 
-        }
+    "middleware": {
+        "pages": { },
+        "notFound": { },
+        "debugInfo": { },
+        "exceptionReporter": { }
+    },
+    "framework": { 
     }
 }

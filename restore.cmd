@@ -1,1 +1,1 @@
-.paket\paket.exe restore > restore.log 2> restore.err
+.paket\paket.exe restore > restore.log

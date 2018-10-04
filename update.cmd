@@ -1,1 +1,1 @@
-.paket\paket.exe update > update.log 2> update.err
+.paket\paket.exe update > update.log
