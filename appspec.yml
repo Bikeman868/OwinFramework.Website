@@ -7,10 +7,15 @@ files:
     destination: c:\inetpub\wwwroot
   - source: web\bin
     destination: c:\inetpub\wwwroot\bin
+
   - source: .paket\paket.exe
     destination: c:\inetpub\wwwroot\.paket
+
   - source: paket.lock
     destination: c:\inetpub\wwwroot
+  - source: paket.dependencies
+    destination: c:\inetpub\wwwroot
+
   - source: web\paket.references
     destination: c:\inetpub\wwwroot
   - source: web\Website.csproj
