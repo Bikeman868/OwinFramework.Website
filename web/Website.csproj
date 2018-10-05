@@ -80,6 +80,19 @@
   <ItemGroup>
     <Content Include="paket.references" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Images\" />
+    <Folder Include="Assets\Scripts\" />
+    <Folder Include="Assets\Styles\" />
+    <Folder Include="Content\General\" />
+    <Folder Include="Content\NuGet\Owin.Framework.AnalysisReporter\" />
+    <Folder Include="Content\NuGet\Owin.Framework.Authorization\" />
+    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Authorization\" />
+    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Facilities\" />
+    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Middleware\" />
+    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Pages\" />
+    <Folder Include="Content\Repository\Bikeman868\OwinFramework\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

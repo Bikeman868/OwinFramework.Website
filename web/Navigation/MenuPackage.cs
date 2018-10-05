@@ -9,7 +9,6 @@ using OwinFramework.Pages.Html.Runtime;
 
 namespace Website.Navigation
 {
-    [IsPackage("menu")]
     public class MenuPackage : OwinFramework.Pages.Framework.Runtime.Package
     {
         public MenuPackage(IPackageDependenciesFactory dependencies)
@@ -58,11 +57,11 @@ namespace Website.Navigation
         { }
 
         [DeployCss("ul.{ns}_menu", "margin: 0; padding: 0; background-color: #333", 1)]
-        [DeployCss("li.{ns}_option a", "color: white; text-align: center; padding: 14px 16px;", 2)]
+        [DeployCss("li.{ns}_option a", "color: white; text-align: center; padding: 14px 16px; font-family: sans-serif; letter-spacing: 1px;", 2)]
         [DeployCss("li.{ns}_option a:hover, li.{ns}_menu-option:hover a.{ns}_menu-option", "background-color: red", 3)]
         [DeployCss("div.{ns}_dropdown a:hover", "background-color: #f1f1f1;", 4)]
         [DeployCss("div.{ns}_dropdown", "background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);", 5)]
-        [DeployCss("div.{ns}_dropdown a", "color: black; padding: 12px 16px;", 6)]
+        [DeployCss("div.{ns}_dropdown a", "color: black; padding: 12px 16px; font-family: sans-serif;", 6)]
         public class MenuStyle1
         { }
 

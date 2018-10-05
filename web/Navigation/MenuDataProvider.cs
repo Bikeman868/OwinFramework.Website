@@ -40,6 +40,20 @@ namespace Website.Navigation
                     }
             };
 
+            var documentationMenu = new MenuPackage.MenuItem
+            {
+                Name = "Documentation",
+                SubMenu = new List<MenuPackage.MenuItem>
+                    {
+                        new MenuPackage.MenuItem { Name = "The Owin Frameowrk" },
+                        new MenuPackage.MenuItem { Name = "GitHub Wikki", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Identification and authorization" },
+                        new MenuPackage.MenuItem { Name = "Session handling" },
+                        new MenuPackage.MenuItem { Name = "Configuration" },
+                        new MenuPackage.MenuItem { Name = "Configuration" },
+                    }
+            };
+
             var nuGetMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
@@ -79,11 +93,14 @@ namespace Website.Navigation
                     }
             };
 
-            _mainMenu = new List<MenuPackage.MenuItem>();
-            _mainMenu.Add(gettingStartedMenu);
-            _mainMenu.Add(tutorialsMenu);
-            _mainMenu.Add(nuGetMenu);
-            _mainMenu.Add(gitHubMenu);
+            _mainMenu = new List<MenuPackage.MenuItem>
+            {
+                gettingStartedMenu,
+                tutorialsMenu,
+                documentationMenu,
+                nuGetMenu,
+                gitHubMenu
+            };
         }
 
         protected override void Supply(

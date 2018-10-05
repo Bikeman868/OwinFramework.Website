@@ -2,17 +2,25 @@
 
 namespace Website.Pages
 {
-    //------------------------------------------------------------------------------------
-    // Default page styles
+    /*
+     * This is the base page for all regular pages on the website. It provides a standard
+     * header, navigation menu and footer, but does not specify the page content of the
+     * 'body' region of the page layout, which should be specified for each page on the 
+     * website.
+     * */
 
-    [IsComponent("defaultStyles")]
+    //------------------------------------------------------------------------------------
+    // Css for the navigation elements
+
+    [IsComponent("navigationStyles")]
     [PartOf("application")]
     [DeployedAs("content")]
-    [DeployCss("p", "font-size:11pt;")]
-    [DeployCss("h1", "font-size:16pt;")]
-    [DeployCss("h2", "font-size:14pt;")]
-    [DeployCss("h3", "font-size:12pt;")]
-    internal class DefaultStylesComponent { }
+    [DeployCss("div.{ns}_header-region", "height: 150px; width:100%; background: gray; color: whitesmoke; clear: both;", 1)]
+    [DeployCss("div.{ns}_header-region h1", "font-size: 3em; padding: 15px 0px 0px 30px; margin: 0; letter-spacing: 1px;", 2)]
+    [DeployCss("div.{ns}_header-region p", "font-size: 0.8em; padding: 0px 0px 0px 50px; margin: 13px;", 2)]
+    [DeployCss("div.{ns}_footer-region", "height: 50px; width:100%; padding:5px; background: gray; color: whitesmoke;", 3)]
+    [DeployCss(".navigation", "font-family: sans-serif")]
+    internal class NavigationStylesComponent { }
 
     //------------------------------------------------------------------------------------
     // Header
@@ -20,7 +28,8 @@ namespace Website.Pages
     [IsComponent("title")]
     [PartOf("application")]
     [DeployedAs("navigation")]
-    [RenderHtml("heading.main", "<h1>OWIN Framework</h1>")]
+    [RenderHtml("heading.main", 1, "<h1 style='font-size: 3em; padding: 15px 0px 0px 30px; margin: 0; letter-spacing: 1px; font-family: sans-serif;'>Owin Framework</h1>")] // BUG - style should be handled by CSS
+    [RenderHtml("heading.sub", 2, "<p style='font-size: 0.8em; padding: 0px 0px 0px 50px; margin: 13px;'>An open architecture for interoperable middleware</p>")] // BUG - style should be handled by CSS
     internal class TitleComponent { }
 
     [IsRegion("title")]
@@ -40,7 +49,8 @@ namespace Website.Pages
     [IsRegion("header")]
     [PartOf("application")]
     [DeployedAs("navigation")]
-    [Style("height: 90px; width:100%; padding:10px; background: gray; color: whitesmoke; clear: both;")]
+    [Container("div", "{ns}_header-region")]
+    [Style("height: 150px; width:100%; background: gray; color: whitesmoke; clear: both;")] // BUG - should be handled by the ContainerAttribute
     [UsesLayout("header")]
     internal class HeaderRegion { }
 
@@ -50,14 +60,15 @@ namespace Website.Pages
     [IsComponent("footer")]
     [PartOf("application")]
     [DeployedAs("navigation")]
-    [DeployCss("p.{ns}_footer", "font-weight:bold; font-size:9pt;")]
+    [DeployCss("p.{ns}_footer", "font-weight:bold; font-size:9pt; text-align: right;")]
     [RenderHtml("footer.standard", "<p class='{ns}_footer'>Copyright 2018</p>")]
     internal class FooterComponent { }
 
     [IsRegion("footer")]
     [PartOf("application")]
     [DeployedAs("navigation")]
-    [Style("height: 50px; width:100%; padding:5px; background: gray; color: whitesmoke;")]
+    [Container("div", "{ns}_footer-region")]
+    [Style("height: 50px; width:100%; padding:5px; background: gray; color: whitesmoke;")] // BUG - should be handled by the ContainerAttribute
     [UsesComponent("footer")]
     internal class MainFooterRegion { }
 
@@ -73,14 +84,14 @@ namespace Website.Pages
     [PartOf("application")]
     [DeployedAs("navigation")]
     [UsesRegion("header", "header")]
-    [UsesRegion("body", "body")] // TODO: Remove later - bug
+    [UsesRegion("body", "body")] // BUG - this should be ommited
     [UsesRegion("footer", "footer")]
     [RegionLayout("header", "header")]
     [RegionComponent("footer", "footer")]
     internal class NavigationPageLayout { }
 
-    [NeedsComponent("defaultStyles")]
     [UsesLayout("navigationPage")]
+    [NeedsComponent("navigationStyles")]
     public class NavigationMasterPage : BlankMasterPage
     {
     }

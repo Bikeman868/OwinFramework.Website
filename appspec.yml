@@ -22,18 +22,10 @@ files:
     destination: c:\inetpub\wwwroot
 
 hooks:
-  BeforeInstall:
-    - location: scripts/before-install.cmd
-      timeout: 300
-
-  AfterInstall:
-    - location: scripts/after-install.cmd
+  ApplicationStop:
+    - location: scripts/CodeDeploy-stop.cmd
       timeout: 300
 
   ApplicationStart:
-    - location: scripts/appliation-start.cmd
-      timeout: 300
-
-  ApplicationStop:
-    - location: scripts/application-stop.cmd
+    - location: scripts/CodeDeploy-start.cmd
       timeout: 300
