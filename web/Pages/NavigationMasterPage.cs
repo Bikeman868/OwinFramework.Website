@@ -15,7 +15,7 @@ namespace Website.Pages
     internal class DefaultStylesComponent { }
 
     //------------------------------------------------------------------------------------
-    // Header
+    // Header - is the same on all pages
 
     [IsComponent("title")]
     [PartOf("application")]
@@ -45,7 +45,7 @@ namespace Website.Pages
     internal class HeaderRegion { }
 
     //------------------------------------------------------------------------------------
-    // Footer
+    // Footer - is the same design on all pages
 
     [IsComponent("footer")]
     [PartOf("application")]
@@ -62,18 +62,21 @@ namespace Website.Pages
     internal class MainFooterRegion { }
 
     //------------------------------------------------------------------------------------
-    // Page layout
+    // Body - the body has a different layout on each page
 
     [IsRegion("body")]
     [PartOf("application")]
-    [DeployedAs("navigation")]
-    internal class DummyBody_RemoveLater { }
+    [DeployedAs("content")]
+    internal class BodyRegion { }
+
+    //------------------------------------------------------------------------------------
+    // Base page for most regular pages on the website
 
     [IsLayout("navigationPage", "header,body,footer)")]
     [PartOf("application")]
     [DeployedAs("navigation")]
     [UsesRegion("header", "header")]
-    [UsesRegion("body", "body")] // TODO: Remove later - bug
+    [UsesRegion("body", "body")]
     [UsesRegion("footer", "footer")]
     [RegionLayout("header", "header")]
     [RegionComponent("footer", "footer")]
