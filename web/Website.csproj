@@ -68,6 +68,7 @@
     <Compile Include="Packaging\ContentModule.cs" />
     <Compile Include="Packaging\NavigationModule.cs" />
     <Compile Include="Pages\BlankMasterPage.cs" />
+    <Compile Include="Pages\AssetReferencesComponent.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\NavigationMasterPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,7 +84,6 @@
   <ItemGroup>
     <Folder Include="Assets\Images\" />
     <Folder Include="Assets\Scripts\" />
-    <Folder Include="Assets\Styles\" />
     <Folder Include="Content\General\" />
     <Folder Include="Content\NuGet\Owin.Framework.AnalysisReporter\" />
     <Folder Include="Content\NuGet\Owin.Framework.Authorization\" />
@@ -92,6 +92,9 @@
     <Folder Include="Content\Repository\Bikeman868\OwinFramework.Middleware\" />
     <Folder Include="Content\Repository\Bikeman868\OwinFramework.Pages\" />
     <Folder Include="Content\Repository\Bikeman868\OwinFramework\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Styles\main.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -125,6 +128,17 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="dotless.ClientOnly">
+          <HintPath>..\packages\DotlessClientOnly\lib\dotless.ClientOnly.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
@@ -238,6 +252,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
+        <Reference Include="OwinFramework.Less">
+          <HintPath>..\packages\Owin.Framework.Less\lib\net40\OwinFramework.Less.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
         <Reference Include="OwinFramework.NotFound">
           <HintPath>..\packages\Owin.Framework.NotFound\lib\net40\OwinFramework.NotFound.dll</HintPath>
           <Private>True</Private>
@@ -284,6 +309,17 @@
       <ItemGroup>
         <Reference Include="OwinFramework.Pages.Html">
           <HintPath>..\packages\Owin.Framework.Pages.Html\lib\net40\OwinFramework.Pages.Html.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="OwinFramework.StaticFiles">
+          <HintPath>..\packages\Owin.Framework.StaticFiles\lib\net40\OwinFramework.StaticFiles.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

@@ -11,6 +11,8 @@ files:
     destination: c:\inetpub\wwwroot\web
   - source: web\Website.csproj
     destination: c:\inetpub\wwwroot\web
+  - source: web\Assets\Styles\*.less
+    destination: c:\inetpub\wwwroot\web\assets\styles
 
   - source: .paket\paket.exe
     destination: c:\inetpub\wwwroot\.paket

@@ -3,7 +3,35 @@
         "pages": { },
         "notFound": { },
         "debugInfo": { },
-        "exceptionReporter": { }
+        "exceptionReporter": { },
+        "staticFiles": {
+            "assets": {
+                "staticFilesRootUrl": "/assets",
+                "documentationRootUrl": null,
+                "rootDirectory": "~\\assets",
+                "enabled": "true",
+                "includeSubFolders": "true",
+                "FileExtensions": [
+                    { "extension": ".css", "mimeType": "text/css" },
+                    { "extension": ".js", "mimeType": "application/javascript" },
+                    { "extension": ".jpg", "mimeType": "image/jpeg" },
+                    { "extension": ".jpeg", "mimeType": "image/jpeg" },
+                    { "extension": ".png", "mimeType": "image/png" }
+                ],
+                "maximumFileSizeToCache": 10000,
+                "totalCacheSize": 1000000,
+                "maximumCacheTime": "00:30:00",
+                "requiredPermission": ""
+            }
+        },
+        "less": {
+            "rootUrl": "/assets/styles",
+            "rootDirectory": "~\\assets\\styles",
+            "enabled": true,
+            "analyticsEnabled": false,
+            "minify": false,
+            "traceLog": false
+        }
     },
     "framework": { 
     }

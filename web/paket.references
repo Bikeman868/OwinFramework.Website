@@ -9,6 +9,8 @@ Microsoft.Owin.Host.SystemWeb
 Owin.Framework.NotFound
 Owin.Framework.Urchin
 Owin.Framework.ExceptionReporter
+Owin.Framework.StaticFiles
+Owin.Framework.Less
 
 Owin.Framework.Pages.Core
 Owin.Framework.Pages.Framework

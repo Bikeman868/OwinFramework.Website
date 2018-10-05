@@ -80,9 +80,9 @@ namespace Website.Navigation
                     }
             };
 
-            var gitHubMenu = new MenuPackage.MenuItem
+            var sourceMenu = new MenuPackage.MenuItem
             {
-                Name = "GitHub",
+                Name = "Source code",
                 SubMenu = new List<MenuPackage.MenuItem>
                     {
                         new MenuPackage.MenuItem { Name = "OWIN Framework", Url = "https://github.com/Bikeman868/OwinFramework", Target = "_blank" },
@@ -99,7 +99,7 @@ namespace Website.Navigation
                 tutorialsMenu,
                 documentationMenu,
                 nuGetMenu,
-                gitHubMenu
+                sourceMenu
             };
         }
 
