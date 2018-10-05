@@ -16,6 +16,30 @@ namespace Website.Navigation
             : base(dependencies) 
         {
 
+            var gettingStartedMenu = new MenuPackage.MenuItem
+            {
+                Name = "Getting started",
+                SubMenu = new List<MenuPackage.MenuItem>
+                    {
+                        new MenuPackage.MenuItem { Name = "Hello world" },
+                        new MenuPackage.MenuItem { Name = "Sample websites" },
+                        new MenuPackage.MenuItem { Name = "NuGet packages" },
+                        new MenuPackage.MenuItem { Name = "Configuration" },
+                    }
+            };
+
+            var tutorialsMenu = new MenuPackage.MenuItem
+            {
+                Name = "Tutorials",
+                SubMenu = new List<MenuPackage.MenuItem>
+                    {
+                        new MenuPackage.MenuItem { Name = "Website walkthrough" },
+                        new MenuPackage.MenuItem { Name = "Microservice walkthrough" },
+                        new MenuPackage.MenuItem { Name = "Localization" },
+                        new MenuPackage.MenuItem { Name = "Best practices" },
+                    }
+            };
+
             var nuGetMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
@@ -56,6 +80,8 @@ namespace Website.Navigation
             };
 
             _mainMenu = new List<MenuPackage.MenuItem>();
+            _mainMenu.Add(gettingStartedMenu);
+            _mainMenu.Add(tutorialsMenu);
             _mainMenu.Add(nuGetMenu);
             _mainMenu.Add(gitHubMenu);
         }
