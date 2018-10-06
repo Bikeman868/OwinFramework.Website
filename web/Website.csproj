@@ -58,8 +58,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Index.html" />
-    <Content Include="Templates\Components\Github\Bikeman868\OwinFramework\Overview.html" />
+    <Content Include="Content\Repository\Bikeman868\OwinFramework\Overview.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -68,11 +67,12 @@
     <Compile Include="Layouts\FixedRightColumnLayout.cs" />
     <Compile Include="Navigation\MenuDataProvider.cs" />
     <Compile Include="Navigation\MenuPackage.cs" />
+    <Compile Include="Navigation\Sitemap.cs" />
     <Compile Include="Packaging\ApplicationPackage.cs" />
     <Compile Include="Packaging\ContentModule.cs" />
     <Compile Include="Packaging\NavigationModule.cs" />
     <Compile Include="PageBase\BlankMasterPage.cs" />
-    <Compile Include="Components\AssetReferencesComponent.cs" />
+    <Compile Include="Components\AssetReferences.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="PageBase\NavigationMasterPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,12 +94,7 @@
     <Folder Include="Content\Repository\Bikeman868\OwinFramework.Facilities\" />
     <Folder Include="Content\Repository\Bikeman868\OwinFramework.Middleware\" />
     <Folder Include="Content\Repository\Bikeman868\OwinFramework.Pages\" />
-    <Folder Include="Content\Repository\Bikeman868\OwinFramework\" />
-    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Facilities\" />
-    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Midleware\" />
-    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Pages\" />
-    <Folder Include="Templates\Components\Github\Bikeman868\Owinramework.Authorization\" />
-    <Folder Include="Templates\Components\Nuget\Owin.Framework.AnalysisReporter\" />
+    <Folder Include="Templates\Components\" />
     <Folder Include="Templates\Layouts\" />
     <Folder Include="Templates\Regions\" />
   </ItemGroup>

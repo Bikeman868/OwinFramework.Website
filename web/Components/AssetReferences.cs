@@ -8,9 +8,9 @@ namespace Website.Components
 {
     [IsComponent("assetReferences")]
     [PartOf("application")]
-    public class AssetReferencesComponent: Component
+    public class AssetReferences: Component
     {
-        public AssetReferencesComponent(IComponentDependenciesFactory dependencies) : base(dependencies)
+        public AssetReferences(IComponentDependenciesFactory dependencies) : base(dependencies)
         {
             PageAreas = new [] { PageArea.Head };
         }

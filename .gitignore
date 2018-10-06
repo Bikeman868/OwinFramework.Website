@@ -4,6 +4,7 @@
 *.log
 *.exe
 *.pdb
+*.err
 *.manifest
 
 web/bin/*
