@@ -94,6 +94,14 @@
     <Folder Include="Content\Repository\Bikeman868\OwinFramework.Middleware\" />
     <Folder Include="Content\Repository\Bikeman868\OwinFramework.Pages\" />
     <Folder Include="Content\Repository\Bikeman868\OwinFramework\" />
+    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Facilities\" />
+    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Midleware\" />
+    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Pages\" />
+    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework\" />
+    <Folder Include="Templates\Components\Github\Bikeman868\Owinramework.Authorization\" />
+    <Folder Include="Templates\Components\Nuget\Owin.Framework.AnalysisReporter\" />
+    <Folder Include="Templates\Layouts\" />
+    <Folder Include="Templates\Regions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Styles\main.less" />
