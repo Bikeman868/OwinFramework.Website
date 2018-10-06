@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Index.html" />
+    <Content Include="Templates\Components\Github\Bikeman868\OwinFramework\Overview.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +98,6 @@
     <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Facilities\" />
     <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Midleware\" />
     <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework.Pages\" />
-    <Folder Include="Templates\Components\Github\Bikeman868\OwinFramework\" />
     <Folder Include="Templates\Components\Github\Bikeman868\Owinramework.Authorization\" />
     <Folder Include="Templates\Components\Nuget\Owin.Framework.AnalysisReporter\" />
     <Folder Include="Templates\Layouts\" />
