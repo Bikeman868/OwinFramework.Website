@@ -11,6 +11,8 @@ files:
     destination: c:\inetpub\wwwroot\web
   - source: web\Website.csproj
     destination: c:\inetpub\wwwroot\web
+  - source: web\Assets\Styles\*.less
+    destination: c:\inetpub\wwwroot\web\assets\styles
 
   - source: .paket\paket.exe
     destination: c:\inetpub\wwwroot\.paket
@@ -22,18 +24,10 @@ files:
     destination: c:\inetpub\wwwroot
 
 hooks:
-  BeforeInstall:
-    - location: scripts/before-install.cmd
-      timeout: 300
-
-  AfterInstall:
-    - location: scripts/after-install.cmd
+  ApplicationStop:
+    - location: scripts/CodeDeploy-stop.cmd
       timeout: 300
 
   ApplicationStart:
-    - location: scripts/appliation-start.cmd
-      timeout: 300
-
-  ApplicationStop:
-    - location: scripts/application-stop.cmd
+    - location: scripts/CodeDeploy-start.cmd
       timeout: 300

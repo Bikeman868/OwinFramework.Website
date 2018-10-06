@@ -4,10 +4,9 @@ using System.Linq;
 using System.Web;
 using OwinFramework.Pages.Core.Attributes;
 
-namespace Website.Pages
+namespace Website.Layouts
 {
     [PartOf("application")]
-    public class BlankMasterPage
-    {
-    }
+    [DeployedAs("content")]
+    internal class ContentElement { }
 }

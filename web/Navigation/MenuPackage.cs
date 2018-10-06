@@ -9,7 +9,12 @@ using OwinFramework.Pages.Html.Runtime;
 
 namespace Website.Navigation
 {
-    [IsPackage("menu")]
+    /// <summary>
+    /// This package defines a region that will render a horizontal menu bar
+    /// with drop-down sub-menus using pure CSS and no JavaScript. The menu
+    /// skin is a separate component that you can add to your page, or you
+    /// can style the menu your way.
+    /// </summary>
     public class MenuPackage : OwinFramework.Pages.Framework.Runtime.Package
     {
         public MenuPackage(IPackageDependenciesFactory dependencies)
@@ -58,11 +63,11 @@ namespace Website.Navigation
         { }
 
         [DeployCss("ul.{ns}_menu", "margin: 0; padding: 0; background-color: #333", 1)]
-        [DeployCss("li.{ns}_option a", "color: white; text-align: center; padding: 14px 16px;", 2)]
+        [DeployCss("li.{ns}_option a", "color: white; text-align: center; padding: 14px 16px; font-family: sans-serif; letter-spacing: 1px;", 2)]
         [DeployCss("li.{ns}_option a:hover, li.{ns}_menu-option:hover a.{ns}_menu-option", "background-color: red", 3)]
         [DeployCss("div.{ns}_dropdown a:hover", "background-color: #f1f1f1;", 4)]
         [DeployCss("div.{ns}_dropdown", "background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);", 5)]
-        [DeployCss("div.{ns}_dropdown a", "color: black; padding: 12px 16px;", 6)]
+        [DeployCss("div.{ns}_dropdown a", "color: black; padding: 12px 16px; font-family: sans-serif;", 6)]
         public class MenuStyle1
         { }
 
@@ -92,7 +97,7 @@ namespace Website.Navigation
                 .Build();
 
             // This data provider extracts sub-menu items from the current menu item
-            // using fluent syntax. No custom class is needed in this case
+            // using fluent syntax.
             var subMenuDataProvider = builder.BuildUpDataProvider()
                 .BindTo<MenuItem>()
                 .Provides<IList<MenuItem>>((rc, dc, d) => 
@@ -121,7 +126,7 @@ namespace Website.Navigation
                 .Build();
 
             // This layout defines the main menu option and the sub-menu that
-            // drops down wen the main menu option is tapped
+            // drops down when the main menu option is tapped or hovered
             var menuOptionLayout = builder.BuildUpLayout()
                 .Tag("li")
                 .ClassNames("{ns}_option")
@@ -131,7 +136,8 @@ namespace Website.Navigation
                 .Build();
 
             // This region is the whole menu structure with top level menu 
-            // options and sub-menus beneath each option
+            // options and sub-menus beneath each option. This is the region you
+            // need to add to a layout in your page to display a menu.
             builder.BuildUpRegion()
                 .Name("menu")
                 .Tag("ul")

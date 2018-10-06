@@ -14,6 +14,8 @@ nuget Microsoft.Owin.Host.SystemWeb = 2.1.0
 nuget Owin.Framework.NotFound
 nuget Owin.Framework.Urchin
 nuget Owin.Framework.ExceptionReporter
+nuget Owin.Framework.StaticFiles
+nuget Owin.Framework.Less
 
 nuget Owin.Framework.Pages.Core
 nuget Owin.Framework.Pages.Framework
