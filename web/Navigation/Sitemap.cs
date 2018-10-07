@@ -17,25 +17,24 @@ namespace Website.Navigation
 
         public FunctionalArea[] FunctionalAreas { get; private set; }
         public Repository[] Repositories { get; private set; }
-        public NugetPackage[] NugetPackages { get; private set; }
         public Project[] Projects { get; private set; }
         public RepositoryOwner[] RepositoryOwners { get; private set; }
 
         public class FunctionalArea
         {
+            public string Identifier { get; private set;}
             public Document Document { get; private set; }
-            public NugetPackage[] NugetPackages { get; private set; }
             public Project[] Projects { get; private set; }
 
-            public FunctionalArea(Document document)
+            public FunctionalArea(string identifier, string name)
             {
-                Document = document;
+                Identifier = identifier;
+                Document = new Document("area." + identifier.ToLower(), name);
             }
 
             public void Initialize()
             {
                 Projects = Instance.Projects.Where(p => p.FunctionalArea == this).ToArray();
-                NugetPackages = Instance.NugetPackages.Where(n => Projects.Contains(n.Project)).ToArray();
             }
         }
 
@@ -59,39 +58,62 @@ namespace Website.Navigation
 
         public class Repository
         {
-            public string Identifier { get; set; }
+            public string RepositoryName { get; private set; }
             public string Url { get; set; }
             public RepositoryOwner Owner { get; set; }
             public Project[] Projects { get; set; }
 
-            public Repository(string identifier, string owner, string url = null)
+            public Repository(string repositoryName, string owner, string url = null)
             {
-                Identifier = identifier;
+                RepositoryName = repositoryName;
                 Owner = Instance.RepositoryOwners.First(o => o.Name == owner);
-                Url = url ?? "https://github.com/" + owner + "/" + identifier;
+                Url = url ?? "https://github.com/" + owner + "/" + repositoryName;
             }
 
             public void Initialize()
-            { }
+            {
+                Projects = Instance.Projects.Where(p => p.Repository == this).ToArray();
+            }
         }
 
         public class Project
         {
-            public Document Document { get; private set;}
+            public string ProjectName { get; private set; }
+            public bool DesktopMenu { get; private set; }
+            public bool MobileMenu { get; private set; }
+            public string NugetPackage { get; private set; }
+            public Document Document { get; private set; }
             public Repository  Repository { get; private set; }
             public FunctionalArea FunctionalArea { get; private set; }
 
-            public void Initialize()
-            { }
-        }
+            public Project(string projectName, string repositoryIdentifier, string areaIdentifier)
+            {
+                ProjectName = projectName;
+                NugetPackage = projectName;
+                DesktopMenu = true;
+                MobileMenu = false;
+                Document = new Document("project." + projectName.ToLower(), projectName + " project").SetPages("/content/project/");
+                Repository = Instance.Repositories.First(r => r.RepositoryName == repositoryIdentifier);
+                FunctionalArea = Instance.FunctionalAreas.First(a => a.Identifier == areaIdentifier);
+            }
 
-        public class NugetPackage
-        {
-            public Document Document { get; private set;}
-            public Project Project { get; private set; }
+            public Project Menus(bool desktop, bool mobile)
+            {
+                DesktopMenu = desktop;
+                MobileMenu = mobile;
+                return this;
+            }
 
-            public void Initialize()
-            { }
+            public Project Nuget(string packageName)
+            {
+                NugetPackage = packageName;
+                return this;
+            }
+
+            public Project Initialize()
+            {
+                return this;
+            }
         }
 
         public class InterfaceDefinition
@@ -99,6 +121,11 @@ namespace Website.Navigation
             public Document Document { get; private set; }
             public Project Project { get; private set; }
 
+            public InterfaceDefinition(string typeName, string projectName)
+            {
+                Document = new Document("interface." + typeName.ToLower(), typeName + " Interface");
+                Project = Instance.Projects.First(p => p.ProjectName == projectName);
+            }
             public void Initialize()
             { }
         }
@@ -127,7 +154,7 @@ namespace Website.Navigation
             {
                 LandingPageTemplate = templateRoot + Identifier + "/landing";
                 OverviewTemplate = templateRoot + Identifier + "/overview";
-                OverviewTemplate = templateRoot + Identifier + "/index";
+                IndexTemplate = templateRoot + Identifier + "/index";
                 return this;
             }
 
@@ -138,14 +165,16 @@ namespace Website.Navigation
             }
         }
 
-        public Sitemap()
+        public Sitemap Initialize()
         {
             FunctionalAreas = new[]
             {
-                new FunctionalArea(new Document("area.framework", "Owin Framework")),
-                new FunctionalArea(new Document("area.content", "Content")),
-                new FunctionalArea(new Document("area.authorization", "Authorization")),
-                new FunctionalArea(new Document("area.pages", "Html Pages"))
+                new FunctionalArea("framework", "Owin Framework"),
+                new FunctionalArea("content", "Content"),
+                new FunctionalArea("diagnostics", "Diagnostics"),
+                new FunctionalArea("authorization", "Authorization"),
+                new FunctionalArea("pages", "Html Pages"),
+                new FunctionalArea("testing", "Unit Testing")
             };
 
             RepositoryOwners = new[]
@@ -162,22 +191,49 @@ namespace Website.Navigation
                 new Repository("OwinFramework.Facilities", "Bikeman868"),
             };
 
-            NugetPackages = new[]
-            {
-                new NugetPackage()
-            };
-
             Projects = new[]
             {
-                new Project()
-            };
-        }
+                new Project("OwinFramework", "OwinFramework", "framework").Menus(true, true),
+                new Project("OwinFramework.Configuration.ConfigurationManager", "OwinFramework", "framework").Menus(false, false),
+                new Project("OwinFramework.Configuration.Urchin", "OwinFramework", "framework").Menus(false, false),
+                new Project("OwinFramework.Mocks", "OwinFramework", "testing").Menus(false, false),
+                new Project("OwinFramework.UnitTests", "OwinFramework", "testing").Menus(false, false).Nuget(null),
 
-        public Sitemap Initialize()
-        {
+                new Project("OwinFramework.Facilities.Cache.Local", "OwinFramework.Facilities", "framework").Menus(false, false),
+                new Project("OwinFramework.Facilities.IdentityStore.Prius", "OwinFramework.Facilities", "authorization").Menus(false, false),
+                new Project("OwinFramework.Facilities.TokenStore.Cache", "OwinFramework.Facilities", "framework").Menus(false, false),
+                new Project("OwinFramework.Facilities.TokenStore.Prius", "OwinFramework.Facilities", "framework").Menus(false, false),
+
+                new Project("OwinFramework.AnalysisReporter", "OwinFramework.Middleware", "diagnostics").Menus(false, false),
+                new Project("OwinFramework.Dart", "OwinFramework.Middleware", "content").Menus(false, false),
+                new Project("OwinFramework.DefaultDocument", "OwinFramework.Middleware", "content").Menus(true, true),
+                new Project("OwinFramework.Documenter", "OwinFramework.Middleware", "diagnostics").Menus(false, false),
+                new Project("OwinFramework.ExceptionReporter", "OwinFramework.Middleware", "diagnostics").Menus(true, false),
+                new Project("OwinFramework.FormIdentification", "OwinFramework.Middleware", "authorization").Menus(true, false),
+                new Project("OwinFramework.Less", "OwinFramework.Middleware", "content").Menus(true, false),
+                new Project("OwinFramework.NotFound", "OwinFramework.Middleware", "content").Menus(true, false),
+                new Project("OwinFramework.OutputCache", "OwinFramework.Middleware", "content").Menus(true, false),
+                new Project("OwinFramework.RouteVisualizer", "OwinFramework.Middleware", "diagnostics").Menus(false, false),
+                new Project("OwinFramework.Session", "OwinFramework.Middleware", "authorization").Menus(true, false),
+                new Project("OwinFramework.StaticFiles", "OwinFramework.Middleware", "content").Menus(true, true),
+                new Project("OwinFramework.Versioning", "OwinFramework.Middleware", "content").Menus(true, false),
+
+                new Project("OwinFramework.Authorization", "OwinFramework.Authorization", "authorization").Menus(true, true),
+                new Project("OwinFramework.Authorization.Core", "OwinFramework.Authorization", "authorization").Menus(false, false),
+                new Project("OwinFramework.Authorization.Prius", "OwinFramework.Authorization", "authorization").Menus(true, false),
+                new Project("OwinFramework.Authorization.UI", "OwinFramework.Authorization", "authorization").Menus(true, false),
+
+                new Project("OwinFramework.Pages.Core", "OwinFramework.Pages", "pages").Menus(false, false),
+                new Project("OwinFramework.Pages.DebugMiddleware", "OwinFramework.Pages", "diagnostics").Menus(false, false),
+                new Project("OwinFramework.Pages.Framework", "OwinFramework.Pages", "pages").Menus(false, false),
+                new Project("OwinFramework.Pages.Html", "OwinFramework.Pages", "pages").Menus(true, true),
+                new Project("OwinFramework.Pages.Mocks", "OwinFramework.Pages", "testing").Menus(false, false),
+                new Project("OwinFramework.Pages.Restful", "OwinFramework.Pages", "pages").Menus(true, true),
+                new Project("OwinFramework.Pages.UnitTests", "OwinFramework.Pages", "testing").Menus(false, false).Nuget(null),
+            };
+
             for (var i = 0; i < FunctionalAreas.Length; i++) FunctionalAreas[i].Initialize();
             for (var i = 0; i < Repositories.Length; i++) Repositories[i].Initialize();
-            for (var i = 0; i < NugetPackages.Length; i++) NugetPackages[i].Initialize();
             for (var i = 0; i < Projects.Length; i++) Projects[i].Initialize();
             for (var i = 0; i < RepositoryOwners.Length; i++) RepositoryOwners[i].Initialize();
 

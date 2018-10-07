@@ -2,6 +2,11 @@
 @content-panel-background: white;
 @header-background: gray;
 @header-color: whitesmoke;
+@break1: 400px;
+@break2: 600px;
+@break3: 820px;
+
+* { box-sizing: border-box; }
 
 body { margin:10px; background-color: whitesmoke; }
 
@@ -15,15 +20,23 @@ h3 { font-size:12pt; }
 
 div { margin: 0; padding: 0; }
 
+div.web_page { min-width: 400px; max-width: 1280px; margin: 0 auto; }
+
+ul.menu_menu { display: none; }
+
+@media only screen and (min-width: @break3) {
+        ul.menu_menu { display: block; }
+    }
+
 div.web_header-region { 
-    height: 158px; width:100%; background: @header-background; color: @header-color; clear: both; 
+    width:100%; background: @header-background; color: @header-color; clear: both; 
 
     h1 { 
-        font-size: 3em; padding: 15px 0px 0px 30px; margin: 0; letter-spacing: 1px; font-family: sans-serif;
+        font-size: 4vw; padding: 15px 0px 0px 30px; margin: 0; letter-spacing: 1px; font-family: sans-serif;
     }
 
     p {
-        font-size: 0.8em; padding: 0px 0px 0px 50px; margin: 13px;
+        font-size: 0.8em; padding: 0px 0px 0px 50px; margin: 1vw;
     }
 }
 
@@ -43,13 +56,21 @@ div.web_footer-region {
 div.web_fixed-left-layout {
     overflow: hidden;
 
-    div.web_left { overflow: hidden; float: left; width: 200px; background-color: @fixed-panel-background; }
-    div.web_right { min-height: 400px; margin-left: 210px; margin-top: -5px; background-color: @content-panel-background; }
+    div.web_left { overflow: hidden; float: left; width: 250px; background-color: @fixed-panel-background; display: none; }
+    div.web_right { min-height: 400px; margin-left: 260px; margin-top: -5px; background-color: @content-panel-background; }
+
+    @media only screen and (min-width: @break2) {
+            div.web_left { display: initial; }
+        }
 }
 
 div.web_fixed-right-layout {
     height: auto; overflow: hidden;
 
-    div.web_left { overflow: hidden; width: auto; background-color: @content-panel-background; }
-    div.web_right { width: 200px; float: right; background-color: @fixed-panel-background; }
+    div.web_left { min-height: 400px; overflow: hidden; width: auto; background-color: @content-panel-background; }
+    div.web_right { width: 250px; float: right; background-color: @fixed-panel-background; display: none; }
+
+    @media only screen and (min-width: @break2) {
+            div.web_right { display: initial; }
+        }
 }

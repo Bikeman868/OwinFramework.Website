@@ -58,7 +58,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Repository\Bikeman868\OwinFramework\Overview.html" />
+    <Content Include="Content\Project\OwinFramework\Overview.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -72,7 +72,7 @@
     <Compile Include="Packaging\ContentModule.cs" />
     <Compile Include="Packaging\NavigationModule.cs" />
     <Compile Include="PageBase\BlankMasterPage.cs" />
-    <Compile Include="Components\AssetReferences.cs" />
+    <Compile Include="Components\PageHead.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="PageBase\NavigationMasterPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,12 +88,10 @@
     <Folder Include="Assets\Images\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Content\General\" />
-    <Folder Include="Content\NuGet\Owin.Framework.AnalysisReporter\" />
-    <Folder Include="Content\NuGet\Owin.Framework.Authorization\" />
-    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Authorization\" />
-    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Facilities\" />
-    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Middleware\" />
-    <Folder Include="Content\Repository\Bikeman868\OwinFramework.Pages\" />
+    <Folder Include="Content\Project\OwinFramework.Authorization\" />
+    <Folder Include="Content\Project\OwinFramework.Facilities\" />
+    <Folder Include="Content\Project\OwinFramework.Middleware\" />
+    <Folder Include="Content\Project\OwinFramework.Pages\" />
     <Folder Include="Templates\Components\" />
     <Folder Include="Templates\Layouts\" />
     <Folder Include="Templates\Regions\" />

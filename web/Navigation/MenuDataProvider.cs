@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using OwinFramework.Pages.Core.Attributes;
 using OwinFramework.Pages.Core.Interfaces.Builder;
 using OwinFramework.Pages.Core.Interfaces.DataModel;
@@ -10,7 +11,8 @@ namespace Website.Navigation
     [IsDataProvider("menu", typeof(IList<MenuPackage.MenuItem>))]
     public class MenuDataProvider: DataProvider
     {
-        private readonly IList<MenuPackage.MenuItem> _mainMenu;
+        private readonly IList<MenuPackage.MenuItem> _desktopMenu;
+        private readonly IList<MenuPackage.MenuItem> _mobileMenu;
 
         public MenuDataProvider(IDataProviderDependenciesFactory dependencies) 
             : base(dependencies) 
@@ -54,52 +56,109 @@ namespace Website.Navigation
                     }
             };
 
-            var nuGetMenu = new MenuPackage.MenuItem
+            var nuGetDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = new List<MenuPackage.MenuItem>
-                    {
-                        new MenuPackage.MenuItem { Name = "Analysis Reporter", Url = "https://www.nuget.org/packages/Owin.Framework.AnalysisReporter/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Authorization",     Url = "https://www.nuget.org/packages/Owin.Framework.Authorization/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Configuration Manager", Url = "https://www.nuget.org/packages/Owin.Framework.ConfigurationManager/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Dart", Url = "https://www.nuget.org/packages/Owin.Framework.Dart/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Default Document", Url = "https://www.nuget.org/packages/Owin.Framework.DefaultDocument/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Documenter", Url = "https://www.nuget.org/packages/Owin.Framework.Documenter/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Exception Reporter", Url = "https://www.nuget.org/packages/Owin.Framework.ExceptionReporter/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Form Identification", Url = "https://www.nuget.org/packages/Owin.Framework.FormIdentification/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Less", Url = "https://www.nuget.org/packages/Owin.Framework.Less/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Mocks", Url = "https://www.nuget.org/packages/Owin.Framework.Mocks/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Not Found", Url = "https://www.nuget.org/packages/Owin.Framework.NotFound/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Output Cache", Url = "https://www.nuget.org/packages/Owin.Framework.OutputCache/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Pages Html", Url = "https://www.nuget.org/packages/Owin.Framework.Pages.Html/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Route Visualizer", Url = "https://www.nuget.org/packages/Owin.Framework.RouteVisualizer/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Session", Url = "https://www.nuget.org/packages/Owin.Framework.Session/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Static Files", Url = "https://www.nuget.org/packages/Owin.Framework.StaticFiles/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Urchin", Url = "https://www.nuget.org/packages/Owin.Framework.Urchin/", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Versioning", Url = "https://www.nuget.org/packages/Owin.Framework.Versioning/", Target = "_blank" },
-                    }
+                SubMenu = Sitemap.Instance.Projects
+                    .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
+                    .OrderBy(p => p.NugetPackage)
+                    .Select(r => new MenuPackage.MenuItem 
+                        { 
+                            Name = r.NugetPackage, 
+                            Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
+                            Target = "_blank" 
+                        })
+                    .ToList()
             };
+            nuGetDesktopMenu.SubMenu.Add(new MenuPackage.MenuItem
+            {
+                Name = "More ...",
+                Url = "/content/nuget/index"
+            });
 
-            var sourceMenu = new MenuPackage.MenuItem
+            var nuGetMobileMenu = new MenuPackage.MenuItem
+            {
+                Name = "NuGet",
+                SubMenu = Sitemap.Instance.Projects
+                    .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
+                    .OrderBy(p => p.NugetPackage)
+                    .Select(r => new MenuPackage.MenuItem
+                    {
+                        Name = r.NugetPackage,
+                        Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/",
+                        Target = "_blank"
+                    })
+                    .ToList()
+            };
+            nuGetMobileMenu.SubMenu.Add(new MenuPackage.MenuItem
+            {
+                Name = "More ...",
+                Url = "/content/nuget/index"
+            });
+
+            var sourceDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "Source code",
-                SubMenu = new List<MenuPackage.MenuItem>
+                SubMenu = Sitemap.Instance.Repositories
+                    .OrderBy(r => r.RepositoryName)
+                    .Select(r => new MenuPackage.MenuItem
                     {
-                        new MenuPackage.MenuItem { Name = "OWIN Framework", Url = "https://github.com/Bikeman868/OwinFramework", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Facilities", Url = "https://github.com/Bikeman868/OwinFramework.Facilities", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Middleware", Url = "https://github.com/Bikeman868/OwinFramework.Middleware", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Authorization", Url = "https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Pages", Url = "https://github.com/Bikeman868/OwinFramework.Pages", Target = "_blank" },
-                    }
+                        Name = "Repo " + r.RepositoryName,
+                        Url = r.Url,
+                        Target = "_blank"
+                    })
+                    .Concat(Sitemap.Instance.Projects
+                        .Where(p => p.DesktopMenu)
+                        .OrderBy(p => p.ProjectName)
+                        .Select(p => new MenuPackage.MenuItem
+                        {
+                            Name = "Project " + p.ProjectName,
+                            Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
+                            Target = "_blank"
+                        }))
+                    .ToList()
             };
+            sourceDesktopMenu.SubMenu.Add(new MenuPackage.MenuItem
+            {
+                Name = "More ...",
+                Url = "/content/source/index"
+            });
 
-            _mainMenu = new List<MenuPackage.MenuItem>
+            var sourceMobileMenu = new MenuPackage.MenuItem
+            {
+                Name = "Source code",
+                SubMenu = Sitemap.Instance.Repositories
+                    .OrderBy(r => r.RepositoryName)
+                    .Select(r => new MenuPackage.MenuItem
+                    {
+                        Name = r.RepositoryName,
+                        Url = r.Url,
+                        Target = "_blank"
+                    })
+                    .ToList()
+            };
+            sourceMobileMenu.SubMenu.Add(new MenuPackage.MenuItem
+                    {
+                        Name = "More ...",
+                        Url = "/content/source/index"
+                    });
+
+            _desktopMenu = new List<MenuPackage.MenuItem>
             {
                 gettingStartedMenu,
                 tutorialsMenu,
                 documentationMenu,
-                nuGetMenu,
-                sourceMenu
+                nuGetDesktopMenu,
+                sourceDesktopMenu
+            };
+
+            _mobileMenu = new List<MenuPackage.MenuItem>
+            {
+                gettingStartedMenu,
+                tutorialsMenu,
+                documentationMenu,
+                nuGetMobileMenu,
+                sourceMobileMenu
             };
         }
 
@@ -108,7 +167,24 @@ namespace Website.Navigation
             IDataContext dataContext,
             IDataDependency dependency)
         {
-            dataContext.Set(_mainMenu);
+            if (dependency == null || string.IsNullOrEmpty(dependency.ScopeName))
+            {
+                dataContext.Set(_desktopMenu);
+                return;
+            }
+
+            switch (dependency.ScopeName)
+            {
+                case "mobile":
+                    dataContext.Set(_mobileMenu, dependency.ScopeName);
+                    break;
+                case "desktop":
+                    dataContext.Set(_desktopMenu, dependency.ScopeName);
+                    break;
+                default:
+                    dataContext.Set(_desktopMenu);
+                    break;
+            }
         }
     }
 

@@ -61,6 +61,7 @@ namespace Website.PageBase
     // Base page for most regular pages on the website
 
     [IsLayout("navigationPage", "header,body,footer")]
+    [Container("div", "{ns}_page")]
     [UsesRegion("header", "header")]
     [UsesRegion("body", "body")]
     [UsesRegion("footer", "footer")]
@@ -70,7 +71,7 @@ namespace Website.PageBase
 
     [UsesLayout("navigationPage")]
     [DeployedAs("content")]
-    [NeedsComponent("assetReferences")]
+    [NeedsComponent("pageHead")]
     public class NavigationMasterPage : BlankMasterPage
     {
     }

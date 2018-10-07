@@ -1,6 +1,15 @@
 version: 0.0
 os: windows
 files:
+  - source: .paket\paket.exe
+    destination: c:\inetpub\wwwroot\.paket
+  - source: paket.lock
+    destination: c:\inetpub\wwwroot
+  - source: paket.dependencies
+    destination: c:\inetpub\wwwroot
+  - source: DeployPackages.exe
+    destination: c:\inetpub\wwwroot
+
   - source: web\web.config
     destination: c:\inetpub\wwwroot\web
   - source: web\config.json
@@ -15,15 +24,6 @@ files:
     destination: c:\inetpub\wwwroot\web\Assets\Styles
   - source: web\Templates
     destination: c:\inetpub\wwwroot\web\Templates
-
-  - source: .paket\paket.exe
-    destination: c:\inetpub\wwwroot\.paket
-  - source: paket.lock
-    destination: c:\inetpub\wwwroot
-  - source: paket.dependencies
-    destination: c:\inetpub\wwwroot
-  - source: DeployPackages.exe
-    destination: c:\inetpub\wwwroot
 
 hooks:
   ApplicationStop:

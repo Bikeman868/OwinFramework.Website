@@ -6,11 +6,11 @@ using OwinFramework.Pages.Html.Elements;
 
 namespace Website.Components
 {
-    [IsComponent("assetReferences")]
+    [IsComponent("pageHead")]
     [PartOf("application")]
-    public class AssetReferences: Component
+    public class PageHead: Component
     {
-        public AssetReferences(IComponentDependenciesFactory dependencies) : base(dependencies)
+        public PageHead(IComponentDependenciesFactory dependencies) : base(dependencies)
         {
             PageAreas = new [] { PageArea.Head };
         }
@@ -19,6 +19,7 @@ namespace Website.Components
         {
             if (pageArea == PageArea.Head)
             {
+                context.Html.WriteElementLine("meta", null, "name", "viewport", "content", "width=device-width, initial-scale=1.0");
                 context.Html.WriteElementLine("link", null, "rel", "stylesheet", "type", "text/css", "href", "/assets/styles/main.css");
             }
 
