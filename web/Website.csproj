@@ -58,13 +58,21 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Project\OwinFramework\Overview.html" />
+    <Content Include="Templates\Content\Project\OwinFramework\Overview.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Content\DocumentTitle.cs" />
+    <Compile Include="Components\Content\DocumentIcon.cs" />
+    <Compile Include="Components\Content\DocumentListItem.cs" />
+    <Compile Include="Components\FunctionalArea\ListHeading.cs" />
+    <Compile Include="DataProviders\FunctionalAreaList.cs" />
+    <Compile Include="DataProviders\FunctionalAreaDocument.cs" />
     <Compile Include="Layouts\ContentElement.cs" />
-    <Compile Include="Layouts\FixedLeftColumnLayout.cs" />
-    <Compile Include="Layouts\FixedRightColumnLayout.cs" />
+    <Compile Include="Layouts\Content\FunctionalAreaList.cs" />
+    <Compile Include="Layouts\PageStructure\FixedLeftColumnLayout.cs" />
+    <Compile Include="Layouts\PageStructure\FixedRightColumnLayout.cs" />
+    <Compile Include="DataProviders\FunctionalArea.cs" />
     <Compile Include="Navigation\MenuDataProvider.cs" />
     <Compile Include="Navigation\MenuPackage.cs" />
     <Compile Include="Navigation\Sitemap.cs" />
@@ -76,6 +84,8 @@
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="PageBase\NavigationMasterPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Regions\Content\ComponentContainer.cs" />
+    <Compile Include="Regions\Content\FunctionalAreaList.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,12 +97,12 @@
   <ItemGroup>
     <Folder Include="Assets\Images\" />
     <Folder Include="Assets\Scripts\" />
-    <Folder Include="Content\General\" />
-    <Folder Include="Content\Project\OwinFramework.Authorization\" />
-    <Folder Include="Content\Project\OwinFramework.Facilities\" />
-    <Folder Include="Content\Project\OwinFramework.Middleware\" />
-    <Folder Include="Content\Project\OwinFramework.Pages\" />
     <Folder Include="Templates\Components\" />
+    <Folder Include="Templates\Content\General\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Authorization\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Facilities\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Middleware\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages\" />
     <Folder Include="Templates\Layouts\" />
     <Folder Include="Templates\Regions\" />
   </ItemGroup>

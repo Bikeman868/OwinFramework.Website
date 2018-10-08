@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using OwinFramework.Pages.Core.Attributes;
+﻿using OwinFramework.Pages.Core.Attributes;
 
-namespace Website.Layouts
+namespace Website.Layouts.PageStructure
 {
     //------------------------------------------------------------------------------------
     // Two column layout with left column fixed width

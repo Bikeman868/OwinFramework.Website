@@ -40,14 +40,14 @@ namespace Website.Navigation
 
         public class RepositoryOwner
         {
-            public string Name { get; private set; }
+            public string GitHubAccountName { get; private set; }
             public string HomePageUrl { get; private set; }
             public Repository[]  Repositories { get; private set; }
 
-            public RepositoryOwner(string name, string homePageUrl = null)
+            public RepositoryOwner(string gitHubAccountName, string homePageUrl = null)
             {
-                Name = name;
-                HomePageUrl = homePageUrl ?? "https://github.com/" + name;
+                GitHubAccountName = gitHubAccountName;
+                HomePageUrl = homePageUrl ?? "https://github.com/" + gitHubAccountName;
             }
 
             public void Initialize()
@@ -58,16 +58,16 @@ namespace Website.Navigation
 
         public class Repository
         {
-            public string RepositoryName { get; private set; }
+            public string GitHubRepositoryName { get; private set; }
             public string Url { get; set; }
             public RepositoryOwner Owner { get; set; }
             public Project[] Projects { get; set; }
 
-            public Repository(string repositoryName, string owner, string url = null)
+            public Repository(string gitHubRepositoryName, string gitHubAccountName, string url = null)
             {
-                RepositoryName = repositoryName;
-                Owner = Instance.RepositoryOwners.First(o => o.Name == owner);
-                Url = url ?? "https://github.com/" + owner + "/" + repositoryName;
+                GitHubRepositoryName = gitHubRepositoryName;
+                Owner = Instance.RepositoryOwners.First(o => o.GitHubAccountName == gitHubAccountName);
+                Url = url ?? "https://github.com/" + gitHubAccountName + "/" + gitHubRepositoryName;
             }
 
             public void Initialize()
@@ -78,6 +78,7 @@ namespace Website.Navigation
 
         public class Project
         {
+            public string Caption { get; private set; }
             public string ProjectName { get; private set; }
             public bool DesktopMenu { get; private set; }
             public bool MobileMenu { get; private set; }
@@ -86,14 +87,15 @@ namespace Website.Navigation
             public Repository  Repository { get; private set; }
             public FunctionalArea FunctionalArea { get; private set; }
 
-            public Project(string projectName, string repositoryIdentifier, string areaIdentifier)
+            public Project(string projectName, string gitHubRepositoryName, string areaIdentifier)
             {
+                Caption = projectName.Substring(projectName.IndexOf('.') + 1).Replace(".", " ");
                 ProjectName = projectName;
                 NugetPackage = projectName;
                 DesktopMenu = true;
                 MobileMenu = false;
-                Document = new Document("project." + projectName.ToLower(), projectName + " project").SetPages("/content/project/");
-                Repository = Instance.Repositories.First(r => r.RepositoryName == repositoryIdentifier);
+                Document = new Document("project." + projectName.ToLower(), Caption + " Project").SetPages("/content/project/" + projectName.ToLower());
+                Repository = Instance.Repositories.First(r => r.GitHubRepositoryName == gitHubRepositoryName);
                 FunctionalArea = Instance.FunctionalAreas.First(a => a.Identifier == areaIdentifier);
             }
 

@@ -9,7 +9,9 @@ using OwinFramework.Pages.Framework.DataModel;
 namespace Website.Navigation
 {
     [IsDataProvider("menu", typeof(IList<MenuPackage.MenuItem>))]
-    public class MenuDataProvider: DataProvider
+    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "mobile")]
+    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "desktop")]
+    public class MenuDataProvider : DataProvider
     {
         private readonly IList<MenuPackage.MenuItem> _desktopMenu;
         private readonly IList<MenuPackage.MenuItem> _mobileMenu;
@@ -100,10 +102,10 @@ namespace Website.Navigation
             {
                 Name = "Source code",
                 SubMenu = Sitemap.Instance.Repositories
-                    .OrderBy(r => r.RepositoryName)
+                    .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
-                        Name = "Repo " + r.RepositoryName,
+                        Name = r.GitHubRepositoryName + " Repo",
                         Url = r.Url,
                         Target = "_blank"
                     })
@@ -112,7 +114,7 @@ namespace Website.Navigation
                         .OrderBy(p => p.ProjectName)
                         .Select(p => new MenuPackage.MenuItem
                         {
-                            Name = "Project " + p.ProjectName,
+                            Name = p.Caption + " Project",
                             Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
                             Target = "_blank"
                         }))
@@ -128,10 +130,10 @@ namespace Website.Navigation
             {
                 Name = "Source code",
                 SubMenu = Sitemap.Instance.Repositories
-                    .OrderBy(r => r.RepositoryName)
+                    .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
-                        Name = r.RepositoryName,
+                        Name = r.GitHubRepositoryName,
                         Url = r.Url,
                         Target = "_blank"
                     })
