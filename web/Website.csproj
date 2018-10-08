@@ -66,12 +66,18 @@
     <Compile Include="Components\Content\DocumentIcon.cs" />
     <Compile Include="Components\Content\DocumentListItem.cs" />
     <Compile Include="Components\FunctionalArea\ListHeading.cs" />
+    <Compile Include="Components\Project\ProjectListItem.cs" />
+    <Compile Include="Components\Project\ListHeading.cs" />
+    <Compile Include="DataProviders\ProjectList.cs" />
+    <Compile Include="DataProviders\ProjectDocument.cs" />
+    <Compile Include="DataProviders\Project.cs" />
     <Compile Include="DataProviders\FunctionalAreaList.cs" />
     <Compile Include="DataProviders\FunctionalAreaDocument.cs" />
-    <Compile Include="Layouts\ContentElement.cs" />
-    <Compile Include="Layouts\Content\FunctionalAreaList.cs" />
-    <Compile Include="Layouts\PageStructure\FixedLeftColumnLayout.cs" />
-    <Compile Include="Layouts\PageStructure\FixedRightColumnLayout.cs" />
+    <Compile Include="Content\ContentElement.cs" />
+    <Compile Include="Content\Layouts\Lists\ProjectList.cs" />
+    <Compile Include="Content\Layouts\Lists\FunctionalAreaList.cs" />
+    <Compile Include="Content\Layouts\PageStructure\FixedLeftColumnLayout.cs" />
+    <Compile Include="Content\Layouts\PageStructure\FixedRightColumnLayout.cs" />
     <Compile Include="DataProviders\FunctionalArea.cs" />
     <Compile Include="Navigation\MenuDataProvider.cs" />
     <Compile Include="Navigation\MenuPackage.cs" />
@@ -84,8 +90,9 @@
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="PageBase\NavigationMasterPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Regions\Content\ComponentContainer.cs" />
-    <Compile Include="Regions\Content\FunctionalAreaList.cs" />
+    <Compile Include="Content\Regions\BlankRegion.cs" />
+    <Compile Include="Content\Regions\Lists\ProjectList.cs" />
+    <Compile Include="Content\Regions\Lists\FunctionalAreaList.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,8 +9,8 @@ using OwinFramework.Pages.Framework.DataModel;
 namespace Website.Navigation
 {
     [IsDataProvider("menu", typeof(IList<MenuPackage.MenuItem>))]
-    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "mobile")]
-    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "desktop")]
+    //[SuppliesData(typeof(IList<MenuPackage.MenuItem>), "mobile")]
+    //[SuppliesData(typeof(IList<MenuPackage.MenuItem>), "desktop")]
     public class MenuDataProvider : DataProvider
     {
         private readonly IList<MenuPackage.MenuItem> _desktopMenu;

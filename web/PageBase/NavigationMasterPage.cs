@@ -29,6 +29,8 @@ namespace Website.PageBase
     [UsesRegion("title", "title")]
     [UsesRegion("menu", "menu:menu")]
     [NeedsComponent("menu:menuStyle1")]
+    //[IsLayout("header", "title")]
+    //[UsesRegion("title", "title")]
     internal class HeaderLayout : NavigationElement { }
 
     [IsRegion("header")]

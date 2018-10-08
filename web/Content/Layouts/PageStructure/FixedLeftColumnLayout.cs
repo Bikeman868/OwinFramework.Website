@@ -1,4 +1,5 @@
 ﻿using OwinFramework.Pages.Core.Attributes;
+using Website.Content;
 
 namespace Website.Layouts.PageStructure
 {

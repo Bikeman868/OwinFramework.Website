@@ -17,7 +17,7 @@ nuget Owin.Framework.ExceptionReporter
 nuget Owin.Framework.StaticFiles
 nuget Owin.Framework.Less
 
-nuget Owin.Framework.Pages.Core = 1.0.0-alpha-5
-nuget Owin.Framework.Pages.Framework = 1.0.0-alpha-5
-nuget Owin.Framework.Pages.Html = 1.0.0-alpha-5
-nuget Owin.Framework.Pages.DebugMiddleware = 1.0.0-alpha-5
+nuget Owin.Framework.Pages.Core = 1.0.0-alpha-006
+nuget Owin.Framework.Pages.Framework = 1.0.0-alpha-006
+nuget Owin.Framework.Pages.Html = 1.0.0-alpha-006
+nuget Owin.Framework.Pages.DebugMiddleware = 1.0.0-alpha-006

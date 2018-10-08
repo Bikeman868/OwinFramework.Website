@@ -29,7 +29,9 @@ namespace Website.Navigation
             public FunctionalArea(string identifier, string name)
             {
                 Identifier = identifier;
-                Document = new Document("area." + identifier.ToLower(), name);
+                Document = new Document(identifier.ToLower(), name)
+                    .SetPages("/content/area/")
+                    .SetImage("/assets/images/area/", ".png");
             }
 
             public void Initialize()
@@ -94,7 +96,9 @@ namespace Website.Navigation
                 NugetPackage = projectName;
                 DesktopMenu = true;
                 MobileMenu = false;
-                Document = new Document("project." + projectName.ToLower(), Caption + " Project").SetPages("/content/project/" + projectName.ToLower());
+                Document = new Document(projectName.ToLower(), Caption + " Project")
+                    .SetPages("/content/project/")
+                    .SetImage("/assets/images/project/", ".png");
                 Repository = Instance.Repositories.First(r => r.GitHubRepositoryName == gitHubRepositoryName);
                 FunctionalArea = Instance.FunctionalAreas.First(a => a.Identifier == areaIdentifier);
             }
@@ -125,7 +129,9 @@ namespace Website.Navigation
 
             public InterfaceDefinition(string typeName, string projectName)
             {
-                Document = new Document("interface." + typeName.ToLower(), typeName + " Interface");
+                Document = new Document(typeName.ToLower(), typeName + " Interface")
+                    .SetPages("/content/interface/")
+                    .SetImage("/assets/images/interface/", ".png");
                 Project = Instance.Projects.First(p => p.ProjectName == projectName);
             }
             public void Initialize()
