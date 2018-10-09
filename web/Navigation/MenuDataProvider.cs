@@ -98,52 +98,39 @@ namespace Website.Navigation
                 Url = "/content/nuget/index"
             });
 
-            var sourceDesktopMenu = new MenuPackage.MenuItem
+            var gitHubMenu = new MenuPackage.MenuItem
             {
-                Name = "Source code",
+                Name = "GitHub repos",
                 SubMenu = Sitemap.Instance.Repositories
                     .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
-                        Name = r.GitHubRepositoryName + " Repo",
+                        Name = r.Caption,
                         Url = r.Url,
                         Target = "_blank"
                     })
-                    .Concat(Sitemap.Instance.Projects
-                        .Where(p => p.DesktopMenu)
-                        .OrderBy(p => p.ProjectName)
-                        .Select(p => new MenuPackage.MenuItem
-                        {
-                            Name = p.Caption + " Project",
-                            Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
-                            Target = "_blank"
-                        }))
                     .ToList()
             };
-            sourceDesktopMenu.SubMenu.Add(new MenuPackage.MenuItem
+
+            var projectDesktopMenu = new MenuPackage.MenuItem
+            {
+                Name = "Project source",
+                SubMenu = Sitemap.Instance.Projects
+                    .Where(p => p.DesktopMenu)
+                    .OrderBy(p => p.ProjectName)
+                    .Select(p => new MenuPackage.MenuItem
+                    {
+                        Name = p.Caption,
+                        Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
+                        Target = "_blank"
+                    })
+                    .ToList()
+            };
+            projectDesktopMenu.SubMenu.Add(new MenuPackage.MenuItem
             {
                 Name = "More ...",
                 Url = "/content/source/index"
             });
-
-            var sourceMobileMenu = new MenuPackage.MenuItem
-            {
-                Name = "Source code",
-                SubMenu = Sitemap.Instance.Repositories
-                    .OrderBy(r => r.GitHubRepositoryName)
-                    .Select(r => new MenuPackage.MenuItem
-                    {
-                        Name = r.GitHubRepositoryName,
-                        Url = r.Url,
-                        Target = "_blank"
-                    })
-                    .ToList()
-            };
-            sourceMobileMenu.SubMenu.Add(new MenuPackage.MenuItem
-                    {
-                        Name = "More ...",
-                        Url = "/content/source/index"
-                    });
 
             _desktopMenu = new List<MenuPackage.MenuItem>
             {
@@ -151,7 +138,8 @@ namespace Website.Navigation
                 tutorialsMenu,
                 documentationMenu,
                 nuGetDesktopMenu,
-                sourceDesktopMenu
+                gitHubMenu,
+                projectDesktopMenu
             };
 
             _mobileMenu = new List<MenuPackage.MenuItem>
@@ -160,7 +148,7 @@ namespace Website.Navigation
                 tutorialsMenu,
                 documentationMenu,
                 nuGetMobileMenu,
-                sourceMobileMenu
+                gitHubMenu
             };
         }
 

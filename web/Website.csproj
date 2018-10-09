@@ -87,6 +87,7 @@
     <Compile Include="Packaging\NavigationModule.cs" />
     <Compile Include="PageBase\BlankMasterPage.cs" />
     <Compile Include="Components\PageHead.cs" />
+    <Compile Include="Pages\ContentPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="PageBase\NavigationMasterPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

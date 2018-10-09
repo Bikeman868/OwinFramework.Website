@@ -120,7 +120,6 @@ namespace Website.Navigation
             var dropDownMenuRegion = builder.BuildUpRegion()
                 .Tag("div")
                 .ClassNames("{ns}_dropdown")
-                .DataProvider(subMenuDataProvider)
                 .ForEach<MenuItem>("submenu", null, null, "submenu")
                 .Component(subMenuItemComponent)
                 .Build();
@@ -133,6 +132,7 @@ namespace Website.Navigation
                 .RegionNesting("head,submenu")
                 .Region("head", mainMenuItemRegion)
                 .Region("submenu", dropDownMenuRegion)
+                .DataProvider(subMenuDataProvider)
                 .Build();
 
             // This region is the whole menu structure with top level menu 

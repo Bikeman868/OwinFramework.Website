@@ -61,6 +61,7 @@ namespace Website.Navigation
         public class Repository
         {
             public string GitHubRepositoryName { get; private set; }
+            public string Caption { get; private set; }
             public string Url { get; set; }
             public RepositoryOwner Owner { get; set; }
             public Project[] Projects { get; set; }
@@ -68,6 +69,7 @@ namespace Website.Navigation
             public Repository(string gitHubRepositoryName, string gitHubAccountName, string url = null)
             {
                 GitHubRepositoryName = gitHubRepositoryName;
+                Caption = gitHubRepositoryName.Substring(gitHubRepositoryName.IndexOf('.') + 1).Replace(".", " ");
                 Owner = Instance.RepositoryOwners.First(o => o.GitHubAccountName == gitHubAccountName);
                 Url = url ?? "https://github.com/" + gitHubAccountName + "/" + gitHubRepositoryName;
             }

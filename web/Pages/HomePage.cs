@@ -8,7 +8,7 @@ using Website.PageBase;
 namespace Website.Pages
 {
     [IsComponent("homePage_Content")]
-    [RenderHtml("home-page-right-column", "<h1 style='padding:20px;'>This website is under construction.</h1>")]
+    [RenderHtml("home-page-right-column", "<img src='https://openclipart.org/download/293843/under-construction_geek_woman.svg' style='padding: 5vh; max-width: 50vw; max-height: 50vh;'/>")]
     internal class HomePageContent : ContentElement { }
 
     [IsLayout("homePage_RightColumn", "panel1,panel2")]

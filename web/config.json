@@ -16,7 +16,8 @@
                     { "extension": ".js", "mimeType": "application/javascript" },
                     { "extension": ".jpg", "mimeType": "image/jpeg" },
                     { "extension": ".jpeg", "mimeType": "image/jpeg" },
-                    { "extension": ".png", "mimeType": "image/png" }
+                    { "extension": ".png", "mimeType": "image/png" },
+                    { "extension": ".eps", "mimeType": "application/postscript" }
                 ],
                 "maximumFileSizeToCache": 10000,
                 "totalCacheSize": 1000000,
