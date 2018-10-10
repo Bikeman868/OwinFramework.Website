@@ -34,10 +34,13 @@ a:hover { color: @anchor-hover-color}
 
 div.app_page { min-width: 400px; max-width: 1280px; margin: 0 auto; }
 
+div.app_header_bar_region { overflow: hidden; }
+
 ul.menu_dt_menu { display: none; }
 
 @media only screen and (min-width: @break3) {
         ul.menu_dt_menu { display: block; }
+        div.menu_mb_menu { display: none; }
     }
 
 div.app_header-region { 
@@ -63,7 +66,6 @@ div.app_footer-region {
 .app_app_navigation {
     font-family: sans-serif;
 }
-
 
 div.app_fixed-left-layout {
     overflow: hidden;

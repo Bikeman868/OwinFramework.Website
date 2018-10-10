@@ -71,9 +71,9 @@ namespace Website.Navigation
                     context.Html.WriteOpenTag("input", true, "type", "checkbox", "class", ns + "_mb_hamburger_button", "id", ns + "_mb_hamburger_button");
                     context.Html.WriteLine();
                     context.Html.WriteOpenTag("label", "for", ns + "_mb_hamburger_button", "class", ns + "_mb_hamburger_icon");
-                    context.Html.WriteElementLine("div", null, "class", ns + "_mb_hamburger_icon_1");
-                    context.Html.WriteElementLine("div", null, "class", ns + "_mb_hamburger_icon_2");
-                    context.Html.WriteElementLine("div", null, "class", ns + "_mb_hamburger_icon_3");
+                    context.Html.WriteElementLine("div", null, "class", ns + "_mb_hamburger_icon " + ns + "_mb_hamburger_icon_1");
+                    context.Html.WriteElementLine("div", null, "class", ns + "_mb_hamburger_icon " + ns + "_mb_hamburger_icon_2");
+                    context.Html.WriteElementLine("div", null, "class", ns + "_mb_hamburger_icon " + ns + "_mb_hamburger_icon_3");
                     context.Html.WriteCloseTag("label");
                 }
                 return WriteResult.Continue();
@@ -87,10 +87,12 @@ namespace Website.Navigation
         [DeployCss("div.{ns}_dt_dropdown a", "text-decoration: none; display: block; text-align: left", 5)]
         [DeployCss("li.{ns}_dt_option:hover div.{ns}_dt_dropdown", "display: block;", 6)]
 
-        [DeployCss("div.{ns}_mb_hamburger_icon_1", "background-color: black;", 20)]
-        [DeployCss("div.{ns}_mb_hamburger_icon_2", "background-color: black;", 21)]
-        [DeployCss("div.{ns}_mb_hamburger_icon_3", "background-color: black;", 22)]
-        [DeployCss("label.{ns}_mb_hamburger_button", "top: 22px; left: 15px; height: 22px; width: 22px;", 23)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button", "display: none;", 20)]
+        [DeployCss("label.{ns}_mb_hamburger_button", "transition: all 0.3s; cursor: pointer; ", 21)]
+        [DeployCss("div.{ns}_mb_hamburger_icon", "transition: all 0.3s; position: relative; float: left; width: 100%;", 22)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_1", "transition: all 0.3s; transform: rotate(135deg);", 23)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_2", "transition: all 0.3s; opacity: 0;", 23)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "transition: all 0.3s; transform: rotate(-135deg);", 23)]
         public class MenuStyles
         { }
 
@@ -103,11 +105,11 @@ namespace Website.Navigation
         [DeployCss("div.{ns}_dt_dropdown", "background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);", 5)]
         [DeployCss("div.{ns}_dt_dropdown a", "color: black; padding: 12px 16px; font-family: sans-serif;", 6)]
 
-        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button", "transition: all 0.3s; display: none;", 20)]
-        [DeployCss("div.{ns}_mb_hamburger_icon_1", "transition: all 0.3s; position: relative; float: left; height: 3px; width: 100%; margin-top: 3px;", 21)]
-        [DeployCss("div.{ns}_mb_hamburger_icon_2", "transition: all 0.3s; position: relative; float: left; height: 3px; width: 100%;", 22)]
-        [DeployCss("div.{ns}_mb_hamburger_icon_3", "transition: all 0.3s; position: relative; float: left; height: 3px; width: 100%; margin-top: 3px;", 23)]
-        [DeployCss("label.{ns}_mb_hamburger_button", "transition: all 0.3s; cursor: pointer; position: absolute; z-index: 99;", 24)]
+        [DeployCss("div.{ns}_mb_menu", "height: 50px; width: 70px; float: left;", 21)]
+        [DeployCss("div.{ns}_mb_hamburger_icon", "height: 3px; margin-top: 6px; background-color: white;", 21)]
+        [DeployCss("label.{ns}_mb_hamburger_icon", "position: absolute; z-index: 99; left: 30px; top: 3vw; margin-top: 8px; width: 30px; height: 33px;", 23)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_1", "margin-top: 16px;", 23)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "margin-top: -12px;", 23)]
         public class MenuStyle1
         { }
 
