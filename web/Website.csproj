@@ -66,8 +66,13 @@
     <Compile Include="Components\Content\DocumentIcon.cs" />
     <Compile Include="Components\Content\DocumentListItem.cs" />
     <Compile Include="Components\FunctionalArea\ListHeading.cs" />
+    <Compile Include="Components\InterfaceDefinition\ListHeading.cs" />
+    <Compile Include="Components\InterfaceDefinition\InterfaceListItem.cs" />
     <Compile Include="Components\Project\ProjectListItem.cs" />
     <Compile Include="Components\Project\ListHeading.cs" />
+    <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />
+    <Compile Include="Content\Regions\Lists\InterfaceList.cs" />
+    <Compile Include="DataProviders\InterfaceList.cs" />
     <Compile Include="DataProviders\ProjectList.cs" />
     <Compile Include="DataProviders\ProjectDocument.cs" />
     <Compile Include="DataProviders\Project.cs" />
@@ -87,6 +92,9 @@
     <Compile Include="Packaging\NavigationModule.cs" />
     <Compile Include="PageBase\BlankMasterPage.cs" />
     <Compile Include="Components\PageHead.cs" />
+    <Compile Include="Pages\FunctionalArea\LandingPage.cs" />
+    <Compile Include="Pages\InterfaceDefinition\LandingPage.cs" />
+    <Compile Include="Pages\Project\LandingPage.cs" />
     <Compile Include="Pages\ContentPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="PageBase\NavigationMasterPage.cs" />
@@ -105,6 +113,7 @@
   <ItemGroup>
     <Folder Include="Assets\Images\" />
     <Folder Include="Assets\Scripts\" />
+    <Folder Include="Pages\Repository\" />
     <Folder Include="Templates\Components\" />
     <Folder Include="Templates\Content\General\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Authorization\" />

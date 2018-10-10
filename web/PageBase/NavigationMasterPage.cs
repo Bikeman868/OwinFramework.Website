@@ -1,4 +1,5 @@
 ﻿using OwinFramework.Pages.Core.Attributes;
+using Website.Content;
 
 namespace Website.PageBase
 {
@@ -25,12 +26,21 @@ namespace Website.PageBase
     [UsesComponent("title")]
     internal class TitleRegion : NavigationElement { }
 
-    [IsLayout("header", "title,menu")]
+    [IsLayout("header_bar", "hamburger,title")]
+    [UsesRegion("hamburger", "menu:mobile_menu")]
     [UsesRegion("title", "title")]
-    [UsesRegion("menu", "menu:menu")]
     [NeedsComponent("menu:menuStyle1")]
-    //[IsLayout("header", "title")]
-    //[UsesRegion("title", "title")]
+    internal class HeaderBarLayout : NavigationElement { }
+
+    [IsRegion("header_bar")]
+    [Container("div", "{ns}_header_bar_region")]
+    [UsesLayout("header_bar")]
+    internal class HeaderBarRegion : NavigationElement { }
+
+    [IsLayout("header", "header-bar,menu")]
+    [UsesRegion("header-bar", "header_bar")]
+    [UsesRegion("menu", "menu:desktop_menu")]
+    [NeedsComponent("menu:menuStyle1")]
     internal class HeaderLayout : NavigationElement { }
 
     [IsRegion("header")]
@@ -54,10 +64,8 @@ namespace Website.PageBase
     // Body - the body region has a different layout on each page
 
     [IsRegion("body")]
-    [PartOf("application")]
-    [DeployedAs("content")]
     [Container("div", "{ns}_body-region")]
-    internal class BodyRegion { }
+    internal class BodyRegion: ContentElement { }
 
     //------------------------------------------------------------------------------------
     // Base page for most regular pages on the website

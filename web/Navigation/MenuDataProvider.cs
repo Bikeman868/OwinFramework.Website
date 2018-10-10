@@ -53,7 +53,8 @@ namespace Website.Navigation
                         new MenuPackage.MenuItem { Name = "GitHub Wikki", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Identification and authorization" },
                         new MenuPackage.MenuItem { Name = "Session handling" },
-                        new MenuPackage.MenuItem { Name = "Configuration" },
+                        new MenuPackage.MenuItem { Name = "Page rendering" },
+                        new MenuPackage.MenuItem { Name = "REST services" },
                         new MenuPackage.MenuItem { Name = "Configuration" },
                     }
             };

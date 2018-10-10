@@ -95,7 +95,7 @@ namespace Website.Navigation
             {
                 Caption = projectName.Substring(projectName.IndexOf('.') + 1).Replace(".", " ");
                 ProjectName = projectName;
-                NugetPackage = projectName;
+                NugetPackage = projectName.Replace("OwinFramework", "Owin.Framework");
                 DesktopMenu = true;
                 MobileMenu = false;
                 Document = new Document(projectName.ToLower(), Caption + " Project")

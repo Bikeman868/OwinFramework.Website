@@ -2,6 +2,6 @@
 
 namespace Website.Packaging
 {
-    [IsPackage("application", "web")]
+    [IsPackage("application", "app")]
     internal class ApplicationPackage { }
 }

@@ -1,8 +1,7 @@
 ﻿using OwinFramework.Pages.Core.Attributes;
-using Website.Content;
 using Website.Navigation;
 
-namespace Website.Regions.Content
+namespace Website.Content.Regions.Lists
 {
     [IsRegion("project__list")]
     [Container("ul")] // Wraps the list in a 'ul' element

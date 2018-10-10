@@ -1,7 +1,7 @@
 ﻿using OwinFramework.Pages.Core.Attributes;
 using OwinFramework.Pages.Core.Enums;
 using Website.Content;
-using Website.Layouts.PageStructure;
+using Website.Content.Layouts.PageStructure;
 using Website.PageBase;
 
 namespace Website.Pages
@@ -23,7 +23,7 @@ namespace Website.Pages
     internal class ContentPageLayout : FixedRightColumnLayout { }
 
     [IsPage("content")]
-    [Route("/content/**", Methods.Get)]
+    [Route("/content/**", Methods.Get, Priority = 100)]
     [Route("/", Methods.Get)]
     [PageTitle("OWIN Framework")]
     [RegionLayout("body", "content")]

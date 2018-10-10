@@ -26,19 +26,21 @@ div { margin: 0; padding: 0; }
 
 ul { list-style: none; }
 
+li.app_list-item { padding: 4px; }
+
 a, a:visited { text-decoration: none; color: @anchor-color; }
 
 a:hover { color: @anchor-hover-color}
 
-div.web_page { min-width: 400px; max-width: 1280px; margin: 0 auto; }
+div.app_page { min-width: 400px; max-width: 1280px; margin: 0 auto; }
 
-ul.menu_menu { display: none; }
+ul.menu_dt_menu { display: none; }
 
 @media only screen and (min-width: @break3) {
-        ul.menu_menu { display: block; }
+        ul.menu_dt_menu { display: block; }
     }
 
-div.web_header-region { 
+div.app_header-region { 
     width:100%; background: @header-background; color: @header-color; clear: both; 
 
     h1 { 
@@ -50,7 +52,7 @@ div.web_header-region {
     }
 }
 
-div.web_footer-region { 
+div.app_footer-region { 
     height: 50px; width:100%; padding:5px; background: @header-background; color: @header-color; 
     
     p {
@@ -58,29 +60,29 @@ div.web_footer-region {
     }
 }
 
-.web_web_navigation {
+.app_app_navigation {
     font-family: sans-serif;
 }
 
 
-div.web_fixed-left-layout {
+div.app_fixed-left-layout {
     overflow: hidden;
 
-    div.web_left { overflow: hidden; float: left; width: 250px; padding: 5px; background-color: @fixed-panel-background; display: none; }
-    div.web_right { min-height: 400px; margin-left: 260px; margin-top: -5px; background-color: @content-panel-background; }
+    div.app_left { overflow: hidden; float: left; width: 250px; padding: 5px; background-color: @fixed-panel-background; display: none; }
+    div.app_right { min-height: 400px; margin-left: 260px; margin-top: -5px; background-color: @content-panel-background; }
 
     @media only screen and (min-width: @break2) {
-            div.web_left { display: initial; }
+            div.app_left { display: initial; }
         }
 }
 
-div.web_fixed-right-layout {
+div.app_fixed-right-layout {
     height: auto; overflow: hidden;
 
-    div.web_left { min-height: 400px; overflow: hidden; width: auto; background-color: @content-panel-background; }
-    div.web_right { width: 250px; float: right; padding: 5px; background-color: @fixed-panel-background; display: none; }
+    div.app_left { min-height: 400px; overflow: hidden; width: auto; background-color: @content-panel-background; }
+    div.app_right { width: 250px; float: right; padding: 5px; background-color: @fixed-panel-background; display: none; }
 
     @media only screen and (min-width: @break2) {
-            div.web_right { display: initial; }
+            div.app_right { display: initial; }
         }
 }

@@ -6,14 +6,14 @@ using OwinFramework.Pages.Html.Elements;
 using OwinFramework.Pages.Html.Runtime;
 using Website.Navigation;
 
-namespace Website.Components.Project
+namespace Website.Components.InterfaceDefinition
 {
-    [IsComponent("project__list_item")]
-    [NeedsData(typeof(Sitemap.Project))]
+    [IsComponent("interface__list_item")]
+    [NeedsData(typeof(Sitemap.InterfaceDefinition))]
     [PartOf("application")]
-    public class ProjectListItem: Component
+    public class IntarfaceListItem: Component
     {
-        public ProjectListItem(IComponentDependenciesFactory dependencies) 
+        public IntarfaceListItem(IComponentDependenciesFactory dependencies) 
             : base(dependencies)
         {
         }
@@ -22,11 +22,11 @@ namespace Website.Components.Project
         {
            if (pageArea == PageArea.Body)
            {
-               var project  = context.Data.Get<Sitemap.Project>();
-               if (project != null)
+               var interfaceDefinition  = context.Data.Get<Sitemap.InterfaceDefinition>();
+               if (interfaceDefinition != null)
                {
                    context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_project-caption");
-                   context.Html.WriteElementLine("a", project.Caption, "href", project.Document.LandingPageTemplate);
+                   context.Html.WriteElementLine("a", interfaceDefinition.Document.Title, "href", interfaceDefinition.Document.LandingPageTemplate);
                    context.Html.WriteCloseTag("li");
                }
            }

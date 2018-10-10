@@ -1,7 +1,6 @@
 ﻿using OwinFramework.Pages.Core.Attributes;
-using Website.Content;
 
-namespace Website.Regions.Content
+namespace Website.Content.Regions
 {
     /// <summary>
     /// For layouts where the region has no behavior

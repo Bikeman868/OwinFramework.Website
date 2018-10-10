@@ -1,8 +1,7 @@
 ﻿using OwinFramework.Pages.Core.Attributes;
 using OwinFramework.Pages.Core.Enums;
 using Website.Content;
-using Website.Layouts;
-using Website.Layouts.PageStructure;
+using Website.Content.Layouts.PageStructure;
 using Website.PageBase;
 
 namespace Website.Pages
@@ -24,8 +23,8 @@ namespace Website.Pages
     internal class HomePageLayout : FixedRightColumnLayout { }
 
     [IsPage("home", "/home")]
-    [Route("/home", Methods.Get)]
-    [Route("/", Methods.Get)]
+    [Route("/home", Methods.Get, Priority = 1000)]
+    [Route("/", Methods.Get, Priority = 1000)]
     [PageTitle("OWIN Framework Home")]
     [RegionLayout("body", "home")]
     public class HomePage: NavigationMasterPage{ }
