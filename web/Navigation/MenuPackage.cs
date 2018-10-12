@@ -211,21 +211,24 @@ namespace Website.Navigation
                 new HamburgerButtonComponent(Dependencies.ComponentDependenciesFactory))
                 .Build();
 
-            // This layout defines the desktop menu option and the sub-menu that
-            // drops down when the main menu option is tapped or hovered
-            var mobileOptionLayout = builder.BuildUpLayout()
-                .Tag(null)
-                .ClassNames("{ns}_mb_option")
-                .RegionNesting("head,submenu")
-                .Region("head", desktopMenuItemRegion)
-                .Region("submenu", desktopDropDownMenuRegion)
-                .DataProvider(subMenuDataProvider)
+            var mobileMenuHead = builder.BuildUpRegion()
+                .Tag("li")
+                .ClassNames("{ns}_mb_heading")
+                //.Component(mainMenuItemComponent)
                 .Build();
 
-            var mobileSlideoutLayout = builder.BuildUpLayout()
-                .Tag("div")
-                .ClassNames("{ns}_mb_slideout")
-                .RegionNesting("slideout")
+            var mobileSubMenu = builder.BuildUpRegion()
+                .Tag("")
+                //.Component(subMenuItemComponent)
+                //.ForEach<MenuItem>("submenu", "li", null, "submenu", "{ns}_mb_option")
+                .Build();
+
+            var mobileMenuOptionLayout = builder.BuildUpLayout()
+                .Tag("")
+                .RegionNesting("head,subMenu")
+                .Region("head", mobileMenuHead)
+                .Region("subMenu", mobileSubMenu)
+                //.DataProvider(subMenuDataProvider)
                 .Build();
 
             var mobileHamburgerRegion = builder.BuildUpRegion()
@@ -233,7 +236,10 @@ namespace Website.Navigation
                 .Build();
 
             var mobileSlideoutRegion = builder.BuildUpRegion()
-                .Layout(mobileSlideoutLayout)
+                .Tag("ul")
+                .ClassNames("{ns}_mb_slideout")
+                //.ForEach<MenuItem>("mobile", "", "", "mobile")
+                .Layout(mobileMenuOptionLayout)
                 .Build();
 
             var mobileMenuLayout = builder.BuildUpLayout()
