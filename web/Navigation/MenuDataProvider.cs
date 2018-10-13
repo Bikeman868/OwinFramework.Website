@@ -25,10 +25,10 @@ namespace Website.Navigation
                 Name = "Getting started",
                 SubMenu = new List<MenuPackage.MenuItem>
                     {
-                        new MenuPackage.MenuItem { Name = "Hello world" },
-                        new MenuPackage.MenuItem { Name = "Sample websites" },
-                        new MenuPackage.MenuItem { Name = "NuGet packages" },
-                        new MenuPackage.MenuItem { Name = "Configuration" },
+                        new MenuPackage.MenuItem { Name = "Hello world", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/Sample2", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Sample websites", Url = "https://github.com/Bikeman868/OwinFramework.Website", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "NuGet packages", Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Configuration", Url = "https://github.com/Bikeman868/OwinFramework/wiki/Configuring-middleware-components", Target = "_blank" },
                     }
             };
 
@@ -37,10 +37,10 @@ namespace Website.Navigation
                 Name = "Tutorials",
                 SubMenu = new List<MenuPackage.MenuItem>
                     {
-                        new MenuPackage.MenuItem { Name = "Website walkthrough" },
-                        new MenuPackage.MenuItem { Name = "Microservice walkthrough" },
-                        new MenuPackage.MenuItem { Name = "Localization" },
-                        new MenuPackage.MenuItem { Name = "Best practices" },
+                        new MenuPackage.MenuItem { Name = "Website walkthrough", Url = "/content/general/walkthrough/website" },
+                        new MenuPackage.MenuItem { Name = "Microservice walkthrough", Url = "/content/general/walkthrough/microservice" },
+                        new MenuPackage.MenuItem { Name = "Localization", Url = "/content/general/walkthrough/localization" },
+                        new MenuPackage.MenuItem { Name = "Best practices", Url = "/content/general/bestpractice/landing" },
                     }
             };
 
@@ -49,13 +49,13 @@ namespace Website.Navigation
                 Name = "Documentation",
                 SubMenu = new List<MenuPackage.MenuItem>
                     {
-                        new MenuPackage.MenuItem { Name = "The Owin Frameowrk" },
+                        new MenuPackage.MenuItem { Name = "The Owin Frameowrk", Url = "https://github.com/Bikeman868/OwinFramework/wiki/OWIN", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "GitHub Wikki", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Identification and authorization" },
-                        new MenuPackage.MenuItem { Name = "Session handling" },
-                        new MenuPackage.MenuItem { Name = "Page rendering" },
-                        new MenuPackage.MenuItem { Name = "REST services" },
-                        new MenuPackage.MenuItem { Name = "Configuration" },
+                        new MenuPackage.MenuItem { Name = "Identification and authorization", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Session handling", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Page rendering", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "REST services", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Configuration", Url = "https://github.com/Bikeman868/OwinFramework/wiki/Configuring-middleware-components", Target = "_blank" },
                     }
             };
 
@@ -76,7 +76,8 @@ namespace Website.Navigation
             nuGetDesktopMenu.SubMenu.Add(new MenuPackage.MenuItem
             {
                 Name = "More ...",
-                Url = "/content/nuget/index"
+                Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory", 
+                Target = "_blank"
             });
 
             var nuGetMobileMenu = new MenuPackage.MenuItem
@@ -96,7 +97,8 @@ namespace Website.Navigation
             nuGetMobileMenu.SubMenu.Add(new MenuPackage.MenuItem
             {
                 Name = "More ...",
-                Url = "/content/nuget/index"
+                Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory", 
+                Target = "_blank"
             });
 
             var gitHubMenu = new MenuPackage.MenuItem
