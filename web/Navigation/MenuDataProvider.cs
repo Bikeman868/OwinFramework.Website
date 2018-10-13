@@ -9,8 +9,8 @@ using OwinFramework.Pages.Framework.DataModel;
 namespace Website.Navigation
 {
     [IsDataProvider("menu", typeof(IList<MenuPackage.MenuItem>))]
-    //[SuppliesData(typeof(IList<MenuPackage.MenuItem>), "mobile")]
-    //[SuppliesData(typeof(IList<MenuPackage.MenuItem>), "desktop")]
+    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "mobile")]
+    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "desktop")]
     public class MenuDataProvider : DataProvider
     {
         private readonly IList<MenuPackage.MenuItem> _desktopMenu;
@@ -66,8 +66,8 @@ namespace Website.Navigation
                     .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem 
-                        { 
-                            Name = r.NugetPackage, 
+                        {
+                            Name = r.NugetCaption, 
                             Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
                             Target = "_blank" 
                         })
@@ -87,7 +87,7 @@ namespace Website.Navigation
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem
                     {
-                        Name = r.NugetPackage,
+                        Name = r.NugetCaption,
                         Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/",
                         Target = "_blank"
                     })
@@ -121,7 +121,7 @@ namespace Website.Navigation
                     .OrderBy(p => p.ProjectName)
                     .Select(p => new MenuPackage.MenuItem
                     {
-                        Name = p.Caption,
+                        Name = p.ProjectCaption,
                         Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
                         Target = "_blank"
                     })
@@ -164,7 +164,7 @@ namespace Website.Navigation
                 return;
             }
 
-            switch (dependency.ScopeName)
+            switch (dependency.ScopeName.ToLower())
             {
                 case "mobile":
                     dataContext.Set(_mobileMenu, dependency.ScopeName);

@@ -53,6 +53,27 @@ namespace Website.Navigation
             }
         }
 
+        private class MobileHeaderComponent : Component
+        {
+            public MobileHeaderComponent(IComponentDependenciesFactory dependencies)
+                : base(dependencies)
+            {
+                PageAreas = new[] { PageArea.Body };
+            }
+
+            public override IWriteResult WritePageArea(
+                IRenderContext context,
+                PageArea pageArea)
+            {
+                if (pageArea == PageArea.Body)
+                {
+                    var menuItem = context.Data.Get<MenuItem>();
+                    context.Html.WriteElementLine("li", menuItem.Name, "class", Package.NamespaceName + "_mb_heading");
+                }
+                return WriteResult.Continue();
+            }
+        }
+
         private class HamburgerButtonComponent : Component
         {
             public HamburgerButtonComponent(IComponentDependenciesFactory dependencies)
@@ -80,6 +101,7 @@ namespace Website.Navigation
             }
         }
 
+        // Desktop menu behavior
         [DeployCss("ul.{ns}_dt_menu", "list-style-type: none; overflow: hidden; white-space: nowrap;", 1)]
         [DeployCss("li.{ns}_dt_option", "display: inline-block;", 2)]
         [DeployCss("li.{ns}_dt_option a, a.{ns}_dt_option", "display: inline-block; text-decoration: none;", 3)]
@@ -87,17 +109,21 @@ namespace Website.Navigation
         [DeployCss("div.{ns}_dt_dropdown a", "text-decoration: none; display: block; text-align: left", 5)]
         [DeployCss("li.{ns}_dt_option:hover div.{ns}_dt_dropdown", "display: block;", 6)]
 
+        // Hamburger button behavior
         [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button", "display: none;", 20)]
         [DeployCss("label.{ns}_mb_hamburger_button", "transition: all 0.3s; cursor: pointer; ", 21)]
         [DeployCss("div.{ns}_mb_hamburger_icon", "transition: all 0.3s; position: relative; float: left; width: 100%;", 22)]
         [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_1", "transition: all 0.3s; transform: rotate(135deg);", 23)]
         [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_2", "transition: all 0.3s; opacity: 0;", 23)]
         [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "transition: all 0.3s; transform: rotate(-135deg);", 23)]
+
+        // Slideout menu behavior
+        [DeployCss("ul.{ns}_mb_slideout", "position: absolute;", 24)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked ~ ul.{ns}_mb_slideout", "transform: translateX(0);", 25)]
         public class MenuStyles
         { }
 
-        // https://jsfiddle.net/hqx97zm4/
-
+        // Desktop menu appearence
         [DeployCss("ul.{ns}_dt_menu", "margin: 0; padding: 0; background-color: #333", 1)]
         [DeployCss("li.{ns}_dt_option a", "color: white; text-align: center; padding: 14px 16px; font-family: sans-serif; letter-spacing: 1px;", 2)]
         [DeployCss("li.{ns}_dt_option a:hover, li.{ns}_dt_menu-option:hover a.{ns}_dt_menu-option", "background-color: red", 3)]
@@ -105,11 +131,22 @@ namespace Website.Navigation
         [DeployCss("div.{ns}_dt_dropdown", "background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);", 5)]
         [DeployCss("div.{ns}_dt_dropdown a", "color: black; padding: 12px 16px; font-family: sans-serif;", 6)]
 
+        // Hamburger button appearence
         [DeployCss("div.{ns}_mb_menu", "height: 50px; width: 70px; float: left;", 21)]
         [DeployCss("div.{ns}_mb_hamburger_icon", "height: 3px; margin-top: 6px; background-color: white;", 21)]
         [DeployCss("label.{ns}_mb_hamburger_icon", "position: absolute; z-index: 99; left: 30px; top: 3vw; margin-top: 8px; width: 30px; height: 33px;", 23)]
         [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_1", "margin-top: 16px;", 23)]
         [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "margin-top: -12px;", 23)]
+
+        // Slideout menu appearence
+        [DeployCss("ul.{ns}_mb_slideout", "left: 10px; margin-top: 84px; width: 250px; transform: translateX(-300px); transition: transform 250ms ease-in-out; background-color: #f9f9f9; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: 0; font-family: sans-serif; letter-spacing: 1px;", 24)]
+        [DeployCss("ul.{ns}_mb_slideout li", "padding: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.25); font-size: 14px;", 24)]
+        [DeployCss("li.{ns}_mb_heading", "color: whitesmoke; background-color: black;", 24)]
+        [DeployCss("li.{ns}_mb_heading span", "display: block; font-size: 10px;", 24)]
+        [DeployCss("li.{ns}_mb_option", "color: black; cursor: pointer;", 24)]
+        [DeployCss("li.{ns}_mb_option:hover", "background-color: #f1f1f1;", 24)]
+        [DeployCss("li.{ns}_mb_option a", "color: black;", 24)]
+        [DeployCss("li.{ns}_mb_option a:visited", "color: black;", 24)]
         public class MenuStyle1
         { }
 
@@ -197,7 +234,7 @@ namespace Website.Navigation
                 .Tag("ul")
                 .NeedsComponent("menuStyles")
                 .ClassNames("{ns}_dt_menu")
-                .ForEach<MenuItem>()
+                .ForEach<MenuItem>("", "", "", "desktop")
                 .Layout(desktopOptionLayout)
                 .Build();
 
@@ -211,16 +248,21 @@ namespace Website.Navigation
                 new HamburgerButtonComponent(Dependencies.ComponentDependenciesFactory))
                 .Build();
 
+            // This component displays a main menu item
+            var mobileHeaderComponent = builder.BuildUpComponent(
+                new MobileHeaderComponent(Dependencies.ComponentDependenciesFactory))
+                .BindTo<MenuItem>()
+                .Build();
+
             var mobileMenuHead = builder.BuildUpRegion()
-                .Tag("li")
-                .ClassNames("{ns}_mb_heading")
-                //.Component(mainMenuItemComponent)
+                .Tag("")
+                .Component(mobileHeaderComponent)
                 .Build();
 
             var mobileSubMenu = builder.BuildUpRegion()
                 .Tag("")
-                //.Component(subMenuItemComponent)
-                //.ForEach<MenuItem>("submenu", "li", null, "submenu", "{ns}_mb_option")
+                .Component(subMenuItemComponent)
+                .ForEach<MenuItem>("submenu", "li", null, "submenu", "{ns}_mb_option")
                 .Build();
 
             var mobileMenuOptionLayout = builder.BuildUpLayout()
@@ -228,17 +270,18 @@ namespace Website.Navigation
                 .RegionNesting("head,subMenu")
                 .Region("head", mobileMenuHead)
                 .Region("subMenu", mobileSubMenu)
-                //.DataProvider(subMenuDataProvider)
+                .DataProvider(subMenuDataProvider)
                 .Build();
 
             var mobileHamburgerRegion = builder.BuildUpRegion()
+                .Tag("")
                 .Component(mobileHamburgerButtonComponent)
                 .Build();
 
             var mobileSlideoutRegion = builder.BuildUpRegion()
                 .Tag("ul")
                 .ClassNames("{ns}_mb_slideout")
-                //.ForEach<MenuItem>("mobile", "", "", "mobile")
+                .ForEach<MenuItem>("", "", "", "mobile")
                 .Layout(mobileMenuOptionLayout)
                 .Build();
 

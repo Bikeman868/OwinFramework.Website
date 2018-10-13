@@ -82,7 +82,8 @@ namespace Website.Navigation
 
         public class Project
         {
-            public string Caption { get; private set; }
+            public string ProjectCaption { get; private set; }
+            public string NugetCaption { get; private set; }
             public string ProjectName { get; private set; }
             public bool DesktopMenu { get; private set; }
             public bool MobileMenu { get; private set; }
@@ -93,12 +94,13 @@ namespace Website.Navigation
 
             public Project(string projectName, string gitHubRepositoryName, string areaIdentifier)
             {
-                Caption = projectName.Substring(projectName.IndexOf('.') + 1).Replace(".", " ");
+                ProjectCaption = projectName.Substring(projectName.IndexOf('.') + 1).Replace(".", " ");
                 ProjectName = projectName;
                 NugetPackage = projectName.Replace("OwinFramework", "Owin.Framework");
+                NugetCaption = NugetPackage.StartsWith("Owin.Framework.") ? NugetPackage.Substring(15) : NugetPackage;
                 DesktopMenu = true;
                 MobileMenu = false;
-                Document = new Document(projectName.ToLower(), Caption + " Project")
+                Document = new Document(projectName.ToLower(), ProjectCaption + " Project")
                     .SetPages("/content/project/")
                     .SetImage("/assets/images/project/", ".png");
                 Repository = Instance.Repositories.First(r => r.GitHubRepositoryName == gitHubRepositoryName);

@@ -26,7 +26,7 @@ namespace Website.Components.Project
                if (project != null)
                {
                    context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_project-caption");
-                   context.Html.WriteElementLine("a", project.Caption, "href", project.Document.LandingPageTemplate);
+                   context.Html.WriteElementLine("a", project.ProjectCaption, "href", project.Document.LandingPageTemplate);
                    context.Html.WriteCloseTag("li");
                }
            }
