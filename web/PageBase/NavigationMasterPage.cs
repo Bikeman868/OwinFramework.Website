@@ -17,13 +17,8 @@ namespace Website.PageBase
     //------------------------------------------------------------------------------------
     // Header - is the same on all pages
 
-    [IsComponent("title")]
-    [RenderHtml("heading.main", 1, "<h1>Owin Framework</h1>")]
-    [RenderHtml("heading.sub", 2, "<p>An open architecture for interoperable middleware</p>")]
-    internal class TitleComponent : NavigationElement { }
-
     [IsRegion("title")]
-    [UsesComponent("title")]
+    [UsesComponent("pageHead")]
     internal class TitleRegion : NavigationElement { }
 
     [IsLayout("header_bar", "hamburger,title")]
@@ -81,7 +76,6 @@ namespace Website.PageBase
 
     [UsesLayout("navigationPage")]
     [DeployedAs("content")]
-    [NeedsComponent("pageHead")]
     public class NavigationMasterPage : BlankMasterPage
     {
     }

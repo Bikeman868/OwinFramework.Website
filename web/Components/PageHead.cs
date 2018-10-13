@@ -12,7 +12,7 @@ namespace Website.Components
     {
         public PageHead(IComponentDependenciesFactory dependencies) : base(dependencies)
         {
-            PageAreas = new [] { PageArea.Head };
+            PageAreas = new [] { PageArea.Head, PageArea.Body };
         }
 
         public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
@@ -21,6 +21,13 @@ namespace Website.Components
             {
                 context.Html.WriteElementLine("meta", null, "name", "viewport", "content", "width=device-width, initial-scale=1.0");
                 context.Html.WriteElementLine("link", null, "rel", "stylesheet", "type", "text/css", "href", "/assets/styles/main.css");
+            }
+            else if (pageArea == PageArea.Body)
+            {
+                context.Html.WriteOpenTag("a", "class", Package.NamespaceName + "_page-head", "href", "/");
+                context.Html.WriteElementLine("h1", "Owin Framework");
+                context.Html.WriteElementLine("p", "An open architecture for interoperable middleware");
+                context.Html.WriteCloseTag("a");
             }
 
             return base.WritePageArea(context, pageArea);

@@ -139,7 +139,7 @@ namespace Website.Navigation
         [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "margin-top: -12px;", 23)]
 
         // Slideout menu appearence
-        [DeployCss("ul.{ns}_mb_slideout", "left: 10px; margin-top: 84px; width: 250px; transform: translateX(-300px); transition: transform 250ms ease-in-out; background-color: #f9f9f9; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: 0; font-family: sans-serif; letter-spacing: 1px;", 24)]
+        [DeployCss("ul.{ns}_mb_slideout", "left: 10px; top:44px; margin-top: 5.9vw; width: 250px; transform: translateX(-300px); transition: transform 250ms ease-in-out; background-color: #f9f9f9; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: 0; font-family: sans-serif; letter-spacing: 1px;", 24)]
         [DeployCss("ul.{ns}_mb_slideout li", "padding: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.25); font-size: 14px;", 24)]
         [DeployCss("li.{ns}_mb_heading", "color: whitesmoke; background-color: black;", 24)]
         [DeployCss("li.{ns}_mb_heading span", "display: block; font-size: 10px;", 24)]
