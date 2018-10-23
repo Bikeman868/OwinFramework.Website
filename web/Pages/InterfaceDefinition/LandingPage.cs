@@ -11,8 +11,8 @@ namespace Website.Pages.InterfaceDefinition
     internal class LandingPageContent : ContentElement { }
 
     [IsLayout("interfaceLandingPage_RightColumn", "panel1,panel2")]
-    [UsesRegion("panel1", "blank")]
-    [UsesRegion("panel2", "blank")]
+    [LayoutRegion("panel1", "blank")]
+    [LayoutRegion("panel2", "blank")]
     [RegionLayout("panel1", "functional_area__list")]
     [RegionLayout("panel2", "interface__list")]
     internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }

@@ -124,7 +124,7 @@
     <Folder Include="Templates\Regions\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Styles\main.less" />
+    <Content Include="Assets\Styles\app.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

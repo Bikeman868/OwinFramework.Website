@@ -22,8 +22,8 @@ namespace Website.PageBase
     internal class TitleRegion : NavigationElement { }
 
     [IsLayout("header_bar", "hamburger,title")]
-    [UsesRegion("hamburger", "menu:mobile_menu")]
-    [UsesRegion("title", "title")]
+    [LayoutRegion("hamburger", "menu:mobile_menu")]
+    [LayoutRegion("title", "title")]
     [NeedsComponent("menu:menuStyle1")]
     internal class HeaderBarLayout : NavigationElement { }
 
@@ -33,8 +33,8 @@ namespace Website.PageBase
     internal class HeaderBarRegion : NavigationElement { }
 
     [IsLayout("header", "header-bar,menu")]
-    [UsesRegion("header-bar", "header_bar")]
-    [UsesRegion("menu", "menu:desktop_menu")]
+    [LayoutRegion("header-bar", "header_bar")]
+    [LayoutRegion("menu", "menu:desktop_menu")]
     [NeedsComponent("menu:menuStyle1")]
     internal class HeaderLayout : NavigationElement { }
 
@@ -67,9 +67,9 @@ namespace Website.PageBase
 
     [IsLayout("navigationPage", "header,body,footer")]
     [Container("div", "{ns}_page")]
-    [UsesRegion("header", "header")]
-    [UsesRegion("body", "body")]
-    [UsesRegion("footer", "footer")]
+    [LayoutRegion("header", "header")]
+    [LayoutRegion("body", "body")]
+    [LayoutRegion("footer", "footer")]
     [RegionLayout("header", "header")]
     [RegionComponent("footer", "footer")]
     internal class NavigationPageLayout : NavigationElement { }
