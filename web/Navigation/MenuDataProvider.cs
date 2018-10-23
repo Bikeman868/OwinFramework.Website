@@ -5,6 +5,7 @@ using OwinFramework.Pages.Core.Interfaces.Builder;
 using OwinFramework.Pages.Core.Interfaces.DataModel;
 using OwinFramework.Pages.Core.Interfaces.Runtime;
 using OwinFramework.Pages.Framework.DataModel;
+using OwinFramework.Pages.Standard;
 
 namespace Website.Navigation
 {
@@ -23,7 +24,7 @@ namespace Website.Navigation
             var gettingStartedMenu = new MenuPackage.MenuItem
             {
                 Name = "Getting started",
-                SubMenu = new List<MenuPackage.MenuItem>
+                SubMenu = new []
                     {
                         new MenuPackage.MenuItem { Name = "Hello world", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/Sample2", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Sample websites", Url = "https://github.com/Bikeman868/OwinFramework.Website", Target = "_blank" },
@@ -35,7 +36,7 @@ namespace Website.Navigation
             var tutorialsMenu = new MenuPackage.MenuItem
             {
                 Name = "Tutorials",
-                SubMenu = new List<MenuPackage.MenuItem>
+                SubMenu = new[]
                     {
                         new MenuPackage.MenuItem { Name = "Website walkthrough", Url = "/content/general/walkthrough/website" },
                         new MenuPackage.MenuItem { Name = "Microservice walkthrough", Url = "/content/general/walkthrough/microservice" },
@@ -47,7 +48,7 @@ namespace Website.Navigation
             var documentationMenu = new MenuPackage.MenuItem
             {
                 Name = "Documentation",
-                SubMenu = new List<MenuPackage.MenuItem>
+                SubMenu = new[]
                     {
                         new MenuPackage.MenuItem { Name = "The Owin Frameowrk", Url = "https://github.com/Bikeman868/OwinFramework/wiki/OWIN", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "GitHub Wikki", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
@@ -62,7 +63,7 @@ namespace Website.Navigation
             var nuGetDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = Sitemap.Instance.Projects
+                SubMenu = SiteMap.Instance.Projects
                     .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem 
@@ -71,19 +72,19 @@ namespace Website.Navigation
                             Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
                             Target = "_blank" 
                         })
-                    .ToList()
+                    .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
+                        {
+                            Name = "More ...",
+                            Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory", 
+                            Target = "_blank"
+                        }, 1))
+                    .ToArray()
             };
-            nuGetDesktopMenu.SubMenu.Add(new MenuPackage.MenuItem
-            {
-                Name = "More ...",
-                Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory", 
-                Target = "_blank"
-            });
 
             var nuGetMobileMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = Sitemap.Instance.Projects
+                SubMenu = SiteMap.Instance.Projects
                     .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem
@@ -92,19 +93,19 @@ namespace Website.Navigation
                         Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/",
                         Target = "_blank"
                     })
-                    .ToList()
+                    .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
+                    {
+                        Name = "More ...",
+                        Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory",
+                        Target = "_blank"
+                    }, 1))
+                    .ToArray()
             };
-            nuGetMobileMenu.SubMenu.Add(new MenuPackage.MenuItem
-            {
-                Name = "More ...",
-                Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory", 
-                Target = "_blank"
-            });
 
             var gitHubMenu = new MenuPackage.MenuItem
             {
                 Name = "GitHub repos",
-                SubMenu = Sitemap.Instance.Repositories
+                SubMenu = SiteMap.Instance.Repositories
                     .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
@@ -112,13 +113,13 @@ namespace Website.Navigation
                         Url = r.Url,
                         Target = "_blank"
                     })
-                    .ToList()
+                    .ToArray()
             };
 
             var projectDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "Project source",
-                SubMenu = Sitemap.Instance.Projects
+                SubMenu = SiteMap.Instance.Projects
                     .Where(p => p.DesktopMenu)
                     .OrderBy(p => p.ProjectName)
                     .Select(p => new MenuPackage.MenuItem
@@ -127,13 +128,13 @@ namespace Website.Navigation
                         Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
                         Target = "_blank"
                     })
-                    .ToList()
+                    .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
+                    {
+                        Name = "More ...",
+                        Url = "/content/source/index"
+                    }, 1))
+                    .ToArray()
             };
-            projectDesktopMenu.SubMenu.Add(new MenuPackage.MenuItem
-            {
-                Name = "More ...",
-                Url = "/content/source/index"
-            });
 
             _desktopMenu = new List<MenuPackage.MenuItem>
             {

@@ -16,3 +16,4 @@ Owin.Framework.Pages.Core
 Owin.Framework.Pages.Framework
 Owin.Framework.Pages.Html
 Owin.Framework.Pages.DebugMiddleware
+Owin.Framework.Pages.Standard

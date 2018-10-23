@@ -6,10 +6,6 @@ using Website.PageBase;
 
 namespace Website.Pages.Project
 {
-    [IsComponent("projectLandingPage_Content")]
-    [RenderHtml("projectLanding-page-right-column", "<h1 style='padding:50px;'>This project landing page needs and author, interested?</h1>")]
-    internal class ProjectLandingPageContent : ContentElement { }
-
     [IsLayout("projectLandingPage_RightColumn", "panel1,panel2")]
     [LayoutRegion("panel1", "blank")]
     [LayoutRegion("panel2", "blank")]
@@ -18,12 +14,12 @@ namespace Website.Pages.Project
     internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("projectLanding", "right,left")]
-    [RegionComponent("left", "projectLandingPage_Content")]
+    [RegionComponent("left", "content__template")]
     [RegionLayout("right", "projectLandingPage_RightColumn")]
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("projectLanding")]
-    [Route("/content/project/**", Methods.Get, Priority = 200)]
+    [Route("/content/project/**", Methods.Get, Priority = -80)]
     [Route("/", Methods.Get)]
     [PageTitle("OWIN Framework")]
     [RegionLayout("body", "projectLanding")]

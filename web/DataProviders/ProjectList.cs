@@ -11,15 +11,15 @@ using Website.Navigation;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider(typeof(IList<Sitemap.Project>))]
+    [IsDataProvider(typeof(IList<SiteMap.Project>))]
     public class ProjectList : DataProvider
     {
-        private readonly IList<Sitemap.Project> _projects;
+        private readonly IList<SiteMap.Project> _projects;
 
         public ProjectList(IDataProviderDependenciesFactory dependencies)
             : base(dependencies)
         {
-            _projects = Sitemap.Instance.Projects.ToList();
+            _projects = SiteMap.Instance.Projects.ToList();
         }
 
         protected override void Supply(
@@ -30,7 +30,7 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(IList<Sitemap.Project>))
+            if (dependency.DataType == typeof(IList<SiteMap.Project>))
             {
                 dataContext.Set(_projects);
                 return;

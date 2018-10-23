@@ -6,7 +6,7 @@ namespace Website.Content.Regions.Lists
     [IsRegion("functional_area__list")]
     [PartOf("application")]
     [Container("ul")] // Wraps the list in a 'ul' element
-    [Repeat(typeof(Sitemap.FunctionalArea), null, null)] // Gets a list of functional areas and repeats the region for each functional area
+    [Repeat(typeof(SiteMap.FunctionalArea), null, null)] // Gets a list of functional areas and repeats the region for each functional area
     [NeedsData("functional_area__document")] // Extracts the 'Document' from each functional area
     [UsesComponent("document__list_item")] // Draws the document as an 'li' element
     internal class FunctionalAreaList : ContentElement{}
@@ -14,7 +14,7 @@ namespace Website.Content.Regions.Lists
     [IsRegion("functional_area__icons")]
     [PartOf("application")]
     [Container("ul")] // Wraps the list in a 'ul' element
-    [Repeat(typeof(Sitemap.FunctionalArea), null, "li")] // Gets a list of functional areas and repeats the region for each functional area. Wraps each region in 'li'
+    [Repeat(typeof(SiteMap.FunctionalArea), null, "li")] // Gets a list of functional areas and repeats the region for each functional area. Wraps each region in 'li'
     [NeedsData("functional_area__document")] // Extracts the 'Document' from each functional area
     [UsesComponent("document__icon")] // Draws the document icon as an image
     internal class FunctionalAreaIcons : ContentElement{}

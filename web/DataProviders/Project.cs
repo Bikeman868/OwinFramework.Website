@@ -12,7 +12,7 @@ using Website.Navigation;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider(typeof(Sitemap.FunctionalArea))]
+    [IsDataProvider(typeof(SiteMap.FunctionalArea))]
     public class Project : DataProvider
     {
         private readonly Regex _urlRegex = new Regex("/content/project/([^/]*)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
@@ -30,13 +30,13 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(Sitemap.Project))
+            if (dependency.DataType == typeof(SiteMap.Project))
             {
                 var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
                 if (match.Success)
                 {
                     var projectName = match.Groups[1].Value;
-                    dataContext.Set(Sitemap.Instance.Projects.FirstOrDefault(p => string.Equals(p.ProjectName, projectName)));
+                    dataContext.Set(SiteMap.Instance.Projects.FirstOrDefault(p => string.Equals(p.ProjectName, projectName)));
                 }
                 return;
             }

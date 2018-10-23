@@ -9,8 +9,8 @@ using Website.Navigation;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider("project__document", typeof(Sitemap.Document))]
-    [NeedsData(typeof(Sitemap.Project))]
+    [IsDataProvider("project__document", typeof(SiteMap.Document))]
+    [NeedsData(typeof(SiteMap.Project))]
     public class ProjectDocument : DataProvider
     {
         public ProjectDocument(IDataProviderDependenciesFactory dependencies)
@@ -26,9 +26,9 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(Sitemap.Document))
+            if (dependency.DataType == typeof(SiteMap.Document))
             {
-                var project = dataContext.Get<Sitemap.Project>();
+                var project = dataContext.Get<SiteMap.Project>();
                 if (project != null)
                     dataContext.Set(project.Document);
                 return;

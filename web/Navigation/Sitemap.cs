@@ -5,13 +5,13 @@ using System.Web;
 
 namespace Website.Navigation
 {
-    public class Sitemap
+    public class SiteMap
     {
-        public static Sitemap Instance { get; private set; }
+        public static SiteMap Instance { get; private set; }
 
-        static Sitemap()
+        static SiteMap()
         {
-            Instance = new Sitemap();
+            Instance = new SiteMap();
             Instance.Initialize();
         }
 
@@ -177,7 +177,7 @@ namespace Website.Navigation
             }
         }
 
-        public Sitemap Initialize()
+        public SiteMap Initialize()
         {
             FunctionalAreas = new[]
             {

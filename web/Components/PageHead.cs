@@ -6,7 +6,7 @@ using OwinFramework.Pages.Html.Elements;
 
 namespace Website.Components
 {
-    [IsComponent("pageHead")]
+    [IsComponent("page__head")]
     [PartOf("application")]
     public class PageHead: Component
     {

@@ -9,7 +9,7 @@ using Website.Navigation;
 namespace Website.Components.InterfaceDefinition
 {
     [IsComponent("interface__list_item")]
-    [NeedsData(typeof(Sitemap.InterfaceDefinition))]
+    [NeedsData(typeof(SiteMap.InterfaceDefinition))]
     [PartOf("application")]
     public class IntarfaceListItem: Component
     {
@@ -22,7 +22,7 @@ namespace Website.Components.InterfaceDefinition
         {
            if (pageArea == PageArea.Body)
            {
-               var interfaceDefinition  = context.Data.Get<Sitemap.InterfaceDefinition>();
+               var interfaceDefinition  = context.Data.Get<SiteMap.InterfaceDefinition>();
                if (interfaceDefinition != null)
                {
                    context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_project-caption");

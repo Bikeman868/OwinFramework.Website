@@ -9,7 +9,7 @@ using Website.Navigation;
 namespace Website.Components.Content
 {
     [IsComponent("document__icon")]
-    [NeedsData(typeof(Sitemap.Document))]
+    [NeedsData(typeof(SiteMap.Document))]
     [PartOf("application")]
     public class DocumentIcon: Component
     {
@@ -22,7 +22,7 @@ namespace Website.Components.Content
         {
             if (pageArea == PageArea.Body)
             {
-                var document = context.Data.Get<Sitemap.Document>();
+                var document = context.Data.Get<SiteMap.Document>();
                 if (document != null)
                 {
                     context.Html.WriteOpenTag("a", "class", Package.NamespaceName + "_document-icon", "href", document.LandingPageTemplate);

@@ -11,15 +11,15 @@ using Website.Navigation;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider(typeof(IList<Sitemap.InterfaceDefinition>))]
+    [IsDataProvider(typeof(IList<SiteMap.InterfaceDefinition>))]
     public class InterfaceList : DataProvider
     {
-        private readonly IList<Sitemap.InterfaceDefinition> _interfaces;
+        private readonly IList<SiteMap.InterfaceDefinition> _interfaces;
 
         public InterfaceList(IDataProviderDependenciesFactory dependencies)
             : base(dependencies)
         {
-            _interfaces = new List<Sitemap.InterfaceDefinition>();
+            _interfaces = new List<SiteMap.InterfaceDefinition>();
         }
 
         protected override void Supply(
@@ -30,7 +30,7 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(IList<Sitemap.InterfaceDefinition>))
+            if (dependency.DataType == typeof(IList<SiteMap.InterfaceDefinition>))
             {
                 dataContext.Set(_interfaces);
                 return;

@@ -9,8 +9,8 @@ using Website.Navigation;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider("functional_area__document", typeof(Sitemap.Document))]
-    [NeedsData(typeof(Sitemap.FunctionalArea))]
+    [IsDataProvider("functional_area__document", typeof(SiteMap.Document))]
+    [NeedsData(typeof(SiteMap.FunctionalArea))]
     public class FunctionalAreaDocument : DataProvider
     {
         public FunctionalAreaDocument(IDataProviderDependenciesFactory dependencies)
@@ -26,9 +26,9 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(Sitemap.Document))
+            if (dependency.DataType == typeof(SiteMap.Document))
             {
-                var functionalArea = dataContext.Get<Sitemap.FunctionalArea>();
+                var functionalArea = dataContext.Get<SiteMap.FunctionalArea>();
                 if (functionalArea != null)
                     dataContext.Set(functionalArea.Document);
                 return;

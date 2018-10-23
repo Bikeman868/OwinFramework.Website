@@ -18,7 +18,7 @@ namespace Website.PageBase
     // Header - is the same on all pages
 
     [IsRegion("title")]
-    [UsesComponent("pageHead")]
+    [UsesComponent("page__head")]
     internal class TitleRegion : NavigationElement { }
 
     [IsLayout("header_bar", "hamburger,title")]

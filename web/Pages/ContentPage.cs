@@ -6,10 +6,6 @@ using Website.PageBase;
 
 namespace Website.Pages
 {
-    [IsComponent("contentPage_Content")]
-    [RenderHtml("content-page-right-column", "<h1 style='padding:50px;'>This page needs and author, interested?</h1>")]
-    internal class ContentPageContent : ContentElement { }
-
     [IsLayout("contentPage_RightColumn", "panel1,panel2")]
     [LayoutRegion("panel1", "blank")]
     [LayoutRegion("panel2", "blank")]
@@ -18,13 +14,12 @@ namespace Website.Pages
     internal class ContentPageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("content", "right,left")]
-    [RegionComponent("left", "contentPage_Content")]
+    [RegionComponent("left", "content__template")]
     [RegionLayout("right", "contentPage_RightColumn")]
     internal class ContentPageLayout : FixedRightColumnLayout { }
 
     [IsPage("content")]
-    [Route("/content/**", Methods.Get, Priority = 100)]
-    [Route("/", Methods.Get)]
+    [Route("/content/**", Methods.Get, Priority = -100)]
     [PageTitle("OWIN Framework")]
     [RegionLayout("body", "content")]
     public class ContentPage: NavigationMasterPage{ }

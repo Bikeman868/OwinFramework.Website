@@ -9,7 +9,7 @@ using Website.Navigation;
 namespace Website.Components.Project
 {
     [IsComponent("project__list_item")]
-    [NeedsData(typeof(Sitemap.Project))]
+    [NeedsData(typeof(SiteMap.Project))]
     [PartOf("application")]
     public class ProjectListItem: Component
     {
@@ -22,7 +22,7 @@ namespace Website.Components.Project
         {
            if (pageArea == PageArea.Body)
            {
-               var project  = context.Data.Get<Sitemap.Project>();
+               var project  = context.Data.Get<SiteMap.Project>();
                if (project != null)
                {
                    context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_project-caption");

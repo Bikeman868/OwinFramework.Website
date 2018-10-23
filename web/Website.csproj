@@ -68,6 +68,7 @@
     <Compile Include="Components\FunctionalArea\ListHeading.cs" />
     <Compile Include="Components\InterfaceDefinition\ListHeading.cs" />
     <Compile Include="Components\InterfaceDefinition\InterfaceListItem.cs" />
+    <Compile Include="Components\ContentTemplate.cs" />
     <Compile Include="Components\Project\ProjectListItem.cs" />
     <Compile Include="Components\Project\ListHeading.cs" />
     <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />
@@ -85,8 +86,7 @@
     <Compile Include="Content\Layouts\PageStructure\FixedRightColumnLayout.cs" />
     <Compile Include="DataProviders\FunctionalArea.cs" />
     <Compile Include="Navigation\MenuDataProvider.cs" />
-    <Compile Include="Navigation\MenuPackage.cs" />
-    <Compile Include="Navigation\Sitemap.cs" />
+    <Compile Include="Navigation\SiteMap.cs" />
     <Compile Include="Packaging\ApplicationPackage.cs" />
     <Compile Include="Packaging\ContentModule.cs" />
     <Compile Include="Packaging\NavigationModule.cs" />
@@ -339,6 +339,17 @@
       <ItemGroup>
         <Reference Include="OwinFramework.Pages.Html">
           <HintPath>..\packages\Owin.Framework.Pages.Html\lib\net40\OwinFramework.Pages.Html.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="OwinFramework.Pages.Standard">
+          <HintPath>..\packages\Owin.Framework.Pages.Standard\lib\net40\OwinFramework.Pages.Standard.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

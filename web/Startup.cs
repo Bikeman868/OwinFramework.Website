@@ -11,6 +11,7 @@ using OwinFramework.Interfaces.Builder;
 using OwinFramework.Interfaces.Utility;
 using OwinFramework.Less;
 using OwinFramework.Pages.DebugMiddleware;
+using OwinFramework.Pages.Standard;
 using OwinFramework.StaticFiles;
 using Urchin.Client.Sources;
 using OwinFramework.Pages.Core;
@@ -57,10 +58,50 @@ namespace Website
             ninject.Get<OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
 
             fluentBuilder.Register(ninject.Get<MenuPackage>(), "menu");
+            fluentBuilder.Register(ninject.Get<LayoutsPackage>(), "layout");
             fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));
+
+            LoadTemplates(ninject);
 
             var nameManager = ninject.Get<INameManager>();
             nameManager.Bind();
+        }
+
+        private void LoadTemplates(StandardKernel ninject)
+        {
+            var uriLoader = ninject.Get<OwinFramework.Pages.Html.Templates.UriLoader>();
+            uriLoader.ReloadInterval = TimeSpan.FromHours(6);
+
+            var markdownParser = ninject.Get<OwinFramework.Pages.Html.Templates.MarkdownParser>();
+
+            foreach (var project in SiteMap.Instance.Projects)
+            {
+                var repository = project.Repository;
+                var repositoryName = repository.GitHubRepositoryName;
+                var ownerName = repository.Owner.GitHubAccountName;
+
+                var uri = new Uri("https://raw.githubusercontent.com/" + ownerName + "/" + repositoryName + "/master/" + project.ProjectName + "/readme.md");
+                var templatePath = "/project/" + project.ProjectName.Replace('.', '_') + "/overview"; // TODO leave . in after bug fix
+                try
+                {
+                    uriLoader.LoadUri(uri, markdownParser, templatePath);
+                }
+                catch { }
+            }
+
+            foreach (var repository in SiteMap.Instance.Repositories)
+            {
+                var repositoryName = repository.GitHubRepositoryName;
+                var ownerName = repository.Owner.GitHubAccountName;
+
+                var uri = new Uri("https://raw.githubusercontent.com/" + ownerName + "/" + repositoryName + "/master/readme.md");
+                var templatePath = "/repository/" + repositoryName.Replace('.', '_') + "/landing"; // TODO leave . in after bug fix
+                try
+                {
+                    uriLoader.LoadUri(uri, markdownParser, templatePath);
+                }
+                catch { }
+            }
         }
     }
 }

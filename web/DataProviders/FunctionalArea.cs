@@ -12,7 +12,7 @@ using Website.Navigation;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider(typeof(Sitemap.FunctionalArea))]
+    [IsDataProvider(typeof(SiteMap.FunctionalArea))]
     public class FunctionalArea : DataProvider
     {
         private readonly Regex _urlRegex = new Regex("/content/area/([^/]*)", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
@@ -30,13 +30,13 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(Sitemap.FunctionalArea))
+            if (dependency.DataType == typeof(SiteMap.FunctionalArea))
             {
                 var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
                 if (match.Success)
                 {
                     var area = match.Groups[1].Value;
-                    dataContext.Set(Sitemap.Instance.FunctionalAreas.FirstOrDefault(a => string.Equals(a.Identifier, area)));
+                    dataContext.Set(SiteMap.Instance.FunctionalAreas.FirstOrDefault(a => string.Equals(a.Identifier, area)));
                 }
                 return;
             }

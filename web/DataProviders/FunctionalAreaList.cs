@@ -11,15 +11,15 @@ using Website.Navigation;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider(typeof(IList<Sitemap.FunctionalArea>))]
+    [IsDataProvider(typeof(IList<SiteMap.FunctionalArea>))]
     public class FunctionalAreaList : DataProvider
     {
-        private readonly IList<Sitemap.FunctionalArea> _functionalAreas;
+        private readonly IList<SiteMap.FunctionalArea> _functionalAreas;
 
         public FunctionalAreaList(IDataProviderDependenciesFactory dependencies)
             : base(dependencies)
         {
-            _functionalAreas = Sitemap.Instance.FunctionalAreas.ToList();
+            _functionalAreas = SiteMap.Instance.FunctionalAreas.ToList();
         }
 
         protected override void Supply(
@@ -30,7 +30,7 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(IList<Sitemap.FunctionalArea>))
+            if (dependency.DataType == typeof(IList<SiteMap.FunctionalArea>))
             {
                 dataContext.Set(_functionalAreas);
                 return;
