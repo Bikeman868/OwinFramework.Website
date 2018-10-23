@@ -81,7 +81,7 @@ namespace Website
                 var ownerName = repository.Owner.GitHubAccountName;
 
                 var uri = new Uri("https://raw.githubusercontent.com/" + ownerName + "/" + repositoryName + "/master/" + project.ProjectName + "/readme.md");
-                var templatePath = "/project/" + project.ProjectName.Replace('.', '_') + "/overview"; // TODO leave . in after bug fix
+                var templatePath = "/project/" + project.ProjectName + "/landing";
                 try
                 {
                     uriLoader.LoadUri(uri, markdownParser, templatePath);
@@ -95,7 +95,7 @@ namespace Website
                 var ownerName = repository.Owner.GitHubAccountName;
 
                 var uri = new Uri("https://raw.githubusercontent.com/" + ownerName + "/" + repositoryName + "/master/readme.md");
-                var templatePath = "/repository/" + repositoryName.Replace('.', '_') + "/landing"; // TODO leave . in after bug fix
+                var templatePath = "/repository/" + repositoryName + "/landing";
                 try
                 {
                     uriLoader.LoadUri(uri, markdownParser, templatePath);

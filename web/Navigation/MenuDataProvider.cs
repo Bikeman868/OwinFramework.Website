@@ -110,8 +110,7 @@ namespace Website.Navigation
                     .Select(r => new MenuPackage.MenuItem
                     {
                         Name = r.Caption,
-                        Url = r.Url,
-                        Target = "_blank"
+                        Url = "/content/repository/" + r.GitHubRepositoryName + "/landing"
                     })
                     .ToArray()
             };

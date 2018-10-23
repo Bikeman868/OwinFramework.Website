@@ -33,7 +33,11 @@ namespace Website.Components
                 {
                     var template = Dependencies.NameManager.ResolveTemplate(relativePath.Value);
                     if (template != null)
+                    {
+                        context.Html.WriteOpenTag("div", "class", "app_content-document");
                         template.WritePageArea(context, pageArea);
+                        context.Html.WriteCloseTag("div");
+                    }
                 }
             }
 
