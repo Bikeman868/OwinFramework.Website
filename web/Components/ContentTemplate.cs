@@ -20,7 +20,7 @@ namespace Website.Components
             : base(dependencies)
         {
             PageAreas = new [] { PageArea.Body };
-            _rootPath = new PathString("/content");
+            _rootPath = new PathString();
         }
 
         public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
@@ -28,15 +28,17 @@ namespace Website.Components
             if (pageArea == PageArea.Body)
             {
                 var requestPath = context.OwinContext.Request.Path;
-                PathString relativePath;
-                if (requestPath.StartsWithSegments(_rootPath, out relativePath))
+                PathString relativePath = requestPath;
+                if (!_rootPath.HasValue || requestPath.StartsWithSegments(_rootPath, out relativePath))
                 {
                     var template = Dependencies.NameManager.ResolveTemplate(relativePath.Value);
                     if (template != null)
                     {
                         context.Html.WriteOpenTag("div", "class", "app_content-document");
+                        context.Html.WriteLine();
                         template.WritePageArea(context, pageArea);
                         context.Html.WriteCloseTag("div");
+                        context.Html.WriteLine();
                     }
                 }
             }

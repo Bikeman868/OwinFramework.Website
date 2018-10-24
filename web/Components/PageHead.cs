@@ -25,9 +25,11 @@ namespace Website.Components
             else if (pageArea == PageArea.Body)
             {
                 context.Html.WriteOpenTag("a", "class", Package.NamespaceName + "_page-head", "href", "/");
+                context.Html.WriteLine();
                 context.Html.WriteElementLine("h1", "Owin Framework");
                 context.Html.WriteElementLine("p", "An open architecture for interoperable middleware");
                 context.Html.WriteCloseTag("a");
+                context.Html.WriteLine();
             }
 
             return base.WritePageArea(context, pageArea);

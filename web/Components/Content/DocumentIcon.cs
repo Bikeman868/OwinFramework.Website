@@ -26,8 +26,9 @@ namespace Website.Components.Content
                 if (document != null)
                 {
                     context.Html.WriteOpenTag("a", "class", Package.NamespaceName + "_document-icon", "href", document.LandingPageTemplate);
-                    context.Html.WriteElementLine("img", "src", document.ImageUrl, "alt", document.Title);
+                    context.Html.WriteElement("img", "src", document.ImageUrl, "alt", document.Title);
                     context.Html.WriteCloseTag("a");
+                    context.Html.WriteLine();
                 }
             }
             return WriteResult.Continue();

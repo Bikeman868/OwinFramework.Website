@@ -26,8 +26,9 @@ namespace Website.Components.InterfaceDefinition
                if (interfaceDefinition != null)
                {
                    context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_project-caption");
-                   context.Html.WriteElementLine("a", interfaceDefinition.Document.Title, "href", interfaceDefinition.Document.LandingPageTemplate);
+                   context.Html.WriteElement("a", interfaceDefinition.Document.Title, "href", interfaceDefinition.Document.LandingPageTemplate);
                    context.Html.WriteCloseTag("li");
+                   context.Html.WriteLine();
                }
            }
            return WriteResult.Continue();

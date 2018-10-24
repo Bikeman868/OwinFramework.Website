@@ -7,8 +7,8 @@ using Website.PageBase;
 namespace Website.Pages.InterfaceDefinition
 {
     [IsLayout("interfaceLandingPage_RightColumn", "panel1,panel2")]
-    [LayoutRegion("panel1", "blank")]
-    [LayoutRegion("panel2", "blank")]
+    [LayoutRegion("panel1", "layouts:null")]
+    [LayoutRegion("panel2", "layouts:null")]
     [RegionLayout("panel1", "functional_area__list")]
     [RegionLayout("panel2", "interface__list")]
     internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }
@@ -20,7 +20,6 @@ namespace Website.Pages.InterfaceDefinition
 
     [IsPage("interfaceLanding")]
     [Route("/content/interface/**", Methods.Get, Priority = -80)]
-    [Route("/", Methods.Get)]
     [PageTitle("OWIN Framework")]
     [RegionLayout("body", "interfaceLanding")]
     public class LandingPage: NavigationMasterPage{ }

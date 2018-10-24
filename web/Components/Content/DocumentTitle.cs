@@ -26,8 +26,9 @@ namespace Website.Components.Content
                 if (document != null)
                 {
                     context.Html.WriteOpenTag("h3", "class", Package.NamespaceName + "_document-title");
-                    context.Html.WriteElementLine("a", document.Title, "href", document.LandingPageTemplate);
+                    context.Html.WriteElement("a", document.Title, "href", document.LandingPageTemplate);
                     context.Html.WriteCloseTag("h3");
+                    context.Html.WriteLine();
                 }
             }
             return WriteResult.Continue();

@@ -58,7 +58,7 @@ namespace Website
             ninject.Get<OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
 
             fluentBuilder.Register(ninject.Get<MenuPackage>(), "menu");
-            fluentBuilder.Register(ninject.Get<LayoutsPackage>(), "layout");
+            fluentBuilder.Register(ninject.Get<LayoutsPackage>(), "layouts");
             fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));
 
             LoadTemplates(ninject);
@@ -69,10 +69,11 @@ namespace Website
 
         private void LoadTemplates(StandardKernel ninject)
         {
+            var markdownParser = ninject.Get<OwinFramework.Pages.Html.Templates.MarkdownParser>();
+            var asIsParser = ninject.Get<OwinFramework.Pages.Html.Templates.AsIsParser>();
+
             var uriLoader = ninject.Get<OwinFramework.Pages.Html.Templates.UriLoader>();
             uriLoader.ReloadInterval = TimeSpan.FromHours(6);
-
-            var markdownParser = ninject.Get<OwinFramework.Pages.Html.Templates.MarkdownParser>();
 
             foreach (var project in SiteMap.Instance.Projects)
             {
@@ -81,7 +82,7 @@ namespace Website
                 var ownerName = repository.Owner.GitHubAccountName;
 
                 var uri = new Uri("https://raw.githubusercontent.com/" + ownerName + "/" + repositoryName + "/master/" + project.ProjectName + "/readme.md");
-                var templatePath = "/project/" + project.ProjectName + "/landing";
+                var templatePath = "/content/project/" + project.ProjectName + "/landing";
                 try
                 {
                     uriLoader.LoadUri(uri, markdownParser, templatePath);
@@ -95,13 +96,18 @@ namespace Website
                 var ownerName = repository.Owner.GitHubAccountName;
 
                 var uri = new Uri("https://raw.githubusercontent.com/" + ownerName + "/" + repositoryName + "/master/readme.md");
-                var templatePath = "/repository/" + repositoryName + "/landing";
+                var templatePath = "/content/repository/" + repositoryName + "/landing";
                 try
                 {
                     uriLoader.LoadUri(uri, markdownParser, templatePath);
                 }
                 catch { }
             }
+
+            var fileLoader = ninject.Get<OwinFramework.Pages.Html.Templates.FileSystemLoader>();
+
+            fileLoader.Load(markdownParser, p => p.Value.EndsWith(".md"));
+            fileLoader.Load(asIsParser, p => p.Value.EndsWith(".html"));
         }
     }
 }

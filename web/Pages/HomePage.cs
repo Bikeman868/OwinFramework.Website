@@ -11,8 +11,8 @@ namespace Website.Pages
     internal class HomePageContent : ContentElement { }
 
     [IsLayout("homePage_RightColumn", "panel1,panel2")]
-    [LayoutRegion("panel1", "blank")]
-    [LayoutRegion("panel2", "blank")]
+    [LayoutRegion("panel1", "layouts:null")]
+    [LayoutRegion("panel2", "layouts:null")]
     [RegionLayout("panel1", "functional_area__list")]
     [RegionLayout("panel2", "project__list")]
     internal class HomePageRightColumnLayout : FixedRightColumnLayout { }
