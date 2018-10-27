@@ -49,7 +49,7 @@ namespace DeployPackages
                             Version = ExtractVersion(f)
                         };
                     })
-                .Where(f => f.Version.HasValue && f.Version.Value <= frameworkVersionNumber)
+                .Where(f => f.Version <= frameworkVersionNumber)
                 .OrderBy(f => f.Version)
                 .Select(f => f.Filename)
                 .ToList();
@@ -62,12 +62,12 @@ namespace DeployPackages
             }
         }
 
-        private static int? ExtractVersion(string filename)
+        private static int ExtractVersion(string filename)
         {
             var regex = new Regex(@"\\net(\d\d)\\[^\\]*\.dll");
             var match = regex.Match(filename);
 
-            if (!match.Success) return null;
+            if (!match.Success) return 0;
 
             return int.Parse(match.Groups[1].Value);
         }

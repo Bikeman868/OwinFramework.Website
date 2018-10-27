@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		update.cmd = update.cmd
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployPackages", "DeployPackages\DeployPackages.csproj", "{9A2080DF-6D10-4486-BCEE-C11EB85A0957}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{D5D9B9BC-A91E-48E7-942A-C7849EB255AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5D9B9BC-A91E-48E7-942A-C7849EB255AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5D9B9BC-A91E-48E7-942A-C7849EB255AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A2080DF-6D10-4486-BCEE-C11EB85A0957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A2080DF-6D10-4486-BCEE-C11EB85A0957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A2080DF-6D10-4486-BCEE-C11EB85A0957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A2080DF-6D10-4486-BCEE-C11EB85A0957}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
