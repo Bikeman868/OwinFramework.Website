@@ -6,6 +6,17 @@ using Website.PageBase;
 
 namespace Website.Pages.InterfaceDefinition
 {
+    [IsLayout("interfaceLandingPage_Header", "title,detail")]
+    [RegionTemplate("detail", "/data/interfacedefinition")]
+    internal class LandingPageHeaderLayout : DocumentHeadLayout { }
+
+    [IsLayout("interfaceLandingPage_LeftColumn", "header,body")]
+    [LayoutRegion("header", "layouts:null")]
+    [LayoutRegion("body", "layouts:null")]
+    [RegionLayout("header", "interfaceLandingPage_Header")]
+    [RegionComponent("body", "content__template")]
+    internal class LandingPageLeftColumnLayout : ContentElement { }
+    
     [IsLayout("interfaceLandingPage_RightColumn", "panel1,panel2")]
     [LayoutRegion("panel1", "layouts:null")]
     [LayoutRegion("panel2", "layouts:null")]
@@ -14,7 +25,7 @@ namespace Website.Pages.InterfaceDefinition
     internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("interfaceLanding", "right,left")]
-    [RegionComponent("left", "content__template")]
+    [RegionLayout("left", "interfaceLandingPage_LeftColumn")]
     [RegionLayout("right", "interfaceLandingPage_RightColumn")]
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
