@@ -209,7 +209,6 @@ namespace Website.Navigation
                 new Project("OwinFramework.Configuration.ConfigurationManager", "OwinFramework", "framework").Menus(false, false),
                 new Project("OwinFramework.Configuration.Urchin", "OwinFramework", "framework").Menus(false, false),
                 new Project("OwinFramework.Mocks", "OwinFramework", "testing").Menus(false, false),
-                new Project("OwinFramework.UnitTests", "OwinFramework", "testing").Menus(false, false).Nuget(null),
 
                 new Project("OwinFramework.Facilities.Cache.Local", "OwinFramework.Facilities", "framework").Menus(false, false),
                 new Project("OwinFramework.Facilities.IdentityStore.Prius", "OwinFramework.Facilities", "authorization").Menus(false, false),
@@ -241,7 +240,6 @@ namespace Website.Navigation
                 new Project("OwinFramework.Pages.Html", "OwinFramework.Pages", "pages").Menus(true, true),
                 new Project("OwinFramework.Pages.Mocks", "OwinFramework.Pages", "testing").Menus(false, false),
                 new Project("OwinFramework.Pages.Restful", "OwinFramework.Pages", "pages").Menus(true, true),
-                new Project("OwinFramework.Pages.UnitTests", "OwinFramework.Pages", "testing").Menus(false, false).Nuget(null),
             };
 
             for (var i = 0; i < FunctionalAreas.Length; i++) FunctionalAreas[i].Initialize();

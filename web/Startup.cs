@@ -59,6 +59,8 @@ namespace Website
 
             fluentBuilder.Register(ninject.Get<MenuPackage>(), "menu");
             fluentBuilder.Register(ninject.Get<LayoutsPackage>(), "layouts");
+            fluentBuilder.Register(ninject.Get<TextEffectsPackage>(), "text");
+
             fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));
 
             LoadTemplates(ninject);
@@ -71,6 +73,7 @@ namespace Website
         {
             var markdownParser = ninject.Get<OwinFramework.Pages.Html.Templates.MarkdownParser>();
             var asIsParser = ninject.Get<OwinFramework.Pages.Html.Templates.AsIsParser>();
+            var mustacheParser = ninject.Get<OwinFramework.Pages.Html.Templates.MustacheParser>();
 
             var uriLoader = ninject.Get<OwinFramework.Pages.Html.Templates.UriLoader>();
             uriLoader.ReloadInterval = TimeSpan.FromHours(6);
@@ -108,6 +111,7 @@ namespace Website
 
             fileLoader.Load(markdownParser, p => p.Value.EndsWith(".md"));
             fileLoader.Load(asIsParser, p => p.Value.EndsWith(".html"));
+            fileLoader.Load(mustacheParser, p => p.Value.EndsWith(".mustache"));
         }
     }
 }

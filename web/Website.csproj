@@ -72,8 +72,10 @@
     <Compile Include="Components\Project\ProjectListItem.cs" />
     <Compile Include="Components\Project\ListHeading.cs" />
     <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />
+    <Compile Include="Content\Layouts\PageStructure\DocumentHeadLayout.cs" />
     <Compile Include="Content\Regions\Lists\InterfaceList.cs" />
     <Compile Include="DataProviders\InterfaceList.cs" />
+    <Compile Include="DataProviders\VerticalTextInfo.cs" />
     <Compile Include="DataProviders\ProjectList.cs" />
     <Compile Include="DataProviders\ProjectDocument.cs" />
     <Compile Include="DataProviders\Project.cs" />
@@ -113,17 +115,17 @@
   <ItemGroup>
     <Folder Include="Assets\Images\" />
     <Folder Include="Assets\Scripts\" />
-    <Folder Include="Templates\Components\" />
     <Folder Include="Templates\Content\General\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Authorization\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Facilities\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Middleware\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Pages\" />
-    <Folder Include="Templates\Layouts\" />
-    <Folder Include="Templates\Regions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Styles\app.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\Data\Project.mustache" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

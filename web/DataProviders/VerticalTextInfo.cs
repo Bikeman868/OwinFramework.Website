@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using OwinFramework.Pages.Core.Attributes;
 using OwinFramework.Pages.Core.Extensions;
@@ -7,18 +6,18 @@ using OwinFramework.Pages.Core.Interfaces.Builder;
 using OwinFramework.Pages.Core.Interfaces.DataModel;
 using OwinFramework.Pages.Core.Interfaces.Runtime;
 using OwinFramework.Pages.Framework.DataModel;
-using Website.Navigation;
+using OwinFramework.Pages.Standard;
 
 namespace Website.DataProviders
 {
-    [IsDataProvider(typeof(SiteMap.Project))]
-    public class Project : DataProvider
+    [IsDataProvider(typeof(TextEffectsPackage.VerticalText))]
+    public class VerticalTextInfo : DataProvider
     {
         private readonly Regex _urlRegex = new Regex(
-            "/content/project/([^/]*)", 
+            "/content/([^/]*)", 
             RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
 
-        public Project(IDataProviderDependenciesFactory dependencies)
+        public VerticalTextInfo(IDataProviderDependenciesFactory dependencies)
             : base(dependencies)
         {
         }
@@ -31,14 +30,18 @@ namespace Website.DataProviders
             if (dependency == null)
                 return;
 
-            if (dependency.DataType == typeof(SiteMap.Project))
+            if (dependency.DataType == typeof(TextEffectsPackage.VerticalText))
             {
-                var project = GetProject(renderContext);
-                if (project != null)
+                var area = GetContentArea(renderContext);
+                if (area != null)
                 {
-                    dataContext.Set(project);
-                    dataContext.Set(project.Document);
-                    dataContext.Set(project.Repository);
+                    area = char.ToUpper(area[0]) + area.Substring(1);
+                    var verticalTextInfo = new TextEffectsPackage.VerticalText(area, 60, 160)
+                    {
+                        Background = null,
+                        TextStyle = "font: 30px serif; fill: #b3b3ff;"
+                    };
+                    dataContext.Set(verticalTextInfo);
                 }
                 return;
             }
@@ -47,14 +50,12 @@ namespace Website.DataProviders
                 dependency.DataType.DisplayName());
         }
 
-        private SiteMap.Project GetProject(IRenderContext renderContext)
+        private string GetContentArea(IRenderContext renderContext)
         {
             var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
             if (match.Success)
-            {
-                var projectName = match.Groups[1].Value;
-                return SiteMap.Instance.Projects.FirstOrDefault(p => string.Equals(p.ProjectName, projectName, StringComparison.InvariantCultureIgnoreCase));
-            }
+                return match.Groups[1].Value;
+
             return null;
         }
     }
