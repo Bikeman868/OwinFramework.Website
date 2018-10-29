@@ -39,7 +39,7 @@ namespace Website.DataProviders
                     var verticalTextInfo = new TextEffectsPackage.VerticalText(area, 60, 160)
                     {
                         Background = null,
-                        TextStyle = "font: 30px serif; fill: #b3b3ff;"
+                        TextStyle = "font: 30px serif; fill: #e8eeff;"
                     };
                     dataContext.Set(verticalTextInfo);
                 }
