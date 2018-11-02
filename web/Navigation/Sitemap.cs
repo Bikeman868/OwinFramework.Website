@@ -23,13 +23,18 @@ namespace Website.Navigation
         public class FunctionalArea
         {
             public string Identifier { get; private set;}
+            public string Caption { get; private set; }
             public Document Document { get; private set; }
             public Project[] Projects { get; private set; }
 
-            public FunctionalArea(string identifier, string name)
+            public FunctionalArea(string identifier, string name, string description)
             {
                 Identifier = identifier;
-                Document = new Document(identifier.ToLower(), name)
+                Caption = name;
+                Document = new Document(identifier.ToLower(), name) 
+                    { 
+                        Description = description
+                    }
                     .SetPages("/content/area/")
                     .SetImage("/assets/images/area/", ".png");
             }
@@ -181,12 +186,12 @@ namespace Website.Navigation
         {
             FunctionalAreas = new[]
             {
-                new FunctionalArea("framework", "Owin Framework"),
-                new FunctionalArea("content", "Content"),
-                new FunctionalArea("diagnostics", "Diagnostics"),
-                new FunctionalArea("authorization", "Authorization"),
-                new FunctionalArea("pages", "Html Pages"),
-                new FunctionalArea("testing", "Unit Testing")
+                new FunctionalArea("framework", "Owin Framework", "Interface definitions and their mocks. Owin Pipeline builder"),
+                new FunctionalArea("content", "Content", "Middleware components that render content to the Http response"),
+                new FunctionalArea("diagnostics", "Diagnostics", "Tools that help developers to track down issues in development or production environments"),
+                new FunctionalArea("authorization", "Authorization", "Identifying who or what is making the Http request and restricting them with permissions"),
+                new FunctionalArea("pages", "Pages Framework", "Rapid development of web pages and web services using templats and code annotation"),
+                new FunctionalArea("testing", "Unit Testing", "Mocks and scafolding for testing code in an isolated sandbox")
             };
 
             RepositoryOwners = new[]

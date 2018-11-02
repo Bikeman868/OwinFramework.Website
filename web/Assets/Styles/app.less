@@ -11,26 +11,29 @@
 @break1: 400px;
 @break2: 600px;
 @break3: 820px;
+@break4: 1280px;
 
 @base-font-size: 16px;
+
+@heading-font-family: Arial, sans-serif;
 
 * { box-sizing: border-box; }
 
 body { margin:10px; background-color: whitesmoke; }
 
-p { font-size:@base-font-size; }
+p { font-size:@base-font-size; font-family: @heading-font-family; }
 
-h1 { font-size:@base-font-size * 1.8; }
+h1 { font-size:@base-font-size * 1.8; font-family: @heading-font-family; }
 
-h2 { font-size:@base-font-size * 1.6; }
+h2 { font-size:@base-font-size * 1.6; font-family: @heading-font-family; }
 
-h3 { font-size:@base-font-size * 1.3; }
+h3 { font-size:@base-font-size * 1.3; font-family: @heading-font-family; }
 
-h4 { font-size:@base-font-size * 1.15; }
+h4 { font-size:@base-font-size * 1.15; font-family: @heading-font-family; }
 
-h5 { font-size:@base-font-size * 1.1; }
+h5 { font-size:@base-font-size * 1.1; font-family: @heading-font-family; }
 
-h6 { font-size:@base-font-size; }
+h6 { font-size:@base-font-size; font-family: @heading-font-family; }
 
 div { margin: 0; padding: 0; }
 
@@ -42,7 +45,7 @@ a, a:visited { text-decoration: none; color: @anchor-color; }
 
 a:hover { color: @anchor-hover-color}
 
-div.app_page { min-width: 400px; max-width: 1280px; margin: 0 auto; }
+div.app_page { min-width: @break1; max-width: @break4; margin: 0 auto; }
 
 a.app_page-head { color: whitesmoke; }
 
@@ -101,7 +104,7 @@ div.app_fixed-left-layout {
         padding-left: 4px;
     }
 
-    @media only screen and (min-width: @break2) {
+    @media only screen and (min-width: @break3) {
             div.app_left { display: initial; }
         }
 }
@@ -131,7 +134,7 @@ div.app_fixed-right-layout {
         }
     }
 
-    @media only screen and (min-width: @break2) {
+    @media only screen and (min-width: @break3) {
             div.app_right { display: initial; }
         }
 }
@@ -189,4 +192,39 @@ div.app_document_head_layout {
     div.app_detail {
         margin-left: 80px;
     }
+}
+
+ul.app_index {
+
+    li.app_index {
+        background: @content-panel-background;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 0;
+        margin-right: 0;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+        padding-left: 15px;
+        margin-top: 0;
+    }
+
+    h1 { font-size:@base-font-size * 1.4; }
+
+    h2 { font-size:@base-font-size * 1.3; }
+
+    h3 { font-size:@base-font-size * 1.2; }
+
+    h4 { font-size:@base-font-size * 1.1; }
+
+    h5 { font-size:@base-font-size * 1.1; }
+
+    h6 { font-size:@base-font-size; }
+}
+
+ul.app_project-index {
 }
