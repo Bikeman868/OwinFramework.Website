@@ -7,7 +7,7 @@ using Website.PageBase;
 namespace Website.Pages.FunctionalArea
 {
     [IsLayout("areaLandingPage_Header", "title,detail")]
-    [RegionTemplate("detail", "/data/functionalarea")]
+    [RegionTemplate("detail", "/data/area")]
     internal class LandingPageHeaderLayout : DocumentHeadLayout { }
 
     [IsLayout("areaLandingPage_LeftColumn", "header,body")]
@@ -31,7 +31,7 @@ namespace Website.Pages.FunctionalArea
 
     [IsPage("areaLanding")]
     [Route("/content/area/**", Methods.Get, Priority = -80)]
-    [PageTitle("OWIN Framework")]
+    [PageTitle("OWIN Framework Area")]
     [RegionLayout("body", "areaLanding")]
     public class LandingPage: NavigationMasterPage{ }
 }

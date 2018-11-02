@@ -45,18 +45,36 @@ namespace Website.Navigation
                     }
             };
 
-            var documentationMenu = new MenuPackage.MenuItem
+            var documentationDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "Documentation",
                 SubMenu = new[]
                     {
                         new MenuPackage.MenuItem { Name = "The Owin Frameowrk", Url = "https://github.com/Bikeman868/OwinFramework/wiki/OWIN", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "GitHub Wikki", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
+                        new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
+                        new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
                         new MenuPackage.MenuItem { Name = "Identification and authorization", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Session handling", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Page rendering", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "REST services", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Configuration", Url = "https://github.com/Bikeman868/OwinFramework/wiki/Configuring-middleware-components", Target = "_blank" },
+                    }
+            };
+
+            var documentationMobileMenu = new MenuPackage.MenuItem
+            {
+                Name = "Documentation",
+                SubMenu = new[]
+                    {
+                        new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
+                        new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
+                        new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
+                        new MenuPackage.MenuItem { Name = "Identification and authorization", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Session handling", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Page rendering", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "REST services", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
                     }
             };
 
@@ -75,8 +93,7 @@ namespace Website.Navigation
                     .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
                         {
                             Name = "More ...",
-                            Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory", 
-                            Target = "_blank"
+                            Url = "/content/index/nuget"
                         }, 1))
                     .ToArray()
             };
@@ -96,8 +113,7 @@ namespace Website.Navigation
                     .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
                     {
                         Name = "More ...",
-                        Url = "https://github.com/Bikeman868/OwinFramework/wiki/Package-Directory",
-                        Target = "_blank"
+                        Url = "/content/index/nuget"
                     }, 1))
                     .ToArray()
             };
@@ -130,7 +146,7 @@ namespace Website.Navigation
                     .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
                     {
                         Name = "More ...",
-                        Url = "/content/source/index"
+                        Url = "/content/index/project"
                     }, 1))
                     .ToArray()
             };
@@ -139,7 +155,7 @@ namespace Website.Navigation
             {
                 gettingStartedMenu,
                 tutorialsMenu,
-                documentationMenu,
+                documentationDesktopMenu,
                 nuGetDesktopMenu,
                 gitHubMenu,
                 projectDesktopMenu
@@ -149,7 +165,7 @@ namespace Website.Navigation
             {
                 gettingStartedMenu,
                 tutorialsMenu,
-                documentationMenu,
+                documentationMobileMenu,
                 nuGetMobileMenu,
                 gitHubMenu
             };

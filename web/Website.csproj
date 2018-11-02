@@ -62,6 +62,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Content\Index.cs" />
     <Compile Include="Components\Content\DocumentTitle.cs" />
     <Compile Include="Components\Content\DocumentIcon.cs" />
     <Compile Include="Components\Content\DocumentListItem.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Packaging\NavigationModule.cs" />
     <Compile Include="PageBase\BlankMasterPage.cs" />
     <Compile Include="Components\PageHead.cs" />
+    <Compile Include="Pages\IndexPage.cs" />
     <Compile Include="Pages\FunctionalArea\LandingPage.cs" />
     <Compile Include="Pages\InterfaceDefinition\LandingPage.cs" />
     <Compile Include="Pages\Project\LandingPage.cs" />
@@ -138,7 +140,13 @@
     <Content Include="Templates\Data\FunctionalArea.mustache" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Templates\Data\Nuget.mustache" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Templates\Data\Repository.mustache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\Data\Area.mustache" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\Data\InterfaceDefinition.mustache" />
