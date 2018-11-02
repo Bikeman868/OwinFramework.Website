@@ -133,7 +133,7 @@
     <Content Include="Templates\Data\Nuget.mustache" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Templates\Data\FunctionalArea.mustache" />
+    <Content Include="Templates\Data\Area.mustache" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\Data\Repository.mustache" />

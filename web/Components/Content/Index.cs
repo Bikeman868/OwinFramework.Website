@@ -122,7 +122,7 @@ namespace Website.Components.Content
         {
             WriteHead(context, "Functional Areas");
 
-            var template = _nameManager.ResolveTemplate("/data/functionalarea");
+            var template = _nameManager.ResolveTemplate("/data/area");
             if (template != null)
             {
                 context.Html.WriteOpenTag("ul", "class", Package.NamespaceName + "_index " + Package.NamespaceName + "_area-index");
