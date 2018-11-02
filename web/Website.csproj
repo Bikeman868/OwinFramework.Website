@@ -137,9 +137,6 @@
     <Content Include="Templates\Data\Project.mustache" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Templates\Data\FunctionalArea.mustache" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Templates\Data\Nuget.mustache" />
   </ItemGroup>
   <ItemGroup>
