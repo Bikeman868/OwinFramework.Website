@@ -1,8 +1,10 @@
 ﻿@fixed-panel-background: #e5e4da;
 @content-panel-background: white;
 @header-background: gray;
+@document-head-background: aliceblue;
 
 @header-color: whitesmoke;
+@document-head-color: indianred;
 @anchor-color: #0000b3;
 @anchor-hover-color: #1a1aff;
 
@@ -143,6 +145,18 @@ div.app_content-document {
         padding-left: 15px;
     }
 
+    h1 { font-size:@base-font-size * 1.4; }
+
+    h2 { font-size:@base-font-size * 1.3; }
+
+    h3 { font-size:@base-font-size * 1.2; }
+
+    h4 { font-size:@base-font-size * 1.1; }
+
+    h5 { font-size:@base-font-size * 1.1; }
+
+    h6 { font-size:@base-font-size; }
+
     .code {
         font-family: Courier New, Courier, monospace;
         letter-spacing: -0.5px;
@@ -159,8 +173,12 @@ div.app_content-document {
 
 div.app_document_head_layout {
     overflow: hidden;
-    border-bottom: 2px solid whitesmoke;
-    background: aliceblue;
+    border-bottom: 2px solid @header-color;
+    background: @document-head-background;
+
+    h2 {
+        color: @document-head-color;
+    }
 
     div.app_title {
         overflow: hidden; 
