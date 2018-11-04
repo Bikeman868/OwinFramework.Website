@@ -58,6 +58,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\Drawings\Layers of OWIN.svg" />
+    <Content Include="Assets\Images\Drawings\Pages rendering model.svg" />
+    <Content Include="Templates\Content\General\Home.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Overview.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -122,9 +125,7 @@
     <Content Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Images\" />
     <Folder Include="Assets\Scripts\" />
-    <Folder Include="Templates\Content\General\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Authorization\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Facilities\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Middleware\" />

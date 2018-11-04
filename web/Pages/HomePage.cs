@@ -6,10 +6,6 @@ using Website.PageBase;
 
 namespace Website.Pages
 {
-    [IsComponent("homePage_Content")]
-    [RenderHtml("home-page-right-column", "<img src='https://openclipart.org/download/293843/under-construction_geek_woman.svg' style='padding: 5vh; max-width: 50vw; max-height: 50vh;'/>")]
-    internal class HomePageContent : ContentElement { }
-
     [IsLayout("homePage_RightColumn", "panel1,panel2")]
     [LayoutRegion("panel1", "layouts:null")]
     [LayoutRegion("panel2", "layouts:null")]
@@ -18,7 +14,7 @@ namespace Website.Pages
     internal class HomePageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("home", "right,left")]
-    [RegionComponent("left", "homePage_Content")]
+    [RegionTemplate("left", "/content/general/home")]
     [RegionLayout("right", "homePage_RightColumn")]
     internal class HomePageLayout : FixedRightColumnLayout { }
 
