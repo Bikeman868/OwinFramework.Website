@@ -68,13 +68,15 @@ namespace Website.Navigation
             public string GitHubRepositoryName { get; private set; }
             public string Caption { get; private set; }
             public string Url { get; set; }
+            public string Description { get; set; }
             public RepositoryOwner Owner { get; set; }
             public Project[] Projects { get; set; }
 
-            public Repository(string gitHubRepositoryName, string gitHubAccountName, string url = null)
+            public Repository(string gitHubRepositoryName, string gitHubAccountName, string description, string url = null)
             {
                 GitHubRepositoryName = gitHubRepositoryName;
                 Caption = gitHubRepositoryName.Substring(gitHubRepositoryName.IndexOf('.') + 1).Replace(".", " ");
+                Description = description;
                 Owner = Instance.RepositoryOwners.First(o => o.GitHubAccountName == gitHubAccountName);
                 Url = url ?? "https://github.com/" + gitHubAccountName + "/" + gitHubRepositoryName;
             }
@@ -190,7 +192,7 @@ namespace Website.Navigation
                 new FunctionalArea("content", "Content", "Middleware components that render content to the Http response"),
                 new FunctionalArea("diagnostics", "Diagnostics", "Tools that help developers to track down issues in development or production environments"),
                 new FunctionalArea("authorization", "Authorization", "Identifying who or what is making the Http request and restricting them with permissions"),
-                new FunctionalArea("pages", "Pages Framework", "Rapid development of web pages and web services using templats and code annotation"),
+                new FunctionalArea("pages", "Pages Framework", "Rapid development of web pages and web services using templates and code annotation"),
                 new FunctionalArea("testing", "Unit Testing", "Mocks and scafolding for testing code in an isolated sandbox")
             };
 
@@ -201,11 +203,11 @@ namespace Website.Navigation
 
             Repositories = new[] 
             { 
-                new Repository("OwinFramework", "Bikeman868"),
-                new Repository("OwinFramework.Middleware", "Bikeman868"),
-                new Repository("OwinFramework.Pages", "Bikeman868"),
-                new Repository("OwinFramework.Authorization", "Bikeman868"),
-                new Repository("OwinFramework.Facilities", "Bikeman868"),
+                new Repository("OwinFramework", "Bikeman868", "The interface definitions that define the Owin Framework"),
+                new Repository("OwinFramework.Middleware", "Bikeman868", "A collection of middleware packages that many websites frequently need. Provides examples of how to write middleware"),
+                new Repository("OwinFramework.Pages", "Bikeman868", "A large framework for defining web pages and services using templates and code annotations"),
+                new Repository("OwinFramework.Authorization", "Bikeman868", "Mechanisms for identifying the caller and restricting what they have access to"),
+                new Repository("OwinFramework.Facilities", "Bikeman868", "A collection of packages that provide implementations of some of the Owin Framework interfaces that define cross-cutting concerns"),
             };
 
             Projects = new[]
