@@ -99,7 +99,7 @@ namespace Website.Navigation
             public Repository  Repository { get; private set; }
             public FunctionalArea FunctionalArea { get; private set; }
 
-            public Project(string projectName, string gitHubRepositoryName, string areaIdentifier)
+            public Project(string projectName, string gitHubRepositoryName, string areaIdentifier, string description)
             {
                 ProjectCaption = projectName.Substring(projectName.IndexOf('.') + 1).Replace(".", " ");
                 ProjectName = projectName;
@@ -110,6 +110,7 @@ namespace Website.Navigation
                 Document = new Document(projectName.ToLower(), ProjectCaption + " Project")
                     .SetPages("/content/project/")
                     .SetImage("/assets/images/project/", ".png");
+                Document.Description = description;
                 Repository = Instance.Repositories.First(r => r.GitHubRepositoryName == gitHubRepositoryName);
                 FunctionalArea = Instance.FunctionalAreas.First(a => a.Identifier == areaIdentifier);
             }
@@ -212,41 +213,41 @@ namespace Website.Navigation
 
             Projects = new[]
             {
-                new Project("OwinFramework", "OwinFramework", "framework").Menus(true, true),
-                new Project("OwinFramework.Configuration.ConfigurationManager", "OwinFramework", "framework").Menus(false, false),
-                new Project("OwinFramework.Configuration.Urchin", "OwinFramework", "framework").Menus(false, false),
-                new Project("OwinFramework.Mocks", "OwinFramework", "testing").Menus(false, false),
+                new Project("OwinFramework", "OwinFramework", "framework", "Defines the interfaces that allow all of the other NuGet packages to work seamlessly together").Menus(true, true),
+                new Project("OwinFramework.Configuration.ConfigurationManager", "OwinFramework", "framework", "Implements IConfiguration using the .Net ConfigurationManager class. This allows you to configure the OWIN Framework in the web.config file").Menus(false, false),
+                new Project("OwinFramework.Configuration.Urchin", "OwinFramework", "framework", "Implements IConfiguration using the Urchin centralized enterprise configuration management system").Menus(false, false),
+                new Project("OwinFramework.Mocks", "OwinFramework", "testing", "Contains mocks of OWIN Framework interfaces that you can use to write unit tests for your middleware").Menus(false, false),
 
-                new Project("OwinFramework.Facilities.Cache.Local", "OwinFramework.Facilities", "framework").Menus(false, false),
-                new Project("OwinFramework.Facilities.IdentityStore.Prius", "OwinFramework.Facilities", "authorization").Menus(false, false),
-                new Project("OwinFramework.Facilities.TokenStore.Cache", "OwinFramework.Facilities", "framework").Menus(false, false),
-                new Project("OwinFramework.Facilities.TokenStore.Prius", "OwinFramework.Facilities", "framework").Menus(false, false),
+                new Project("OwinFramework.Facilities.Cache.Local", "OwinFramework.Facilities", "framework", "An implementation of the ICache facility that caches in process memory").Menus(false, false),
+                new Project("OwinFramework.Facilities.IdentityStore.Prius", "OwinFramework.Facilities", "authorization", "An implementation of the IIdentityStore facility that persists user account and login information using the Prius ORM").Menus(false, false),
+                new Project("OwinFramework.Facilities.TokenStore.Cache", "OwinFramework.Facilities", "framework", "An implementation of the ITokenStore facility that persists tokens using the ICache facility").Menus(false, false),
+                new Project("OwinFramework.Facilities.TokenStore.Prius", "OwinFramework.Facilities", "framework", "An implementation of the ITokenStore facility that persists tokens using the Prius ORM").Menus(false, false),
 
-                new Project("OwinFramework.AnalysisReporter", "OwinFramework.Middleware", "diagnostics").Menus(false, false),
-                new Project("OwinFramework.Dart", "OwinFramework.Middleware", "content").Menus(false, false),
-                new Project("OwinFramework.DefaultDocument", "OwinFramework.Middleware", "content").Menus(true, true),
-                new Project("OwinFramework.Documenter", "OwinFramework.Middleware", "diagnostics").Menus(false, false),
-                new Project("OwinFramework.ExceptionReporter", "OwinFramework.Middleware", "diagnostics").Menus(true, false),
-                new Project("OwinFramework.FormIdentification", "OwinFramework.Middleware", "authorization").Menus(true, false),
-                new Project("OwinFramework.Less", "OwinFramework.Middleware", "content").Menus(true, false),
-                new Project("OwinFramework.NotFound", "OwinFramework.Middleware", "content").Menus(true, false),
-                new Project("OwinFramework.OutputCache", "OwinFramework.Middleware", "content").Menus(true, false),
-                new Project("OwinFramework.RouteVisualizer", "OwinFramework.Middleware", "diagnostics").Menus(false, false),
-                new Project("OwinFramework.Session", "OwinFramework.Middleware", "authorization").Menus(true, false),
-                new Project("OwinFramework.StaticFiles", "OwinFramework.Middleware", "content").Menus(true, true),
-                new Project("OwinFramework.Versioning", "OwinFramework.Middleware", "content").Menus(true, false),
+                new Project("OwinFramework.AnalysisReporter", "OwinFramework.Middleware", "diagnostics", "Enumerates all middleware in the Owin pipeline that implements IAnalysable and formats their stats in html, md, json, text or xml format").Menus(false, false),
+                new Project("OwinFramework.Dart", "OwinFramework.Middleware", "content", "Detects if the user agent has native support for the Dart programming language and serves either Dart code or compiled JavaScript as needed").Menus(false, false),
+                new Project("OwinFramework.DefaultDocument", "OwinFramework.Middleware", "content", "Rewrites requests for the root of your site to a default document").Menus(true, true),
+                new Project("OwinFramework.Documenter", "OwinFramework.Middleware", "diagnostics", "Enumerates all middleware in the Owin pipeline that implements ISelfDocumenting and formats an html response documenting the endpoints").Menus(false, false),
+                new Project("OwinFramework.ExceptionReporter", "OwinFramework.Middleware", "diagnostics", "Catches exceptions thrown by downstream middleware and returns an exception report. Returns templated public apology or detailed technical information. Can optionally send email").Menus(true, false),
+                new Project("OwinFramework.FormIdentification", "OwinFramework.Middleware", "authorization", "Allows other middleware to define required roles and permissions. Uses a system of identities, groups, roles and permissions stored in a database. Supports wildcard matching of resource specific permissions. Implements IAuthorization and depends on IIdentification middleware").Menus(true, false),
+                new Project("OwinFramework.Less", "OwinFramework.Middleware", "content", "Serves requests for CSS files by compiling and caching LESS files on the fly").Menus(true, false),
+                new Project("OwinFramework.NotFound", "OwinFramework.Middleware", "content", "Returns a 404 (not found) response when no other middleware handled the request").Menus(true, false),
+                new Project("OwinFramework.OutputCache", "OwinFramework.Middleware", "content", "Receives hints from downstream middleware about the volatility of generated output, and uses rules based configuration to decide what to cache and for how long").Menus(true, false),
+                new Project("OwinFramework.RouteVisualizer", "OwinFramework.Middleware", "diagnostics", "Responds with an SVG drawing of all middleware components configured in the Owin pipeline. If these middleware implement ISelfDocumenting or IAnalysable then this information will be included on the drawing").Menus(false, false),
+                new Project("OwinFramework.Session", "OwinFramework.Middleware", "authorization", "Contains a few alternate implementations of ISession that your application can choose from").Menus(true, false),
+                new Project("OwinFramework.StaticFiles", "OwinFramework.Middleware", "content", "Responds to requests by returning the contents of files in the file system. Supports directory mapping, security and file extension restrictions").Menus(true, true),
+                new Project("OwinFramework.Versioning", "OwinFramework.Middleware", "content", "Modifies asset URLs in generated pages to include a version number then strips these versions numbers off again on incomming requests. This allows the assets to be cached indefinately by the browser and updated on new versions of the website").Menus(true, false),
 
-                new Project("OwinFramework.Authorization", "OwinFramework.Authorization", "authorization").Menus(true, true),
-                new Project("OwinFramework.Authorization.Core", "OwinFramework.Authorization", "authorization").Menus(false, false),
-                new Project("OwinFramework.Authorization.Prius", "OwinFramework.Authorization", "authorization").Menus(true, false),
-                new Project("OwinFramework.Authorization.UI", "OwinFramework.Authorization", "authorization").Menus(true, false),
+                new Project("OwinFramework.Authorization", "OwinFramework.Authorization", "authorization", "Allows other middleware to define required roles and permissions. Uses a system of identities, groups, roles and permissions stored in a database. Supports wildcard matching of resource specific permissions. Implements IAuthorization and depends on IIdentification middleware").Menus(true, true),
+                new Project("OwinFramework.Authorization.Core", "OwinFramework.Authorization", "authorization", "This very small package is required by the other packages that relate to authorization").Menus(false, false),
+                new Project("OwinFramework.Authorization.Prius", "OwinFramework.Authorization", "authorization", "Stores Authorization information relating to groups, roles and permissions in a relational database using the Prius ORM").Menus(true, false),
+                new Project("OwinFramework.Authorization.UI", "OwinFramework.Authorization", "authorization", "A user interface for managing identities, groups, roles and permissions. Uses built-in CSS or you can provide a custom one. Renders the UI into a <div> element on your page").Menus(true, false),
 
-                new Project("OwinFramework.Pages.Core", "OwinFramework.Pages", "pages").Menus(false, false),
-                new Project("OwinFramework.Pages.DebugMiddleware", "OwinFramework.Pages", "diagnostics").Menus(false, false),
-                new Project("OwinFramework.Pages.Framework", "OwinFramework.Pages", "pages").Menus(false, false),
-                new Project("OwinFramework.Pages.Html", "OwinFramework.Pages", "pages").Menus(true, true),
-                new Project("OwinFramework.Pages.Mocks", "OwinFramework.Pages", "testing").Menus(false, false),
-                new Project("OwinFramework.Pages.Restful", "OwinFramework.Pages", "pages").Menus(true, true),
+                new Project("OwinFramework.Pages.Core", "OwinFramework.Pages", "pages", "Contract definitions for the packages that render Html. Required dependency for other packages in the Pages framework").Menus(false, false),
+                new Project("OwinFramework.Pages.DebugMiddleware", "OwinFramework.Pages", "diagnostics", "Allows you to add ?debug=xxx to your website page URLs to see diagnostic information about page construction and data binding").Menus(false, false),
+                new Project("OwinFramework.Pages.Framework", "OwinFramework.Pages", "pages", "Default implementation of the contracts in Owin.Framework.Pages.Core").Menus(false, false),
+                new Project("OwinFramework.Pages.Html", "OwinFramework.Pages", "pages", "Allows you to build a website with pages of Html content using templates, regions, layouts and 3rd party packages").Menus(true, true),
+                new Project("OwinFramework.Pages.Mocks", "OwinFramework.Pages", "testing", "Provides mock implementations for the interfaces defined in OwinFramework.Pages.Core so that you can write unit tests").Menus(false, false),
+                new Project("OwinFramework.Pages.Restful", "OwinFramework.Pages", "pages", "Allows you to add REST endpoints to a website using classes and methods decorated with attributes").Menus(true, true),
             };
 
             for (var i = 0; i < FunctionalAreas.Length; i++) FunctionalAreas[i].Initialize();

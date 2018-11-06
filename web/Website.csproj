@@ -60,6 +60,9 @@
   <ItemGroup>
     <Content Include="Assets\Images\Drawings\Layers of OWIN.svg" />
     <Content Include="Assets\Images\Drawings\Pages rendering model.svg" />
+    <None Include="Templates\Content\Documentation\Configuration.md" />
+    <Content Include="Templates\Content\General\SampleWebsites.html" />
+    <Content Include="Templates\Content\General\HelloWorld.html" />
     <Content Include="Templates\Content\General\Home.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Overview.html" />
     <Content Include="Web.config" />
@@ -81,6 +84,7 @@
     <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />
     <Compile Include="Content\Layouts\Lists\RepositoryList.cs" />
     <Compile Include="Content\Layouts\PageStructure\DocumentHeadLayout.cs" />
+    <Compile Include="Content\Regions\ContentRegion.cs" />
     <Compile Include="Content\Regions\Lists\InterfaceList.cs" />
     <Compile Include="Content\Regions\Lists\RepositoryList.cs" />
     <Compile Include="DataProviders\InterfaceList.cs" />
