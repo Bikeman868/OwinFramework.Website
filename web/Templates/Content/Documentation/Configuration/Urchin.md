@@ -33,43 +33,43 @@ The code assumes that you have used a package manager like [Paket](https://fspro
 [NuGet](https://www.nuget.org/) to add the Owin Framework into your solution.
 
 ```
-   using System;
-   using System.IO;
-   using System.Reflection;
-   using Microsoft.Owin;
-   using Ioc.Modules;
-   using Ninject;
-   using Urchin.Client.Sources;
-   using Owin;
-   using OwinFramework.Builder;
-   using OwinFramework.Interfaces.Builder;
-   using OwinFramework.Interfaces.Utility;
+using System;
+using System.IO;
+using System.Reflection;
+using Microsoft.Owin;
+using Ioc.Modules;
+using Ninject;
+using Urchin.Client.Sources;
+using Owin;
+using OwinFramework.Builder;
+using OwinFramework.Interfaces.Builder;
+using OwinFramework.Interfaces.Utility;
    
-   [assembly: OwinStartup(typeof(Startup))]
+[assembly: OwinStartup(typeof(Startup))]
    
-   public class Startup
-   {
-       private static IDisposable _configurationSource;
+public class Startup
+{
+    private static IDisposable _configurationSource;
    
-       public void Configuration(IAppBuilder app)
-       {
-           var packageLocator = new PackageLocator()
-               .ProbeBinFolderAssemblies()
-               .Add(Assembly.GetExecutingAssembly());
+    public void Configuration(IAppBuilder app)
+    {
+        var packageLocator = new PackageLocator()
+            .ProbeBinFolderAssemblies()
+            .Add(Assembly.GetExecutingAssembly());
    
-           var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+        var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
    
-           var hostingEnvironment = ninject.Get<IHostingEnvironment>();
-           var configFile = new FileInfo(hostingEnvironment.MapPath("config.json"));
-           _configurationSource = ninject.Get<FileSource>().Initialize(configFile, TimeSpan.FromSeconds(5));
+        var hostingEnvironment = ninject.Get<IHostingEnvironment>();
+        var configFile = new FileInfo(hostingEnvironment.MapPath("config.json"));
+        _configurationSource = ninject.Get<FileSource>().Initialize(configFile, TimeSpan.FromSeconds(5));
    
-           var configuration = ninject.Get<IConfiguration>();
+        var configuration = ninject.Get<IConfiguration>();
    
-           //
-           // More code here that uses the configuration variable
-           //
-       }
-   }
+        //
+        // More code here that uses the configuration variable
+        //
+    }
+}
 ```
 
 ## Using a Configuration URL
