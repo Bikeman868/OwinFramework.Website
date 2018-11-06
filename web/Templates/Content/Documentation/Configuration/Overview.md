@@ -21,3 +21,18 @@ The Owin Framework provides a simple standardization of middleware configuration
   implements the `IConfiguration` interface. The Owin Framework provides implementations of this interface for
   getting configuration data from `web.config` and for Urchin. This is a very simple interface that you can
   easily implement yourself to get configuration data from your database or any other source.
+
+  ## Configuration Options
+
+  [How to use Urchin as a configuration provider](/content/documentation/configuration/urchin)
+
+  [How to use the web.config file for configuration data](/content/documentation/configuration/configurationmanager)
+  
+  ## NuGet package configurations
+  
+  For details of how to configure specific NuGet packages see the author's documentation for their package.
+  In general Owin Framework middleware packages will have a `Configuration` class within the source code
+  that is deserialized from the JSON configuration file. You can look at this source code to determine the
+  definitive list of properties that can be configured.
+
+  The [Index of NuGet packages](/content/index/nuget) has links the source code for all Owin Framework NuGet packages.
