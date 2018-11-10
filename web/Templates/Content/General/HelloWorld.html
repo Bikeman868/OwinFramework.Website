@@ -1,2 +1,175 @@
 ﻿<h1>Hello, world</h1>
 
+<p>
+    If you want to jump straight to the solution, the end result of this 
+    walkthrough is available on <a href="https://github.com/Bikeman868/OwinFramework.Pages/tree/master/Sample2">GitHub</a>
+</p>
+
+<h2>Starting a new Visual Studio solution</h2>
+
+<p>
+    The most educational way of doing this walkthrough is by starting from a completely
+    empty project and add all of the code. You don't need to actually type the code, copy/paste
+    will work just fine.
+</p>
+
+<ol>
+    <li>
+        In Visual Studio start a new project of type "ASP.NET Empty Web Application".
+        This will create a project that contains very little.
+    </li>
+    <li>
+        Go to the NuGet package manager or use <a href="https://fsprojects.github.io/Paket/">Paket</a> to install these NuGet packages
+        <ul>
+            <li><span class="code">Ioc.Modules.Ninject</span></li>
+            <li><span class="code">Owin.Framework</span></li>
+            <li><span class="code">Owin.Framework.Urchin</span></li>
+            <li><span class="code">Owin.Framework.Pages.Framework</span></li>
+            <li><span class="code">Owin.Framework.Pages.Html</span></li>
+            <li><span class="code">Microsoft.Owin.Host.SystemWeb</span></li>
+        </ul>
+    </li>
+</ol>
+
+<div class="app_warning">
+    Note that you might have to pick a specific version of <span class="code">Microsoft.Owin.Host.SystemWeb</span>
+    because each version targets only specific versions of .Net.
+</div>
+
+<div class="app_hint">
+    To install NuGet packages for .Net 4.0 you can copy/paste the lines below into the NuGet Package Manager Console:
+<pre>
+install-package Owin.Framework
+install-package Ioc.Modules.Ninject
+install-package Owin.Framework.Urchin
+install-package Owin.Framework.Pages.Framework
+install-package Owin.Framework.Pages.Html
+install-package Microsoft.Owin.Host.SystemWeb -version 2.1.0
+</pre>
+</div>
+
+<div class="app_hint">
+    You can find out about the other <a href="/content/index/nuget">Owin Framework NuGet packages here</a>
+</div>
+
+<h2>Configure your project as an OWIN website hosted on IIS</h2>
+
+<p>
+    Note that this step would be required for any OWIN application and is not
+    specific to getting started with the Owin Framework.
+</p>
+
+<ol>
+    <li>
+        Modify the <span class="code">web.config</span> file to use the <span class="code">ExtensionlessUrlHandler</span>.
+        You can use <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample1/Web.config">this file</a>
+        as an example of what this should look like.
+    </li>
+    <li>
+        In the root of your project add a new <span class="code">Startup.cs</span> file and add
+        <pre>[assembly: OwinStartup(typeof(Startup))]</pre> 
+        under the <span class="code">using</span> statements and above the namespace statement. Resolve references and make sure it compiles.
+    </li>
+    <li>
+        In the <span class="code">Startup</span> class add a method with ths signature
+        <pre>public void Configuration(IAppBuilder app)</pre>
+    </li>
+    <li>
+        Add the necessary using statements so that the code compiles.
+    </li>
+</ol>
+
+<div class="app_hint">
+    Note that we are using IIS hosted for this walkthrough, but OWIN provides many other hosting options.
+    Please consult the Microsoft documentation for further details.
+</div>
+
+<h2>Configure an IoC container</h2>
+
+<p>
+    For this walkthrough we are going to use <a href="http://www.ninject.org/">Ninject</a> and <a href="https://github.com/Bikeman868/Urchin">Urchin</a>, but you can use any IoC container
+    and any configuration mechanism you choose. There is <a href="/content/documentation/configuration/urchin">documentation</a> you can read and copy
+    code from, or you can copy from <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs">the completed example</a>
+</p>
+
+<h2>Set up the Owin Framework middleware pipeline</h2>
+
+<p>
+    This is the first step in this walktrhough that is specific to the Owin Framework
+</p>
+
+<p>
+    You can review the <a href="/content/documentation/configuration/overview">documentation on Owin Framework configuration</a>, or you can look
+    at <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs"><span class="code">Startup.cs</span></a> 
+    for a working example to copy from.
+</p>
+
+<h2>Configure the Pages middleware</h2>
+
+<p>
+    In this section you will configure the Pages middleware to scan your compiled code
+    and construct web pages from classes that are decorated with custom attributes.
+</p>
+
+<ol>
+    <li>
+        At the end of the <span class="code">Configuration</span> method in your <span class="code">Startup</span> class,
+        resolve <span class="code">IFluentBuilder</span> from your IoC container, for example
+        <pre>var fluentBuilder = ninject.Get&lt;IFluentBuilder>();</pre>
+    </li>
+    <li>
+        Install the Html element build engine with code similar to this:
+        <pre>ninject.Get&lt;OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);</pre>
+    </li>
+    <li>
+        Get the fluent builder to scan your application assembly for classes that are
+        decorated with attributes that makes them into definitions of pages, regions,
+        layouts etc. The fluent builder will use the build engines that we configured earlier.
+        The extra line of code you need to add for this is:
+        <pre>fluentBuilder.Register(Assembly.GetExecutingAssembly());</pre>
+    </li>
+    <li>
+        Finally, after registering all of the elements of your website with the fluent
+        builder you need to bind the elements together because they can reference each other
+        by name, and they can be registered in any order. You will need these two lines of
+        code to do this:
+<pre>var nameManager = ninject.Get&lt;INameManager>();
+nameManager.Bind();</pre>
+    </li>
+</ol>
+
+<div class="app_hint">
+    Note that there are a number of Build Engines included in the base libraries, and you can
+    also install third party Build Engines that provide alternate implementations. Build Engines 
+    are like factories that contruct and configure Pages, Layouts, Regions, Components, Templates etc.
+</div>
+
+<div class="app_hint">
+    Note that the fluent builder can register other things besides assemblies. Try using the
+    Visual Studio intellisense feature to see the other overloads for the <span class="code">Register</span>
+    method.
+</div>
+
+<h2>Add some elements to your website</h2>
+
+<p>
+    At this point your website is scanning the classes compiled into the application assembly
+    and registering them with the element builder, but it will not find any classes like that
+    because we did not add any yet.
+</p>
+
+<p>
+    The code you wrote so far scans the main assembly of your application, so you can add
+    pages, regions, layouts, components, templates etc anywhere within the source code and
+    they will be discovered. It is entirely up to you how you organize these classes, but you
+    might like to read the <a href="/content/general/bestpractice/landing">Best Practice Guide</a>
+    before moving on from this getting started example.
+</p>
+
+<p>
+    If you want to finish up the "Hello, World" example you can copy code from
+    <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs"><span class="code">Startup.cs</span></a>,
+    or you can experiment with creating some pages of your own. If you would like to
+    see some examples of how to define these page elements you can check out
+    <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample1/SamplePages/DeclarativePage.cs">this source file</a>.
+</p>
