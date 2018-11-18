@@ -28,8 +28,11 @@ namespace Website.Navigation
                     {
                         new MenuPackage.MenuItem { Name = "Hello world", Url = "/content/general/helloworld" },
                         new MenuPackage.MenuItem { Name = "Sample websites", Url = "/content/general/samplewebsites" },
-                        new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
                         new MenuPackage.MenuItem { Name = "Configuration", Url = "/content/documentation/configuration/overview" },
+                        new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
+                        new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
+                        new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
+                        new MenuPackage.MenuItem { Name = "GitHub repositories", Url="/content/index/repository" },
                     }
             };
 

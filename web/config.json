@@ -35,6 +35,11 @@
             "traceLog": false
         }
     },
-    "framework": { 
+    "owinFramework": {
+        "pages": {
+            "html": {
+                "includeComments": false
+            }
+        }
     }
 }

@@ -1,5 +1,91 @@
 ﻿# Configuration
+This overview is an introduction to the concepts, and covers what you need to get started. There
+is more detailed documentation in the links from this page about all of the options available
+for configuring the Owin pipeline and the middleware components.
 
+## Microsoft OWIN
+The Owin Framework is built on Microsoft OWIN. The way that Microsoft OWIN works is by chaining middleware
+into a pipeline, then passing each http request through the pipeline until one of the middleware
+chooses to handle the request and return a response.
+
+The Microsoft OWIN assembly contains an `IAppBuilder` interface definition like this:
+
+```
+public interface IAppBuilder
+{
+    IDictionary<string, object> Properties { get; }
+
+    object Build(Type returnType);
+    IAppBuilder New();
+    IAppBuilder Use(object middleware, params object[] args);
+}
+```
+
+The way this is used, is that each middleware author is supposed to write an extension method
+that adds their middleware into the Owin pipeline. A typical extension method looks like this:
+
+```
+public static IAppBuilder Use(
+    this IAppBuilder appBuilder, 
+    MyMiddleware myMiddleware)
+{
+    myMiddleware.Build(appBuilder);
+    return appBuilder;
+}
+```
+
+This allows application developers to add the middleware to their pipeline with code similar to this:
+
+```
+public void Configuration(IAppBuilder app)
+{
+   app.Use(new Middleware1())
+      .Use(new Middleware2())
+      .Use(new Middleware3())
+      .Use(new Middleware4());
+}
+```
+## Owin Framework
+This Owin Framework provides an extension method that extends `IAppBuilder` as required by the
+Microsoft implementation, but provides a richer fluent syntax for:
+
+* Adding middleware the the pipeline
+* Providing information about how the middleware is configured
+* Defining dependencies between middleware
+* Spliting the OWIN pipeline into a tree of routes rather than a linear list
+
+The application code for setting up the Owin Framework looks like this example:
+
+```
+public void Configuration(IAppBuilder app)
+{
+  var builder = new Builder();
+
+  builder.Register(new NotFoundError())
+    .As("staticFilesNotFoundError")
+    .RunAfter("loginId")
+    .ConfigureWith(configuration, "/owin/notFound/staticFiles");
+
+  builder.Register(new FormsIdentification())
+    .As("loginId")
+    .ConfigureWith(configuration, "/owin/auth/forms");
+
+  app.Use(builder);
+}
+```
+
+Note that the `app.Use(builder);` line at the end is calling the extension method that
+is defined by the Microsoft OWIN assembly. The code above that is specific to the Owin
+Framework.
+
+Note that each middleware that is added to the `Builder` has fluent syntax for defining the
+configuration provider and the path within the configuration file to the configuration data
+for that middleware.
+
+Note that each middleware can be named, and these names can be used to define dependencies.
+The `Builder` will add them to the Owin pipeline in an order that satisfies these dependencies.
+
+## Configuring Middleware
 The Owin Framework provides a simple standardization of middleware configuration so that:
 
 * Application developers can choose any method they like to provide configuration to the
@@ -35,4 +121,5 @@ The Owin Framework provides a simple standardization of middleware configuration
   that is deserialized from the JSON configuration file. You can look at this source code to determine the
   definitive list of properties that can be configured.
 
-  The [Index of NuGet packages](/content/index/nuget) has links the source code for all Owin Framework NuGet packages.
+  The [Index of NuGet packages](/content/index/nuget) has links the documentation and source code for all 
+  Owin Framework NuGet packages.

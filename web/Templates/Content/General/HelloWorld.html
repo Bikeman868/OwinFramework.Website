@@ -24,6 +24,7 @@
             <li><span class="code">Ioc.Modules.Ninject</span></li>
             <li><span class="code">Owin.Framework</span></li>
             <li><span class="code">Owin.Framework.Urchin</span></li>
+            <li><span class="code">Owin.Framework.Pages.Core</span></li>
             <li><span class="code">Owin.Framework.Pages.Framework</span></li>
             <li><span class="code">Owin.Framework.Pages.Html</span></li>
             <li><span class="code">Microsoft.Owin.Host.SystemWeb</span></li>
@@ -42,8 +43,8 @@
 install-package Owin.Framework
 install-package Ioc.Modules.Ninject
 install-package Owin.Framework.Urchin
-install-package Owin.Framework.Pages.Framework
-install-package Owin.Framework.Pages.Html
+install-package Owin.Framework.Pages.Framework -IncludePrerelease
+install-package Owin.Framework.Pages.Html -IncludePrerelease
 install-package Microsoft.Owin.Host.SystemWeb -version 2.1.0
 </pre>
 </div>
@@ -66,16 +67,19 @@ install-package Microsoft.Owin.Host.SystemWeb -version 2.1.0
         as an example of what this should look like.
     </li>
     <li>
-        In the root of your project add a new <span class="code">Startup.cs</span> file and add
+        In the root of your project add a new <span class="code">Startup.cs</span> file and under 
+        the <span class="code">using</span> statements and above the namespace statement add
         <pre>[assembly: OwinStartup(typeof(Startup))]</pre> 
-        under the <span class="code">using</span> statements and above the namespace statement. Resolve references and make sure it compiles.
+        Resolve references and make sure it compiles.
     </li>
     <li>
         In the <span class="code">Startup</span> class add a method with ths signature
-        <pre>public void Configuration(IAppBuilder app)</pre>
+        <pre>public void Configuration(IAppBuilder app)
+{
+}</pre>
     </li>
     <li>
-        Add the necessary using statements so that the code compiles.
+        Add the necessary <span class="code">using</span> statements so that the code compiles.
     </li>
 </ol>
 
@@ -92,6 +96,19 @@ install-package Microsoft.Owin.Host.SystemWeb -version 2.1.0
     code from, or you can copy from <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs">the completed example</a>
 </p>
 
+<p>
+    Read the documentation to figure out what code you need to add, or just copy the code
+    below to get going quickly.
+</p>
+
+<pre>
+var packageLocator = new PackageLocator()
+   .ProbeBinFolderAssemblies()
+   .Add(Assembly.GetExecutingAssembly());
+var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+</pre>
+
+
 <h2>Set up the Owin Framework middleware pipeline</h2>
 
 <p>
@@ -103,6 +120,21 @@ install-package Microsoft.Owin.Host.SystemWeb -version 2.1.0
     at <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs"><span class="code">Startup.cs</span></a> 
     for a working example to copy from.
 </p>
+
+<p>
+    An example of the type of code you will need to add to your <span class="code">Startup</span> 
+    class is shown below for reference. In a real application there are a number of ways that you 
+    can write this code. For this walkthrough you can copy/paste if you like.
+</p>
+
+<pre>
+var config = ninject.Get&lt;IConfiguration>();
+
+var pipelineBuilder = ninject.Get&lt;IBuilder>();
+pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config, "/pages");
+
+app.UseBuilder(pipelineBuilder);
+</pre>
 
 <h2>Configure the Pages middleware</h2>
 
@@ -172,4 +204,51 @@ nameManager.Bind();</pre>
     or you can experiment with creating some pages of your own. If you would like to
     see some examples of how to define these page elements you can check out
     <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample1/SamplePages/DeclarativePage.cs">this source file</a>.
+</p>
+
+<p>
+    A compact version of Hello World can be written like this:
+</p>
+
+<pre>
+[IsPage]                                                   // This is a webpage
+[Route("/", Methods.Get)]                                  // This page is served for GET requets for the website root
+[PageTitle("Getting started with Owin Framework Pages")]   // Specifies the page title
+[UsesLayout("homePageLayout")]                             // The layout of this page is 'homePageLayout'
+internal class HomePage { }
+
+[IsLayout("homePageLayout", "region1")]                    // The 'homePageLayout' has 1 region called 'region1'
+[RegionHtml("region1", "hello-world", "Hello, world")]     // Region 1 contains static Html
+internal class HomePageLayout { }
+</pre>
+
+<p>
+    If you press F5 at this point the project should comiple and launch
+    IIS express to display the web page. Try using the "View Source" option
+    in your browser to see the HTML that was produced.
+</p>
+
+<p>
+    You will see that the HTML contains comments to help you to identify
+    the layouts, regions and components that were involved in constructing
+    the HTML. You can turn off these comments by configuring the Pages 
+    middleware like this:
+</p>
+
+<pre>
+var configurationStore = ninject.Get&lt;IConfigurationStore>();
+configurationStore.UpdateConfiguration(
+@"{
+    ""owinFramework"":{
+        ""pages"":{
+            ""html"":{
+                ""IncludeComments"":false
+            }
+        }
+    }
+}");
+</pre>
+
+<p>
+    You can read more about <a href="/content/documentation/configuration/overview">configuration within the Owin Framework here</a>.
 </p>
