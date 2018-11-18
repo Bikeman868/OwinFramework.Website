@@ -10,26 +10,26 @@ files:
   - source: DeployPackages.exe
     destination: c:\inetpub\wwwroot
 
-  - source: web\web.config
+  - source: .\web\web.config
     destination: c:\inetpub\wwwroot\web
-  - source: web\config.json
+  - source: .\web\config.json
     destination: c:\inetpub\wwwroot\web
-  - source: web\bin
+  - source: .\web\bin
     destination: c:\inetpub\wwwroot\web\bin
-  - source: web\paket.references
+  - source: .\web\paket.references
     destination: c:\inetpub\wwwroot\web
-  - source: web\Website.csproj
+  - source: .\web\Website.csproj
     destination: c:\inetpub\wwwroot\web
-  - source: web\Assets\Styles\*.less
-    destination: c:\inetpub\wwwroot\web\Assets\Styles
-  - source: web\Templates
+  - source: .\web\Assets
+    destination: c:\inetpub\wwwroot\web\Assets
+  - source: .\web\Templates
     destination: c:\inetpub\wwwroot\web\Templates
 
 hooks:
   ApplicationStop:
-    - location: scripts/CodeDeploy-stop.cmd
+    - location: .\scripts\CodeDeploy-stop.cmd
       timeout: 300
 
   ApplicationStart:
-    - location: scripts/CodeDeploy-start.cmd
+    - location: .\scripts\CodeDeploy-start.cmd
       timeout: 300
