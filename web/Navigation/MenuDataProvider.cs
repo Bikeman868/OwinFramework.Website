@@ -80,40 +80,40 @@ namespace Website.Navigation
             var nuGetDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = SiteMap.Instance.Projects
-                    .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
-                    .OrderBy(p => p.NugetPackage)
-                    .Select(r => new MenuPackage.MenuItem 
+                SubMenu = Enumerable.Repeat(new MenuPackage.MenuItem
                         {
-                            Name = r.NugetCaption, 
-                            Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
-                            Target = "_blank" 
-                        })
-                    .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
-                        {
-                            Name = "More ...",
+                            Name = "NuGet Package List",
                             Url = "/content/index/nuget"
-                        }, 1))
+                        }, 1)
+                    .Concat(SiteMap.Instance.Projects
+                        .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
+                        .OrderBy(p => p.NugetPackage)
+                        .Select(r => new MenuPackage.MenuItem 
+                            {
+                                Name = r.NugetCaption + " ...", 
+                                Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
+                                Target = "_blank" 
+                            }))
                     .ToArray()
             };
 
             var nuGetMobileMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = SiteMap.Instance.Projects
-                    .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
-                    .OrderBy(p => p.NugetPackage)
-                    .Select(r => new MenuPackage.MenuItem
-                    {
-                        Name = r.NugetCaption,
-                        Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/",
-                        Target = "_blank"
-                    })
-                    .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
-                    {
-                        Name = "More ...",
-                        Url = "/content/index/nuget"
-                    }, 1))
+                SubMenu = Enumerable.Repeat(new MenuPackage.MenuItem
+                        {
+                            Name = "NuGet Package List",
+                            Url = "/content/index/nuget"
+                        }, 1)
+                    .Concat(SiteMap.Instance.Projects
+                        .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
+                        .OrderBy(p => p.NugetPackage)
+                        .Select(r => new MenuPackage.MenuItem 
+                            {
+                                Name = r.NugetCaption + " ...", 
+                                Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
+                                Target = "_blank" 
+                            }))
                     .ToArray()
             };
 
@@ -124,7 +124,7 @@ namespace Website.Navigation
                     .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
-                        Name = r.Caption,
+                        Name = r.Caption + " ...",
                         Url = "/content/repository/" + r.GitHubRepositoryName + "/landing"
                     })
                     .ToArray()
@@ -133,20 +133,20 @@ namespace Website.Navigation
             var projectDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "Project source",
-                SubMenu = SiteMap.Instance.Projects
-                    .Where(p => p.DesktopMenu)
-                    .OrderBy(p => p.ProjectName)
-                    .Select(p => new MenuPackage.MenuItem
+                SubMenu = Enumerable.Repeat(new MenuPackage.MenuItem
                     {
-                        Name = p.ProjectCaption,
-                        Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
-                        Target = "_blank"
-                    })
-                    .Concat(Enumerable.Repeat(new MenuPackage.MenuItem
-                    {
-                        Name = "More ...",
+                        Name = "Project List",
                         Url = "/content/index/project"
-                    }, 1))
+                    }, 1)
+                    .Concat(SiteMap.Instance.Projects
+                        .Where(p => p.DesktopMenu)
+                        .OrderBy(p => p.ProjectName)
+                        .Select(p => new MenuPackage.MenuItem
+                        {
+                            Name = p.ProjectCaption + " ...",
+                            Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
+                            Target = "_blank"
+                        }))
                     .ToArray()
             };
 
