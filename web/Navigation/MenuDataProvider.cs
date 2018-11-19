@@ -29,10 +29,6 @@ namespace Website.Navigation
                         new MenuPackage.MenuItem { Name = "Hello world", Url = "/content/general/helloworld" },
                         new MenuPackage.MenuItem { Name = "Sample websites", Url = "/content/general/samplewebsites" },
                         new MenuPackage.MenuItem { Name = "Configuration", Url = "/content/documentation/configuration/overview" },
-                        new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
-                        new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
-                        new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
-                        new MenuPackage.MenuItem { Name = "GitHub repositories", Url="/content/index/repository" },
                     }
             };
 
@@ -53,16 +49,16 @@ namespace Website.Navigation
                 Name = "Documentation",
                 SubMenu = new[]
                     {
-                        new MenuPackage.MenuItem { Name = "The Owin Frameowrk", Url = "https://github.com/Bikeman868/OwinFramework/wiki/OWIN", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "GitHub Wikki", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "The Owin Frameowrk", Url = "/content/documentation/concepts/overview" },
                         new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
                         new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
                         new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
-                        new MenuPackage.MenuItem { Name = "Identification and authorization", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Session handling", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Page rendering", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "REST services", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Configuration", Url = "/content/documentation/configuration/overview" },
+                        new MenuPackage.MenuItem { Name = "GitHub Wikki ...", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Identification and authorization ...", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Session handling ...", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Page rendering ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "REST services ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
                     }
             };
 
@@ -74,10 +70,10 @@ namespace Website.Navigation
                         new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
                         new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
                         new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
-                        new MenuPackage.MenuItem { Name = "Identification and authorization", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Session handling", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Page rendering", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "REST services", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Authorization ...", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Session handling ...", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Page rendering ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "REST services ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
                     }
             };
 

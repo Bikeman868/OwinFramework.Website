@@ -58,8 +58,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Images\Drawings\Layers of OWIN.svg" />
-    <Content Include="Assets\Images\Drawings\Pages rendering model.svg" />
+    <Content Include="Assets\Images\Drawings\Layers_of_OWIN.svg" />
+    <Content Include="Assets\Images\Drawings\OWIN_world_view.svg" />
+    <Content Include="Assets\Images\Drawings\Pages_rendering_model.svg" />
+    <Content Include="Templates\Content\Documentation\Concepts\Overview.html" />
     <None Include="Templates\Content\Documentation\Configuration\Overview.md" />
     <Content Include="Templates\Content\General\SampleWebsites.html" />
     <Content Include="Templates\Content\General\HelloWorld.html" />

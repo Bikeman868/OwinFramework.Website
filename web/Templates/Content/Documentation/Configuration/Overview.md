@@ -8,33 +8,8 @@ The Owin Framework is built on Microsoft OWIN. The way that Microsoft OWIN works
 into a pipeline, then passing each http request through the pipeline until one of the middleware
 chooses to handle the request and return a response.
 
-The Microsoft OWIN assembly contains an `IAppBuilder` interface definition like this:
-
-```
-public interface IAppBuilder
-{
-    IDictionary<string, object> Properties { get; }
-
-    object Build(Type returnType);
-    IAppBuilder New();
-    IAppBuilder Use(object middleware, params object[] args);
-}
-```
-
-The way this is used, is that each middleware author is supposed to write an extension method
-that adds their middleware into the Owin pipeline. A typical extension method looks like this:
-
-```
-public static IAppBuilder Use(
-    this IAppBuilder appBuilder, 
-    MyMiddleware myMiddleware)
-{
-    myMiddleware.Build(appBuilder);
-    return appBuilder;
-}
-```
-
-This allows application developers to add the middleware to their pipeline with code similar to this:
+In the Microsoft world the application developer constructs a pipeline of middleware components
+using code that looks like this:
 
 ```
 public void Configuration(IAppBuilder app)
@@ -46,15 +21,19 @@ public void Configuration(IAppBuilder app)
 }
 ```
 ## Owin Framework
-This Owin Framework provides an extension method that extends `IAppBuilder` as required by the
-Microsoft implementation, but provides a richer fluent syntax for:
+This Owin Framework contains middleware that can be added to the Owin pipeline, 
+and internally implements a richer middleware definition that adds:
 
 * Adding middleware the the pipeline
 * Providing information about how the middleware is configured
 * Defining dependencies between middleware
 * Spliting the OWIN pipeline into a tree of routes rather than a linear list
 
-The application code for setting up the Owin Framework looks like this example:
+For a more complete description of how all of this works, see the 
+[Owin Framework Conceptual Overview](/content/documentation/concepts/overview).
+
+When using the Owin Framework, the application code for setting up the middleware
+pipeline looks like this example:
 
 ```
 public void Configuration(IAppBuilder app)
