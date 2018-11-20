@@ -58,15 +58,32 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\Drawings\Katana_world_view.svg" />
     <Content Include="Assets\Images\Drawings\Layers_of_OWIN.svg" />
+    <Content Include="Assets\Images\Drawings\Owin_framework_world_view.svg" />
     <Content Include="Assets\Images\Drawings\OWIN_world_view.svg" />
     <Content Include="Assets\Images\Drawings\Pages_rendering_model.svg" />
+    <Content Include="Templates\Content\Area\Testing\Landing.html" />
+    <Content Include="Templates\Content\Area\Pages\Landing.html" />
+    <Content Include="Templates\Content\Area\Content\Landing.html" />
+    <Content Include="Templates\Content\Area\Authorization\Landing.html" />
+    <Content Include="Templates\Content\Area\Diagnostics\Landing.html" />
+    <Content Include="Templates\Content\Area\Framework\Landing.html" />
     <Content Include="Templates\Content\Documentation\Concepts\Overview.html" />
     <None Include="Templates\Content\Documentation\Configuration\Overview.md" />
     <Content Include="Templates\Content\General\SampleWebsites.html" />
     <Content Include="Templates\Content\General\HelloWorld.html" />
     <Content Include="Templates\Content\General\Home.html" />
-    <Content Include="Templates\Content\Project\OwinFramework\Overview.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Authorization\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Facilities\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Middleware\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
+    <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
+    <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
+    <Content Include="Templates\Content\Repository\OwinFramework.Middleware\Landing.html" />
+    <Content Include="Templates\Content\Repository\OwinFramework.Pages\Landing.html" />
+    <Content Include="Templates\Content\Repository\OwinFramework\Landing.html" />
     <Content Include="Web.config" />
     <Content Include="Templates\Content\Documentation\Configuration\Urchin.md" />
     <Content Include="Templates\Content\Documentation\Configuration\ConfigurationManager.md" />
@@ -134,10 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Scripts\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Authorization\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Facilities\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Middleware\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Pages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Styles\app.less" />

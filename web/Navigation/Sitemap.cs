@@ -158,7 +158,6 @@ namespace Website.Navigation
             public string ImageUrl { get; set; }
             public string LandingPageTemplate { get; set; }
             public string OverviewTemplate { get; set; }
-            public string IndexTemplate { get; set; }
 
             public Document(string identifier, string title)
             {
@@ -174,7 +173,6 @@ namespace Website.Navigation
             {
                 LandingPageTemplate = templateRoot + Identifier + "/landing";
                 OverviewTemplate = templateRoot + Identifier + "/overview";
-                IndexTemplate = templateRoot + Identifier + "/index";
                 return this;
             }
 

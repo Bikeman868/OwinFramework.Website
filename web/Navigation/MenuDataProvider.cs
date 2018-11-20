@@ -52,13 +52,9 @@ namespace Website.Navigation
                         new MenuPackage.MenuItem { Name = "The Owin Frameowrk", Url = "/content/documentation/concepts/overview" },
                         new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
                         new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
+                        new MenuPackage.MenuItem { Name = "Repositories", Url="/content/index/repository" },
                         new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
                         new MenuPackage.MenuItem { Name = "Configuration", Url = "/content/documentation/configuration/overview" },
-                        new MenuPackage.MenuItem { Name = "GitHub Wikki ...", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Identification and authorization ...", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Session handling ...", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "Page rendering ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
-                        new MenuPackage.MenuItem { Name = "REST services ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
                     }
             };
 
@@ -67,10 +63,20 @@ namespace Website.Navigation
                 Name = "Documentation",
                 SubMenu = new[]
                     {
+                        new MenuPackage.MenuItem { Name = "The Owin Frameowrk", Url = "/content/documentation/concepts/overview" },
                         new MenuPackage.MenuItem { Name = "Functional areas", Url="/content/index/area" },
-                        new MenuPackage.MenuItem { Name = "Projects", Url="/content/index/project" },
                         new MenuPackage.MenuItem { Name = "NuGet packages", Url="/content/index/nuget" },
-                        new MenuPackage.MenuItem { Name = "Authorization ...", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Configuration", Url = "/content/documentation/configuration/overview" },
+                    }
+            };
+
+            var externalMenu = new MenuPackage.MenuItem
+            {
+                Name = "External",
+                SubMenu = new[]
+                    {
+                        new MenuPackage.MenuItem { Name = "GitHub Wikki ...", Url = "https://github.com/Bikeman868/OwinFramework/wiki", Target = "_blank" },
+                        new MenuPackage.MenuItem { Name = "Identification and authorization ...", Url="https://github.com/Bikeman868/OwinFramework.Authorization", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Session handling ...", Url = "https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.Session", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "Page rendering ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Html", Target = "_blank" },
                         new MenuPackage.MenuItem { Name = "REST services ...", Url = "https://github.com/Bikeman868/OwinFramework.Pages/tree/master/OwinFramework.Pages.Restful", Target = "_blank" },
@@ -80,51 +86,39 @@ namespace Website.Navigation
             var nuGetDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = Enumerable.Repeat(new MenuPackage.MenuItem
+                SubMenu = SiteMap.Instance.Projects
+                    .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
+                    .OrderBy(p => p.NugetPackage)
+                    .Select(r => new MenuPackage.MenuItem 
                         {
-                            Name = "NuGet Package List",
-                            Url = "/content/index/nuget"
-                        }, 1)
-                    .Concat(SiteMap.Instance.Projects
-                        .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
-                        .OrderBy(p => p.NugetPackage)
-                        .Select(r => new MenuPackage.MenuItem 
-                            {
-                                Name = r.NugetCaption + " ...", 
-                                Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
-                                Target = "_blank" 
-                            }))
+                            Name = r.NugetCaption,
+                            Url = "/content/project/" + r.ProjectName + "/landing"
+                        })
                     .ToArray()
             };
 
             var nuGetMobileMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = Enumerable.Repeat(new MenuPackage.MenuItem
-                        {
-                            Name = "NuGet Package List",
-                            Url = "/content/index/nuget"
-                        }, 1)
-                    .Concat(SiteMap.Instance.Projects
-                        .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
-                        .OrderBy(p => p.NugetPackage)
-                        .Select(r => new MenuPackage.MenuItem 
-                            {
-                                Name = r.NugetCaption + " ...", 
-                                Url = "https://www.nuget.org/packages/" + r.NugetPackage + "/", 
-                                Target = "_blank" 
-                            }))
+                SubMenu = SiteMap.Instance.Projects
+                    .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
+                    .OrderBy(p => p.NugetPackage)
+                    .Select(r => new MenuPackage.MenuItem
+                    {
+                        Name = r.NugetCaption,
+                        Url = "/content/project/" + r.ProjectName + "/landing"
+                    })
                     .ToArray()
             };
 
             var gitHubMenu = new MenuPackage.MenuItem
             {
-                Name = "GitHub repos",
+                Name = "Repositories",
                 SubMenu = SiteMap.Instance.Repositories
                     .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
-                        Name = r.Caption + " ...",
+                        Name = r.Caption,
                         Url = "/content/repository/" + r.GitHubRepositoryName + "/landing"
                     })
                     .ToArray()
@@ -132,21 +126,15 @@ namespace Website.Navigation
 
             var projectDesktopMenu = new MenuPackage.MenuItem
             {
-                Name = "Project source",
-                SubMenu = Enumerable.Repeat(new MenuPackage.MenuItem
-                    {
-                        Name = "Project List",
-                        Url = "/content/index/project"
-                    }, 1)
-                    .Concat(SiteMap.Instance.Projects
-                        .Where(p => p.DesktopMenu)
-                        .OrderBy(p => p.ProjectName)
-                        .Select(p => new MenuPackage.MenuItem
+                Name = "Projects",
+                SubMenu = SiteMap.Instance.Projects
+                    .Where(p => p.DesktopMenu)
+                    .OrderBy(p => p.ProjectName)
+                    .Select(p => new MenuPackage.MenuItem
                         {
-                            Name = p.ProjectCaption + " ...",
-                            Url = p.Repository.Url + "/tree/master/" + p.ProjectName,
-                            Target = "_blank"
-                        }))
+                            Name = p.ProjectCaption,
+                            Url = "/content/project/" + p.ProjectName + "/landing"
+                        })
                     .ToArray()
             };
 
@@ -157,7 +145,8 @@ namespace Website.Navigation
                 documentationDesktopMenu,
                 nuGetDesktopMenu,
                 gitHubMenu,
-                projectDesktopMenu
+                //projectDesktopMenu,
+                externalMenu
             };
 
             _mobileMenu = new List<MenuPackage.MenuItem>
