@@ -17,16 +17,8 @@ namespace Website.Pages.InterfaceDefinition
     [RegionComponent("body", "content__template")]
     internal class LandingPageLeftColumnLayout : ContentElement { }
     
-    [IsLayout("interfaceLandingPage_RightColumn", "panel1,panel2")]
-    [LayoutRegion("panel1", "layouts:null")]
-    [LayoutRegion("panel2", "layouts:null")]
-    [RegionLayout("panel1", "functional_area__list")]
-    [RegionLayout("panel2", "interface__list")]
-    internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }
-
     [IsLayout("interfaceLanding", "right,left")]
     [RegionLayout("left", "interfaceLandingPage_LeftColumn")]
-    [RegionLayout("right", "interfaceLandingPage_RightColumn")]
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("interfaceLanding")]

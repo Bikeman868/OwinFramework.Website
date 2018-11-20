@@ -17,11 +17,9 @@ namespace Website.Pages.Project
     [RegionComponent("body", "content__template")]
     internal class LandingPageLeftColumnLayout : ContentElement { }
 
-    [IsLayout("projectLandingPage_RightColumn", "panel1,panel2")]
+    [IsLayout("projectLandingPage_RightColumn", "panel1")]
     [LayoutRegion("panel1", "layouts:null")]
-    [LayoutRegion("panel2", "layouts:null")]
-    [RegionLayout("panel1", "functional_area__list")]
-    [RegionLayout("panel2", "project__list")]
+    [RegionLayout("panel1", "interface__list")]
     internal class LandingPageRightColumnLayout : ContentElement { }
 
     [IsLayout("projectLanding", "right,left")]

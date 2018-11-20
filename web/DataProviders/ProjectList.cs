@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using OwinFramework.Pages.Core.Attributes;
 using OwinFramework.Pages.Core.Extensions;
 using OwinFramework.Pages.Core.Interfaces.Builder;
@@ -15,6 +16,14 @@ namespace Website.DataProviders
     public class ProjectList : DataProvider
     {
         private readonly IList<SiteMap.Project> _projects;
+
+        private readonly Regex _repositoryRegex = new Regex(
+            "/content/repository/([^/]*)",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
+
+        private readonly Regex _areaRegex = new Regex(
+            "/content/area/([^/]*)",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
 
         public ProjectList(IDataProviderDependenciesFactory dependencies)
             : base(dependencies)
@@ -32,7 +41,31 @@ namespace Website.DataProviders
 
             if (dependency.DataType == typeof(IList<SiteMap.Project>))
             {
-                dataContext.Set(_projects);
+                var path = renderContext.OwinContext.Request.Path.Value;
+
+                var repositoryMatch = _repositoryRegex.Match(path);
+                var areaMatch = _areaRegex.Match(path);
+
+                if (repositoryMatch.Success)
+                {
+                    var repositoryName = repositoryMatch.Groups[1].Value;
+                    var projects = _projects
+                        .Where(p => string.Equals(p.Repository.GitHubRepositoryName, repositoryName, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    dataContext.Set<IList<SiteMap.Project>>(projects);
+                }
+                else if (areaMatch.Success)
+                {
+                    var areaName = areaMatch.Groups[1].Value;
+                    var projects = _projects
+                        .Where(p => string.Equals(p.FunctionalArea.Identifier, areaName, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                    dataContext.Set<IList<SiteMap.Project>>(projects);
+                }
+                else
+                {
+                    dataContext.Set(_projects);
+                }
                 return;
             }
 

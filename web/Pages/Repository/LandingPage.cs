@@ -17,11 +17,9 @@ namespace Website.Pages.Repository
     [RegionComponent("body", "content__template")]
     internal class LandingPageLeftColumnLayout : ContentElement { }
 
-    [IsLayout("repositoryLandingPage_RightColumn", "panel1,panel2")]
+    [IsLayout("repositoryLandingPage_RightColumn", "panel1")]
     [LayoutRegion("panel1", "layouts:null")]
-    [LayoutRegion("panel2", "layouts:null")]
-    [RegionLayout("panel1", "functional_area__list")]
-    [RegionLayout("panel2", "repository__list")]
+    [RegionLayout("panel1", "project__list")]
     internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("repositoryLanding", "right,left")]
