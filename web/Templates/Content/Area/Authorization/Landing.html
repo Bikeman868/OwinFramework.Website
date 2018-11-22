@@ -1,5 +1,42 @@
-﻿<h2>Authorization</h2>
-<p>
+﻿<p>
     This area of the Owin Framework is concerned with restricting access to your
-    website or web services. The followinf projects
+    website or web services. The way this works is as follows:
 </p>
+<ol type="1">
+    <li>
+        You must add middleware to the Owin pipeline that implements <span class="code">IMiddleware&lt;IIdentity></span>.
+        This middleware will identify the caller and add an instance of <span class="code">IIdentity</span> to the request
+        context. There are a few useful implemntations for this in the Owin Framework or you can write an implementation
+        that is specific to your needs.
+    </li>
+    <li>
+        You must add middleware to the Owin pipeline that implements <span class="code">IMiddleware&lt;IAuthorization></span>.
+        This middleware will use the <span class="code">IIdentity</span> instance in the request context to identify the caller,
+        check this identities permissions and return a 403 response if the user is not permitted. You will most often use the
+        standard Owin Framework implementation, but you can easily write your own as well.
+    </li>
+    <li>
+        You must register an impementation of <span class="code">IIdentityData</span> with the IoC container.
+        This will be used to get the permissions associated with the caller's identity. The Owin Framework contains
+        an implementation of this that uses the Prius ORM to store identity data in a relational database. You can also
+        write your own implementation if you want custom behavior.
+    </li>
+    <li>
+        Middleware that is downstream of Authorization must specify the permission required to execute this request. The
+        Authorization middleware will use this permission to allow or deny the request. Standard Owin Framework middleware
+        such as the Static Files middleware can be configured with a required permission. The Pages middleware allows permissions
+        to be defined on each page and each service endpoint. If you write your own middleware you need to get an instance of
+        <span class="code">IUpstreamAuthorization</span> during the routing phase or request processing and specify the required
+        permission for the request. Your code does not have to do anything other than set the name of the required permission,
+        everything else will be handled by the other components mentioned above.
+    </li>
+    <li>
+        You can optionally include the Owin Framework standard authorization UI middleware. This middleware will display
+        a user interface inside a <span class="code">&lt;div></span> element on a page of your website. This UI allows 
+        authorized users to manage users, groups, roles and permissions.
+</li>
+</ol>
+
+<h2>Further reading</h2>
+
+<p><a href="/Content/project/owinframework.authorization/landing">Standard Owin Framework Authorization middleware</a></p>
