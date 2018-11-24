@@ -25,7 +25,7 @@ namespace Website.Components.InterfaceDefinition
                var interfaceDefinition  = context.Data.Get<SiteMap.InterfaceDefinition>();
                if (interfaceDefinition != null)
                {
-                   context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_project-caption");
+                   context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_interface-name");
                    context.Html.WriteElement("a", interfaceDefinition.Document.Title, "href", interfaceDefinition.Document.LandingPageTemplate);
                    context.Html.WriteCloseTag("li");
                    context.Html.WriteLine();

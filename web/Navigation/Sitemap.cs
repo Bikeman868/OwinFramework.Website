@@ -19,6 +19,7 @@ namespace Website.Navigation
         public Repository[] Repositories { get; private set; }
         public Project[] Projects { get; private set; }
         public RepositoryOwner[] RepositoryOwners { get; private set; }
+        public InterfaceDefinition[] Interfaces { get; private set; }
 
         public class FunctionalArea
         {
@@ -136,18 +137,36 @@ namespace Website.Navigation
 
         public class InterfaceDefinition
         {
+            public string Name { get; private set; }
+            public string NamespaceName { get; private set; }
+            public string FullyQualifiedName { get; private set; }
+            public string SourceUrl { get; private set; }
             public Document Document { get; private set; }
             public Project Project { get; private set; }
 
             public InterfaceDefinition(string typeName, string projectName)
             {
-                Document = new Document(typeName.ToLower(), typeName + " Interface")
+                FullyQualifiedName = typeName;
+
+                var lastPeriod = typeName.LastIndexOf('.');
+                Name = typeName.Substring(lastPeriod + 1);
+                NamespaceName = typeName.Substring(0, lastPeriod);
+
+                Document = new Document(typeName.ToLower(), Name)
                     .SetPages("/content/interface/")
                     .SetImage("/assets/images/interface/", ".png");
                 Project = Instance.Projects.First(p => p.ProjectName == projectName);
             }
-            public void Initialize()
-            { }
+
+            public InterfaceDefinition Initialize()
+            {
+                SourceUrl = 
+                    "https://raw.githubusercontent.com/" + 
+                    Project.Repository.Owner.GitHubAccountName + "/" +
+                    Project.ProjectName + "/master/" +
+                    FullyQualifiedName.Replace('.', '/') + ".cs";
+                return this;
+            }
         }
 
        public class Document
@@ -172,7 +191,7 @@ namespace Website.Navigation
             public Document SetPages(string templateRoot)
             {
                 LandingPageTemplate = templateRoot + Identifier + "/landing";
-                OverviewTemplate = templateRoot + Identifier + "/overview";
+                OverviewTemplate = templateRoot + Identifier + "/readme";
                 return this;
             }
 
@@ -238,7 +257,7 @@ namespace Website.Navigation
                 new Project("OwinFramework.Authorization", "OwinFramework.Authorization", "authorization", "Allows other middleware to define required roles and permissions. Uses a system of identities, groups, roles and permissions stored in a database. Supports wildcard matching of resource specific permissions. Implements IAuthorization and depends on IIdentification middleware").Menus(true, true),
                 new Project("OwinFramework.Authorization.Core", "OwinFramework.Authorization", "authorization", "This very small package is required by the other packages that relate to authorization").Menus(false, false),
                 new Project("OwinFramework.Authorization.Prius", "OwinFramework.Authorization", "authorization", "Stores Authorization information relating to groups, roles and permissions in a relational database using the Prius ORM").Menus(true, false),
-                new Project("OwinFramework.Authorization.UI", "OwinFramework.Authorization", "authorization", "A user interface for managing identities, groups, roles and permissions. Uses built-in CSS or you can provide a custom one. Renders the UI into a <div> element on your page").Menus(true, false),
+                new Project("OwinFramework.Authorization.UI", "OwinFramework.Authorization", "authorization", "A user interface for managing identities, groups, roles and permissions. Uses built-in CSS or you can provide a custom one. Renders the UI into a &lt;div> element on your page").Menus(true, false),
 
                 new Project("OwinFramework.Pages.Core", "OwinFramework.Pages", "pages", "Contract definitions for the packages that render Html. Required dependency for other packages in the Pages framework").Menus(false, false),
                 new Project("OwinFramework.Pages.DebugMiddleware", "OwinFramework.Pages", "diagnostics", "Allows you to add ?debug=xxx to your website page URLs to see diagnostic information about page construction and data binding").Menus(false, false),
@@ -248,10 +267,37 @@ namespace Website.Navigation
                 new Project("OwinFramework.Pages.Restful", "OwinFramework.Pages", "pages", "Allows you to add REST endpoints to a website using classes and methods decorated with attributes").Menus(true, true),
             };
 
+            Interfaces = new[]
+            {
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Capability.IAnalysable", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Capability.IConfigurable", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Capability.ISelfDocumenting", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Capability.ITraceable", "OwinFramework"),
+
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.ICache", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.ICertificateStore", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.ICredentialStore", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.IIdentityDirectory", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.IMimeTypeEvaluator", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.IPasswordHasher", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.ISharedSecretStore", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.ISocialIdentityStore", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Facilities.ITokenStore", "OwinFramework"),
+
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Middleware.IAuthorization", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Middleware.IIdentification", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Middleware.IOutputCache", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Middleware.IRequestRewriter", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Middleware.IResponseProducer", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Middleware.IResponseRewriter", "OwinFramework"),
+                new InterfaceDefinition("OwinFramework.InterfacesV1.Middleware.ISession", "OwinFramework"),
+            };
+
             for (var i = 0; i < FunctionalAreas.Length; i++) FunctionalAreas[i].Initialize();
             for (var i = 0; i < Repositories.Length; i++) Repositories[i].Initialize();
             for (var i = 0; i < Projects.Length; i++) Projects[i].Initialize();
             for (var i = 0; i < RepositoryOwners.Length; i++) RepositoryOwners[i].Initialize();
+            for (var i = 0; i < Interfaces.Length; i++) Interfaces[i].Initialize();
 
             return this;
         }

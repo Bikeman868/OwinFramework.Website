@@ -1,1 +1,39 @@
-﻿<h2>The Authorization Project</h2>
+﻿<p>
+    The <a href="/content/repository/OwinFramework.Authorization/readme">authorization repository readme</a> 
+    file contains documentation on the key concepts around authorization in the Owin Framework. It is strongly 
+    recommended that you read it before using this assembly.
+</p>
+
+<div class="app_warning">
+    This package checks that the identity making the request has the required permissions. You must add 
+    middleware to the pipeline that implements <span class="code">IMiddleware&lt;IIdentification></span>
+    for this to work.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "authorization": {
+               "documentationRootUrl": "/owin/authorization/config"
+         }
+      }
+   }
+}</pre>
+
+<div class="app_hint">
+    There are not many configuration options on this package beacuse all that it does
+    is enforce permissions provided by other middleware downstream using an implementation
+    of <span class="code">IIdentityData</span> injected by IoC.
+</div>
+
+<h2>Related Projects</h2>
+<ul>
+    <li><a href="/content/project/owinframework.authorization.core/landing">Authorozation core</a></li>
+    <li><a href="/content/project/owinframework.authorization.prius/landing">Prius ORM persistence for authorization</a></li>
+    <li><a href="/content/project/owinframework.authorization.ui/landing">A user interface for managing permissions</a></li>
+</ul>

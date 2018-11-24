@@ -74,10 +74,8 @@
     <Content Include="Templates\Content\General\SampleWebsites.html" />
     <Content Include="Templates\Content\General\HelloWorld.html" />
     <Content Include="Templates\Content\General\Home.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.AnalysisReporter\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Authorization\Landing.html" />
-    <Content Include="Templates\Content\Project\OwinFramework.Facilities\Landing.html" />
-    <Content Include="Templates\Content\Project\OwinFramework.Middleware\Landing.html" />
-    <Content Include="Templates\Content\Project\OwinFramework.Pages\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
@@ -108,7 +106,9 @@
     <Compile Include="Content\Regions\ContentRegion.cs" />
     <Compile Include="Content\Regions\Lists\InterfaceList.cs" />
     <Compile Include="Content\Regions\Lists\RepositoryList.cs" />
+    <Compile Include="DataProviders\InterfaceDefinition.cs" />
     <Compile Include="DataProviders\InterfaceList.cs" />
+    <Compile Include="DataProviders\InterfaceDocument.cs" />
     <Compile Include="DataProviders\RepositoryList.cs" />
     <Compile Include="DataProviders\Repository.cs" />
     <Compile Include="DataProviders\VerticalTextInfo.cs" />
@@ -150,7 +150,40 @@
     <Content Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\Images\Area\" />
+    <Folder Include="Assets\Images\Interface\" />
+    <Folder Include="Assets\Images\Project\" />
+    <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
+    <Folder Include="Templates\Content\Interface\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Authorization.Core\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Authorization.Prius\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Authorization.UI\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Configuration.ConfigurationManager\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Configuration.Urchin\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Dart\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.DefaultDocument\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Documenter\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.ExceptionReporter\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.Cache.Local\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.IdentityStore.Prius\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Cache\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Prius\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.FormIdentification\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Less\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Mocks\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.NotFound\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.OutputCache\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Core\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages.DebugMiddleware\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Framework\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Html\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Mocks\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Restful\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.RouteVisualizer\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Session\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.StaticFiles\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Versioning\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Styles\app.less" />

@@ -1,0 +1,33 @@
+﻿<p>
+    To make this middleware really useful you should implement the <span class="code">IAnalysable</span>
+    interface in any middleware that you write. The standard Owin Framework middleware implements
+    this interface where appropriate, so there is value in
+</p>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "analysisReporter": {
+               "path": "/owin/analytics",
+               "enabled": true,
+               "requiredPermission": null,
+               "defaultFormat ": "application/json"
+         }
+      }
+   }
+}</pre>
+
+<div class="app_hint">
+    The default format applies when there is no <span class="code">Accept</span>
+    header in the request.
+</div>
+<div class="app_hint">
+    In your production environment you should either disable this middleware
+    or configure the <span class="code">requiredPermission</span> and include
+    identification and authorization middleware into your pipeline.
+</div>
