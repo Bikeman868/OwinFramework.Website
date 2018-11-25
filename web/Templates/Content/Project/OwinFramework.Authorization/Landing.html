@@ -10,6 +10,18 @@
     for this to work.
 </div>
 
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.Authorization.AuthorizationMiddleware>())
+    .As("Authorization")
+    .ConfigureWith(config, "/owinFramework/middleware/authorization");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
 <h2>Default Configuration</h2>
 <p>
     The configuration below is the configuration you will get by default if you do not provide
@@ -19,7 +31,7 @@
    "owinFramework": {
       "middleware": {
          "authorization": {
-               "documentationRootUrl": "/owin/authorization/config"
+            "documentationRootUrl": "/owin/authorization/config"
          }
       }
    }
@@ -33,7 +45,8 @@
 
 <h2>Related Projects</h2>
 <ul>
-    <li><a href="/content/project/owinframework.authorization.core/landing">Authorozation core</a></li>
+    <li><a href="/content/project/owinframework.authorization.core/landing">Authorization core</a></li>
     <li><a href="/content/project/owinframework.authorization.prius/landing">Prius ORM persistence for authorization</a></li>
     <li><a href="/content/project/owinframework.authorization.ui/landing">A user interface for managing permissions</a></li>
+    <li><a href="/content/project/owinframework.formidentification/landing">Middleware to process postback events from forms based identification</a></li>
 </ul>

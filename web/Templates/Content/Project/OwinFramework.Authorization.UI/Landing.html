@@ -1,0 +1,97 @@
+﻿<p>
+    The <a href="/content/repository/OwinFramework.Authorization/readme">authorization repository readme</a> 
+    file contains documentation on the key concepts around authorization in the Owin Framework. It is strongly 
+    recommended that you read it before using this assembly.
+</p>
+
+<p>
+    To make this UI appear inside a page on your website you need to add a 
+    this <span class="code">&lt;div id="auth-ui">&lt;/div></span> to your page. You also need to
+    add a reference to the compiled JavaScript. Optionally you can add a reference to the
+    bundled CSS or you can provide your own.
+</p>
+<p>
+    With the default configuration, the asset references in the head of your html page
+    should look like this:
+</p>
+<pre>
+    &lt;link rel="stylesheet" href="/ui/authorization/styles.css">
+    &lt;script async="" src="/ui/authorization/main.dart.js">&lt;/script>
+</pre>
+
+<div class="app_hint">
+    This user interface is written in Dart, but the compiled JavaScript is embedded into
+    the assembly, so you only need to deploy the assembly for the UI to fully function.
+</div>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+builder.Register(ninject.Get&lt;OwinFramework.Authorization.UI.AuthorizationUiMiddleware>())
+    .As("Authorization UI")
+    .ConfigureWith(config, "/owinFramework/middleware/authorizationUi");    
+
+builder.Register(ninject.Get&lt;OwinFramework.Authorization.UI.AuthorizationApiMiddleware>())
+    .As("Authorization UI API")
+    .ConfigureWith(config, "/owinFramework/middleware/authorizationUi");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "authorizationUi": {
+            "documentationRootUrl": "/owin/authorizationUi/config",
+            "apiRootUrl": "api/authorization",
+            "uiRootUrl": "ui/authorization",
+            "assetsPath": "assets",
+            "permissionToCallApi": "auth:api",
+            "permissionToViewIdentities": "auth:identity.view",
+            "permissionToEditPermissions": "auth:permission.edit",
+            "permissionToEditRoles": "auth:role.edit",
+            "permissionToEditGroups": "auth:group.edit",
+            "permissionToAssignPermissionToRole": "auth:permission.assign",
+            "permissionToAssignRoleToGroup": "auth:role.assign",
+            "permissionToAssignUserToGroup": "auth:group.assign",
+            "identityDisplayNameClaims": "username,email"
+         }
+      }
+   }
+}</pre>
+
+<div class="app_warning">
+    Note that this package contains two middleware components, one serves the
+    user interface and the other handles Ajax calls from the front end. Both
+    middleware components need to be added to the pipeline for the UI to function.
+</div>
+
+<h2>Configuration notes</h2>
+<ul>
+    <li>
+        You can add permissions to your database with any naming convention you like,
+        you just need to ensure that the code names of the permissions that you configure
+        match the code names in your authorization database.
+    </li>
+    <li>
+        When searching for identities this UI will display selected claims for each
+        matching identity. Since the claim names are different in every system, you can
+        configure a list of claim names to display. For example if your system stores
+        surname claims then you can add surname to the <span class="code">identityDisplayNameClaims</span>
+        list to have this displayed in the UI.
+    </li>
+</ul>
+
+<h2>Related Projects</h2>
+<ul>
+    <li><a href="/content/project/owinframework.authorization.core/landing">Authorization core</a></li>
+    <li><a href="/content/project/owinframework.authorization.prius/landing">Prius ORM persistence for authorization</a></li>
+    <li><a href="/content/project/owinframework.authorization/landing">Authorization middleware</a></li>
+</ul>

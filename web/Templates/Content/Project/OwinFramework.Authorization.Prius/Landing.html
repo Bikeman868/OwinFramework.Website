@@ -1,0 +1,69 @@
+﻿<p>
+    The <a href="/content/repository/OwinFramework.Authorization/readme">authorization repository readme</a> 
+    file contains documentation on the key concepts around authorization in the Owin Framework. It is strongly 
+    recommended that you read it before using this assembly.
+</p>
+
+<p>
+    This package provides an implementation of the <span class="code">IAuthorizationData</span> interface.
+    To make this implementation available to other packages that need this interface you just need to add
+    the NuGet package to the project - that's it, there is nothing else to do.
+</p>
+
+<div class="app_warning">
+    This package persists authorization data using the Prius ORM. You will need to create a database
+    and configure Prius within your application for this to work. The source code for this project
+    includes an SQL folder containing the SQL scrips you need to create the database.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this package.
+</p>
+<pre>{
+   "owinFramework": {
+      "authorization": {
+         "data": {
+            "priusMasterRepository": "Authorization",
+            "priusReadonlyReplicaRepository": "Authorization",
+            "defaultGroup": "sys.users",
+            "administratorGroup": "sys.admins",
+            "anonymousGroup": "",
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration notes</h2>
+<ul>
+    <li>
+        The <span class="code">priusMasterRepository</span> is the name of a repository configured within Prius. This repository
+        will be used for all queries that modify data.
+    </li>
+    <li>
+        The <span class="code">priusReadonlyReplicaRepository</span> is the name of a repository configured within Prius. This repository
+        will be used for all queries that do not modify data.
+    </li>
+    <li>
+        The <span class="code">defaultGroup</span> is the code name of an authorization group whose permissions
+        should be assigned to any user that is identified but was not specifically assigned to any group. This
+        is typically for public users who have created an account on your website.
+    </li>
+    <li>
+        The <span class="code">administratorGroup</span> is the code name of an authorization group whose
+        users can do anything in the system. All permission checking is bypassed for these users.
+    </li>
+    <li>
+        The <span class="code">anonymousGroup</span> is the code name of an authorization group whose
+        permissions apply to users that were not identified. This is typically users who have not
+        logged into your website.
+    </li>
+</ul>
+
+<h2>Related Projects</h2>
+<ul>
+    <li><a href="/content/project/owinframework.authorization.core/landing">Authorization core</a></li>
+    <li><a href="/content/project/owinframework.authorization/landing">Authorization middleware</a></li>
+    <li><a href="/content/project/owinframework.authorization.ui/landing">A user interface for managing permissions</a></li>
+</ul>

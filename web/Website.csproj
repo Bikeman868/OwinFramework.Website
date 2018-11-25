@@ -75,7 +75,13 @@
     <Content Include="Templates\Content\General\HelloWorld.html" />
     <Content Include="Templates\Content\General\Home.html" />
     <Content Include="Templates\Content\Project\OwinFramework.AnalysisReporter\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Authorization.Core\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Authorization.Prius\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Authorization.UI\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Authorization\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Configuration.ConfigurationManager\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Configuration.Urchin\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Dart\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
@@ -156,12 +162,6 @@
     <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Templates\Content\Interface\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Authorization.Core\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Authorization.Prius\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Authorization.UI\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Configuration.ConfigurationManager\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Configuration.Urchin\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Dart\" />
     <Folder Include="Templates\Content\Project\OwinFramework.DefaultDocument\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Documenter\" />
     <Folder Include="Templates\Content\Project\OwinFramework.ExceptionReporter\" />

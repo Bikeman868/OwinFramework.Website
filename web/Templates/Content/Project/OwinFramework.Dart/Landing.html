@@ -1,0 +1,44 @@
+﻿<p>
+    This middleware will serve a UI written in Dart. Dart is a Google language that
+    compiles to JavaScript for older browsers that can not run Dart code natively. 
+    This middleware detects browsers that support Dart natively and serves Dart code 
+    to them and compiled JavaScript otherwise.
+</p>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+builder.Register(ninject.Get&lt;OwinFramework.Dart.DartMiddleware>())
+    .As("Dart")
+    .ConfigureWith(config, "/owinFramework/middleware/dart");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the 
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "dart": {
+            "documentationRootUrl": "/config/dart",
+            "uiRootUrl": "/ui",
+            "dartUiRootUrl": "/ui/web",
+            "compiledUiRootUrl": "/ui/build/web",
+            "defaultDocument": "index.html",
+            "analyticsEnabled": true
+         }
+      }
+   }
+}</pre>
+
+<div class="app_hint">
+    Note that when you compile your Dart application with the pub tool it will copy
+    the compiled version of your Dart code to <span class="code">\ui\build\web</span> so everything will work
+    right out of the box.
+</div>
