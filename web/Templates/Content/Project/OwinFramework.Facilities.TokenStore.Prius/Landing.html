@@ -1,0 +1,64 @@
+﻿<p>
+    This package provides an implementation of the <span class="code">ITokenStore</span> interface
+    using the Prius ORM to store tokens in a relational database.
+</p>
+
+<div class="app_hint">
+    To make this implementation available to other packages that need this interface you just need to add
+    the NuGet package to the project - that's it, there is nothing else to do.
+</div>
+
+<h2>Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this package.
+</p>
+<pre>{
+   "owinFramework": {
+      "facility": {
+         "tokenStore.prius": {
+            "tokenTypes": null
+         }
+      }
+   }
+}</pre>
+
+<p>
+    To make this token store useful you need to define some token types with the rules
+    to apply to each type of token. Below is an example configuration that demonstrates
+    the layout of the configuration data.
+</p>
+
+<pre>{
+   "owinFramework": {
+      "facility": {
+         "tokenStore.prius": {
+            "tokenTypes": [
+               { 
+                  "name": "PasswordReset", 
+                  "rules": [
+                     "type": "Expiry", "config": "{ \"expiryTime\": 7 }",
+                     "type": "UseCount", "config": "{ \"maxUseCount\": 1 }"
+                  ]
+               }
+            ]
+         }
+      }
+   }
+}</pre>
+
+<h2>Token rules</h2>
+<p>
+    All token types implement the rules in addition to any rules defined in the configuration:
+</p>
+<ul>
+    <li>Only tokens that have been created are valid. Checking a random token string will always result in a 'not valid' response.</li>
+    <li>Tokens are no longer valid after they have expired.</li>
+    <li>Tokens are only valid for the purpose, identity and token type they were created with.</li>
+    <li>If a token is created with no purpose then it is valid for any purpose.</li>
+    <li>If a token is created with no identity than it is valid for all identities.</li>
+    <li>It is not valid to create a token with a token type that is not configured.</li>
+    <li>The token itself and the token identity are case sensitive.</li>
+    <li>The token type and purpose are case insentitive.</li>
+    <li>When tokens are deleted they are deleted from the database and immediately become invalid.</li>
+</ul>

@@ -85,6 +85,11 @@
     <Content Include="Templates\Content\Project\OwinFramework.DefaultDocument\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Documenter\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.ExceptionReporter\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Facilities.Cache.Local\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Facilities.IdentityStore.Prius\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Cache\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Prius\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.FormIdentification\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
@@ -165,11 +170,6 @@
     <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Templates\Content\Interface\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.Cache.Local\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.IdentityStore.Prius\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Cache\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Prius\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.FormIdentification\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Less\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Mocks\" />
     <Folder Include="Templates\Content\Project\OwinFramework.NotFound\" />

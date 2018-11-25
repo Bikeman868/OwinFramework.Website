@@ -1,0 +1,47 @@
+﻿<p>
+    This package provides an implementation of the <span class="code">ITokenStore</span> interface
+    using whatever implementation of <span class="code">ICache</span> is configured in your application.
+</p>
+
+<div class="app_hint">
+    To make this implementation available to other packages that need this interface you just need to add
+    the NuGet package to the project - that's it, there is nothing else to do.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this package.
+</p>
+<pre>{
+   "owinFramework": {
+      "facility": {
+         "tokenStore.Cache": {
+            "lifetime": "01:00:00",
+            "cachePrefix": "/tokens/"
+         }
+      }
+   }
+}</pre>
+
+<div class="app_hint">
+    The "cachePrefix" value is passed to the <span class="code">ICache</span> interface where it
+    can be used to configure the caching behaviour.
+</div>
+
+<h2>Token rules</h2>
+<p>
+    This package implements the following token rules:
+</p>
+<ul>
+    <li>Only tokens that have been created are valid. Checking a random token string will always result in a 'not valid' response.</li>
+    <li>Tokens are no longer valid after they have expired.</li>
+    <li>Tokens are only valid for the purpose, identity and token type they were created with.</li>
+    <li>If a token is created with no purpose then it is valid for any purpose.</li>
+    <li>If a token is created with no identity than it is valid for all identities.</li>
+    <li>It is not valid to create a token with no token type.</li>
+    <li>All token types are treated identically.</li>
+    <li>The token itself is case sensitive.</li>
+    <li>The token type, purpose and identity are case insentitive.</li>
+    <li>When tokens are deleted they are deleted from the cache and immediately become invalid.</li>
+</ul>
