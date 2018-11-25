@@ -82,6 +82,9 @@
     <Content Include="Templates\Content\Project\OwinFramework.Configuration.ConfigurationManager\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Configuration.Urchin\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Dart\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.DefaultDocument\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Documenter\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.ExceptionReporter\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
@@ -162,9 +165,6 @@
     <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Templates\Content\Interface\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.DefaultDocument\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Documenter\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.ExceptionReporter\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Facilities.Cache.Local\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Facilities.IdentityStore.Prius\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Cache\" />

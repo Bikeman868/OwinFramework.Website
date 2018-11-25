@@ -1,0 +1,79 @@
+﻿<p>
+    This middleware adds the following behaviour to your website:
+</p>
+<ul>
+    <li>Wraps the downstream OWIN pipeline in a try/catch block.</li>
+    <li>
+        When exceptions are caught, if they are of type HttpException then
+        the Http status code and message from the exception are send back to 
+        the client as a valid http response.
+    </li>
+    <li>
+        For other kinds of execptions the middleware returns either a public 
+        apology page or detailed technical information. The public apology 
+        page is templated and the default template allows a message to be
+        inserted. For many applications you will want to change the template 
+        to match the design of the rest of your site.
+    </li>
+    <li>
+        Optionally sends email with detailed technical information about
+        the exception that occured.
+    </li>
+</ul>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+builder.Register(ninject.Get&lt;OwinFramework.ExceptionReporter.ExceptionReporterMiddleware>())
+    .As("Exception reporter")
+    .ConfigureWith(config, "/owinFramework/middleware/exceptions");
+</pre>
+
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the 
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "exceptions": {
+            "message": null,
+            "template": null,
+            "requiredPermission": null,
+            "localHost": true,
+            "emailAddress": null,
+            "emailSubject": "Unhandled exception in web site"
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration Notes</h2>
+<ul>
+    <li>
+        To send emails when unhandled exceptions are caught, configure a valid
+        email address and configure the standard .Net email sender with SMTP details.
+    </li>
+    <li>
+        When "localHost" is set to "true", requests originating from the web server
+        machine always result in detailed technical information.
+    </li>
+    <li>
+        To return detailed technical information only to centain users, install
+        Identification and Authorization middleware then configure the "requiredPermission"
+        to the code name of a permission that you configured in authorization.
+    </li>
+    <li>
+        To define the public apology message set the "message" property to a string.
+    </li>
+    <li>
+        To completely replace the public message with a page of your own design set the
+        "template" property to the path of your template file.
+    </li>
+</ul>

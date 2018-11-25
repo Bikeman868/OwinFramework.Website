@@ -1,0 +1,54 @@
+﻿<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+builder.Register(ninject.Get&lt;OwinFramework.Documenter.DocumenterMiddleware>())
+    .As("Documenter")
+    .ConfigureWith(config, "/owinFramework/middleware/documenter");
+</pre>
+
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the 
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "documenter": {
+            "path": "/owin/endpoints",
+            "enabled": true,
+            "requiredPermission": null,
+            "localFilePath ": ""
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration Notes</h2>
+<ul>
+    <li>
+        The "path" configuration specifies the relative URL within your web site
+        where the documentation will be available at run-time. If you are using 
+        routes in your Owin pipeline then you must make sure that the documenter 
+        middleware is on a route where it will receive requests for this URL.
+    </li>
+    <li>
+        In a publically accessible website you probably do not want to expose
+        documentation for all of the endpoints unless this is a public API and
+        you actually want to supply end users with documentation. To disable in
+        production either set the "enabled" property to false, or configure
+        Identification and Authorization middleware then set the "requiredPermission"
+        to the name of a permission that users must have to see the documentation.
+    </li>
+    <li>
+        The "localFilePath" specifies a location on the file system where you
+        placed an alternate set of templates. If you do not provide any templates
+        then the built-in ones will be used by default. The built-in templates are
+        embedded into the assembly so their are no additional files to deploy.
+    </li>
+</ul>
