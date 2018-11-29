@@ -90,6 +90,10 @@
     <Content Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Cache\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Facilities.TokenStore.Prius\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.FormIdentification\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Less\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Mocks\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.NotFound\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.OutputCache\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
@@ -170,10 +174,6 @@
     <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Templates\Content\Interface\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Less\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Mocks\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.NotFound\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.OutputCache\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Pages.Core\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Pages.DebugMiddleware\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Pages.Framework\" />

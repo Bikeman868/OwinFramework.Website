@@ -1,0 +1,66 @@
+﻿<p>
+    This middleware will handle requests for .css files. If there is a physical file with a
+    .css extension then it will serve this file. If there is no .css file on disk but there
+    is a .less file with the same name, then it will use dotless to compile the less file
+    into css and send this as the response.
+</p>
+
+<div class="app_warning">
+    For this to work efficiently you should configure output caching. Without output caching 
+    the .less file will be compiled on every request.
+</div>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.Less.LessMiddleware>())
+    .As("Less")
+    .ConfigureWith(config, "/owinFramework/middleware/less");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "less": {
+            "documentationRootUrl": "/owin/less/config",
+            "rootUrl": "/styles",
+            "rootDirectory": "~\\styles",
+            "enabled": true,
+            "analyticsEnabled": true,
+            "minify": false,
+            "traceLog": false
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration notes</h2>
+<ul>
+    <li>
+        You can set the <span class="code">documentationRootUrl</span> to null or
+        empty to disable this documentation in your production environment.
+    </li>
+    <li>
+        In your production environment you probably want to turn off analytics and
+        turn on minification.
+    </li>
+    <li>
+        If your .less file is invalid then a blank css response will not be served. In this
+        situation you can turn on the trace logging and also turn on tracing in the
+        Owin Framework to see the error that is preventing your .less code from compiling.
+    </li>
+</ul>
+
+<h2>Related Projects</h2>
+<ul>
+    <li><a href="/content/project/owinframework.outputcache/landing">Output cache</a></li>
+</ul>

@@ -1,0 +1,113 @@
+﻿<p>
+    This middleware will improve the performance of your web site by
+    capturing the output from downstream middleware and saving it in
+    the <span class="code">ICache</span> facility, then using the cached 
+    response when another identical request is received.
+</p>
+<p>
+    The output is only cached when dwnstream middleware indicates that it is valid
+    to cache the response. Other Middleware (like the static file middleware)
+    will communicate with the output cache when installed to tell it when the
+    response can be cached.
+</p>
+<p>
+    Downstream middleware can set a category and a priority in the output cache for
+    each request. The output cache can be configured with different cache behavours 
+    for all combinations of these two values.
+</p>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.OutputCache.OutputCacheMiddleware>())
+    .As("Output cache")
+    .ConfigureWith(config, "/owinFramework/middleware/outputCache");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "outputCache": {
+            "documentationRootUrl": "/outputCache",
+            "rules": null
+         }
+      }
+   }
+}</pre>
+
+<div class="app_warning">
+    Note that this default configuration means that nothing will be cached. In order to
+    have some output cached you need to add some rules.
+</div>
+
+<h2>Cache rules</h2>
+<p>
+    The output cache middleware must have rules defined before it will cache anything. The
+    rules define what kind of caching to apply to each type of content that can be requested
+    from your website.
+</p>
+<p>
+    When downstream middleware indicates that caching is possible on the content that
+    it is producing, it passes back a "Category" and "Priority" to the output cache. In
+    the output cache rules you can match on one, both or neither of these and define the
+    caching behavior.
+</p>
+<p>
+    Below is an example configuration that provides some caching:
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "outputCache": {
+            "documentationRootUrl": "/outputCache",
+            "rules": [
+                {
+                    "category": "UserProfile",
+                    "priority": "High",
+                    "cacheCategory": "Shared",
+                    "serverCacheTime": "00:30:00",
+                    "browserCacheTime": "00:10:00"
+                },
+                {
+                    "category": "Product",
+                    "priority": "Always",
+                    "cacheCategory": "Local",
+                    "serverCacheTime": "01:00:00",
+                    "browserCacheTime": "00:30:00"
+                },
+                {
+                    "category": "Product",
+                    "priority": "Medium",
+                    "cacheCategory": "Local",
+                    "serverCacheTime": "00:10:00",
+                    "browserCacheTime": "2"
+                }
+            ]
+         }
+      }
+   }
+}</pre>
+
+<div class="app_hint">
+    Note that the <span class="code">category</span> and <span class="code">priority</span> are used
+    to figure out which rule to apply, then the <span class="code">cacheCategory</span> is passed to
+    the <span class="code">ICache</span> implementation.
+</div>
+<div class="app_hint">
+    Note that the <span class="code">serverCacheTime</span> can be zero to disable server side caching,
+    and <span class="code">browserCacheTime</span> can be set to zero to disable caching in the browser.
+</div>
+<div class="app_warning">
+    If you are configuring the <span class="code">browserCacheTime</span> to a large value you should
+    include some kind of cache buster in your URL or you will have no way to force the browser to
+    retrieve a new version of the content after a production deployment.
+</div>

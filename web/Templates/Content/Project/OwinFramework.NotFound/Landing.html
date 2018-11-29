@@ -1,0 +1,60 @@
+﻿<p>
+    This middleware will return a 404 response always. It will place itself after all other
+    middleware in the pipeline so that when no other middleware handled the request a 404 
+    response will be returned to the client.
+</p>
+<p>
+    If you want this behaviour only on certain routes through the OWIN pipeline then you can configure
+    this middleware only on those routes. You can also add multiple instances of this middleware to
+    the OWIN pipeline to have different 404 templates for different routes. For example if you have 
+    an API that returns JSON, you might want the API to also return JSON in the 404 case.
+</p>
+
+<div class="app_warning">
+    For this to work efficiently you should configure output caching. Without output caching 
+    the .less file will be compiled on every request.
+</div>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.NotFound.NotFoundMiddleware>())
+    .As("Not found")
+    .ConfigureWith(config, "/owinFramework/middleware/notfound");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "notfound": {
+            "documentationRootUrl": "/owin/notFound/config",
+            "template": ""
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration notes</h2>
+<ul>
+    <li>
+        You can set the <span class="code">documentationRootUrl</span> to null or
+        empty to disable this documentation in your production environment.
+    </li>
+    <li>
+        The <span class="code">template</span> setting should be the path to an
+        html file that is to be sent as the response. If you do not provide a
+        template then the template embedded into the Not Found middleware assembly
+        will be used. The setting you configure is passed to the
+        <span class="code">MapPath()</span> method so you can include 
+        <span class="code">~</span> meaning the root folder of the website.
+    </li>
+</ul>
