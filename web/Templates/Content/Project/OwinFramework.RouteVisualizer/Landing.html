@@ -1,0 +1,47 @@
+﻿<p>
+    This middleware will produce an SVG drawing of the Owin Pipeline. The drawing
+    shows all of the routes and middleware that runs on each route. If middleware
+    exposes analytics then these are also shown on the drawing.
+</p>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.RouteVisualizer.RouteVisualizerMiddleware>())
+    .As("Route visualizer")
+    .ConfigureWith(config, "/owinFramework/middleware/routeVisualizer");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "routeVisualizer": {
+            "documentationRootUrl": "/owin/visualization/docs/configuration",
+            "path": "/owin/visualization",
+            "enabled": true,
+            "analyticsEnabled": false
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration notes</h2>
+<ul>
+    <li>
+        You can set the <span class="code">documentationRootUrl</span> to null or
+        empty to disable this documentation in your production environment.
+    </li>
+    <li>
+        In your production environment you probably want to turn off the route visualizer
+        or place it on a route where authorization is required.
+    </li>
+</ul>

@@ -1,0 +1,20 @@
+﻿<h2>Service Endpoint Body Deserialization</h2>
+<p>
+    Services and service endpoints can specify the request deserializer
+    to use when the service endpoint accesses the body of the request.
+    Note that if the body is not read by the application code then the
+    deserializer is not called.
+</p>
+<p>
+    The setting on the service is the default for all endpoints that
+    do not specify a deserializer. If the service does not specify a 
+    deserializer then Json is the default.
+</p>
+<p>
+    The deserializer is specified as a class type to use. This class type
+    must implement the <span class="code">IRequestDeserializer</span> interface.
+</p>
+<p>
+    If the service endpoint method reads the body of the request multiple
+    times then the body of the request will only be deserialized once.
+</p>

@@ -1,0 +1,61 @@
+﻿<p>
+    This middleware provides session for your website or webservice using
+    the <span class="code">ICache</span> interface implementation registered 
+    with IoC.
+</p>
+
+<p>
+    Session is a dictionary of name/value pairs that is unique to each visitor
+    to the website. The user is identified by storing a cookie on thier browser.
+</p>
+<p>
+    You typically want to provide an <span class="code">ICache</span> implementation
+    that provides a consistent view across servers so that you do not need sticky
+    sessions, but you can also use an in-memory cache and sticky sessions if you want.
+</p>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.Session.CacheSessionMiddleware>())
+    .As("Session")
+    .ConfigureWith(config, "/owinFramework/middleware/session");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "session": {
+            "cacheCategory": "session",
+            "sessionDuration": "00:20:00",
+            "cookieName": "owin-framework-sid",
+            "cookieDomainName": ""
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration notes</h2>
+<ul>
+    <li>
+        The cache category is passed to the <span class="code">ICache</span> interface
+        so that it can implement business logic that is specific to session storage.
+    </li>
+    <li>
+        You should set the cookie domain name to your root domain if you want to
+        share session across multiple services that are in sub-domains. For example
+        if you have services at <span class="code">https://service1.mycompany.com/</span> 
+        and <span class="code">https://service2.mycompany.com/</span>
+        then you should set the <span class="code">cookieDomainName</span> to 
+        <span class="code">mycompany.com</span>
+    </li>
+</ul>

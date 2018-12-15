@@ -97,8 +97,19 @@
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Core\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.DebugMiddleware\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Framework\Landing.html" />
-    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ispage.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsPage.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Mocks\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Validators.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Parameters.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Permissions.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\CustomSerialization.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\CustomDeserialization.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.RouteVisualizer\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Session\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.StaticFiles\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Versioning\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
@@ -179,12 +190,6 @@
     <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Templates\Content\Interface\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Mocks\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Restful\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.RouteVisualizer\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Session\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.StaticFiles\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Versioning\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Styles\app.less" />

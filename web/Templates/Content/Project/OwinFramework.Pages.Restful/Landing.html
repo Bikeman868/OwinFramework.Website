@@ -1,0 +1,179 @@
+﻿<p>
+    This package contains a Build Engine for services. If you want the fluent 
+    builder to use this build engine you need to add a couple of lines to
+    your startup code similar to:
+</p>
+
+<pre>
+    var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
+    ninject.Get&lt;OwinFramework.Pages.Restful.BuildEngine>().Install(fluentBuilder);
+</pre>
+
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<p>
+    After adding this build engine to the fluent builder you can add web services
+    to your application by writing classes that are decorated with attributes.
+    The fluent builder will discover these classes and use the attributes to configure 
+    these services.
+</p>
+
+<h2>Sample Service</h2>
+<p>
+    The code below is taken from one of the sample applications. It is a 
+    service that exposes 4 endpoints that add, subtract, multiply and divide 
+    two numbers.
+</p>
+<p>
+    You can invoke this service by typing a URL into a browser similar to
+    <span class="code">http://mycompany.com/math/add?a=45&b=76</span>.
+</p>
+
+<pre>
+using System;
+using System.Collections.Generic;
+using OwinFramework.Pages.Core.Attributes;
+using OwinFramework.Pages.Core.Enums;
+using OwinFramework.Pages.Restful.Interfaces;
+
+namespace Sample1.SampleServices
+{
+    [IsService("arithmetic", "/math/", new[] { Methods.Get })]
+    public class ArithmeticService
+    {
+        [Endpoint]
+        [EndpointParameter("a", typeof(double))]
+        [EndpointParameter("b", typeof(double))]
+        public void Add(IEndpointRequest request)
+        {
+            var a = request.Parameter&lt;double>("a");
+            var b = request.Parameter&lt;double>("b");
+            request.Success(a + b);
+        }
+
+        [Endpoint]
+        [EndpointParameter("a", typeof(double))]
+        [EndpointParameter("b", typeof(double))]
+        public void Subtract(IEndpointRequest request)
+        {
+            var a = request.Parameter&lt;double>("a");
+            var b = request.Parameter&lt;double>("b");
+            request.Success(a - b);
+        }
+
+        [Endpoint]
+        [EndpointParameter("a", typeof(double))]
+        [EndpointParameter("b", typeof(double))]
+        public void Multiply(IEndpointRequest request)
+        {
+            var a = request.Parameter&lt;double>("a");
+            var b = request.Parameter&lt;double>("b");
+            request.Success(a * b);
+        }
+
+        [Endpoint]
+        [EndpointParameter("a", typeof(double))]
+        [EndpointParameter("b", typeof(double))]
+        public void Divide(IEndpointRequest request)
+        {
+            var a = request.Parameter&lt;double>("a");
+            var b = request.Parameter&lt;double>("b");
+            request.Success(a / b);
+        }
+    }
+}</pre>
+
+<div class="app_warning">
+    When writing services you must ensure that the data types produced
+    by the parameter validator are of the same type as requested by your
+    code. In the example above all parameters are declared as
+    <span class="code">double</span> and retrieved as <span class="code">double</span>
+    in the code.
+</div>
+
+<h2>Attributes</h2>
+<p>
+    The class that defines your service must be decorated with an
+    <span class="code">[IsService()]</span> attribute as shown in the
+    example above.
+</p>
+<p>
+    Your class can contain any number of methods. Any or all of these
+    methods can be exposed as REST endpoints by decorating the method
+    with an <span class="code">[Endpoint()]</span> attribute.
+</p>
+<p>
+    Endpoint methods can optionally be decorated with one or more 
+    <span class="code">[EndpointParameter()]</span> attribute
+    to define the parameters that can be passed to the method.
+</p>
+
+<h2>Supported Features</h2>
+<p>
+    This service builder supports the following features:
+</p>
+<ul>
+    <li>
+        A root path is usually specified for the service. By default the method
+        name will be used as a sub-path below this root. The URL is not
+        case sensitive. You can override the default path to an endpoint by
+        passing a parameter to the <span class="code">[Endpoint()]</span> attribute. 
+        This endpoint path can be relative to the service root or an absolute path
+        within the website.
+    </li>
+    <li>
+        The service can be configured to only process requests with certain
+        methods and pass on any other requests to the rest of the routing
+        chain. For example you might only want to handle POST requests in
+        the service and allow GET requests for the same URL to pass through
+        to the page rendering.
+    </li>
+    <li>
+        You can define a permission that the calling identity must have to be 
+        allowed to call this service and optionally restrict access further by
+        passing the service/method name as a resource path when checking
+        permissions. You can also override the service settings on each endpoint.
+    </li>
+    <li>
+        You can specify a request deserializer and a response serializer for
+        the service, and you can override this for each service endpoint. If
+        you do not specify these then they default to Json using the NewtonSoft 
+        library.
+    </li>
+    <li>
+        Endpoint parameter attributes define the name of the parameter and
+        the validator to use. The validator is specified as a 
+        <span class="code">Type</span>. This <span class="code">Type</span> can
+        be a value type like <span class="code">int</span> or <span class="code">double</span>
+        which makes the parameter required, or it can be a nullable type like
+        <span class="code">int?</span> which makes the parameter optional but when
+        present must be of the correct type.
+    </li>
+    <li>
+        For the endpoint parameter validation you can also supply a <span class="code">Type</span>
+        that implements <span class="code">IParameterValidator</span>. A few
+        validators are provided with this package. You can also write your own
+        validator containing your application logic.
+    </li>
+    <li>
+        Endpoint parameter attributes also define the methods that the caller can
+        use to pass the parameter. The default is to only allow parameters in
+        the query string, but you can have any combination of: query string, custom header
+        form field or path element.
+    </li>
+</ul>
+
+<p>
+    For more details on how to take advantage of these features, click the links below:
+</p>
+<ul>
+    <li><a href="customdeserialization">How to provide custom request body deserialization</a></li>
+    <li><a href="customserialization">How to provide custom response serialization</a></li>
+    <li><a href="permissions">How restrict access using permissions</a></li>
+    <li><a href="parameters">How define parameters to service endpoints</a></li>
+    <li><a href="validators">How provide application specific parameter validation</a></li>
+</ul>

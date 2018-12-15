@@ -1,0 +1,82 @@
+﻿<p>
+    This middleware serves static files. This middleware works with any output cache
+    middleware that you have installed to ensure that files are cached both on the
+    server and also by the browser.
+</p>
+<p>
+    Static files are files shipped with your website that contain content that can 
+    be directly consumed by the browser. These are usually HTML, CSS, JavaScript and
+    image files, but can be any file that the browser can accept and process.
+</p>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.StaticFiles.StaticFilesMiddleware>())
+    .As("Static files")
+    .ConfigureWith(config, "/owinFramework/middleware/staticFiles");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Default Configuration</h2>
+<p>
+    The configuration below is the configuration you will get by default if you do not provide
+    a configuration for this middleware.
+</p>
+<pre>{
+   "owinFramework": {
+      "middleware": {
+         "session": {
+            "documentationRootUrl": "/owin/staticFiles/config",
+            "staticFilesRootUrl": "/assets",
+            "rootDirectory": "~\\assets",
+            "enabled": true,
+            "analyticsEnabled": true,
+            "includeSubFolders": true,
+            "maximumFileSizeToCache": 32768,
+            "maximumCacheTime": "01:00:00",
+            "requiredPermission": "",
+            "fileExtensions": [
+                { "extension": ".bmp", "mimeType": "image/bmp", "isText": false },
+                { "extension": ".jpg", "mimeType": "image/jpeg", "isText": false },
+                { "extension": ".png", "mimeType": "image/png", "isText": false },
+                { "extension": ".gif", "mimeType": "image/gif", "isText": false },
+                { "extension": ".html", "mimeType": "text/html", "isText": true },
+                { "extension": ".htm", "mimeType": "text/html", "isText": true },
+                { "extension": ".css", "mimeType": "text/css", "isText": true },
+                { "extension": ".txt", "mimeType": "text/plain", "isText": true },
+                { "extension": ".js", "mimeType": "application/javascript", "isText": true }
+            ]
+         }
+      }
+   }
+}</pre>
+
+<h2>Configuration Notes</h2>
+<ul>
+    <li>
+        You can restrict access to the static files by configuring 
+        the <span class="code">requiredPermission</span>. For this to 
+        work you must add Authorization middleware to the Owin Pipeline.
+    </li>
+    <li>
+        The <span class="code">rootDirectory</span> can be an absolute file
+        path, UNC file path, relative to the current working directory, or
+        start with <span class="code">~</span> to use the <span class="code">MapPath</span>
+        method of <span class="code">IHostingEnvironment</span>.This
+        middleware will serve files in sub-directories of this root by default.
+    </li>
+    <li>
+        The <span class="code">staticFilesRootUrl</span> is the URL within your
+        website where the static files will be available for download.
+    </li>
+    <li>
+        With the Owin Framework the same middleware can be added to the Owin
+        Pipeline multiple times with each instance having a different 
+        configuration. This is especially useful if you want to serve static
+        files from different locations, or with different permissions.
+    </li>
+</ul>
