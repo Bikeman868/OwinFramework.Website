@@ -1,0 +1,259 @@
+﻿<p>
+    This package contains a Build Engine for modules, pages, layouts, regions and components.
+    If you want the fluent builder to use this build engine you need to add a couple of lines to
+    your startup code similar to:
+</p>
+
+<pre>
+    var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
+    ninject.Get&lt;OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
+</pre>
+
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<p>
+    After adding this build engine to the fluent builder you can add web pages
+    to your application by defining modules, pages, layouts, regions and components
+    using classes that are decorated with attributes. The fluent builder will discover
+    these classes and use the attributes to configure these elements.
+</p>
+
+<h2>Sample Page</h2>
+<p>
+    The code below is taken from the <a href="/content/general/helloworld">getting started walkthrough</a>.
+    It creates a very simple web page that only contains "Hello, world".
+</p>
+
+<pre>
+    [IsPage]
+    [Route("/", Methods.Get)]
+    [PageTitle("Getting started with Owin Framework Pages")]
+    [UsesLayout("homePageLayout")]
+    internal class HomePage { }
+
+    [IsLayout("homePageLayout", "region1")]
+    [RegionHtml("region1", "hello-world", "Hello, world")]
+    internal class HomePageLayout { }
+</pre>
+
+<h2>Attributes</h2>
+<p>
+    The attributes that you can attach to your classes are defined in
+    <span class="code">OwinFramework.Pages.Core.Attributes</span>.
+</p>
+<h3>Page Attributes</h3>
+<p>
+    The attributes that can be applied to pages are:
+</p>
+<ul>
+    <li><a href="attributes/ispage"><span class="code">[IsPage]</span></a> identifies this class as a web page</li>
+    <li><a href="attributes/cacheoutput"><span class="code">[CacheOutput]</span></a> configures output caching for the page</li>
+    <li><a href="attributes/datascope"><span class="code">[DataScope]</span></a> defines a scope name used in resolving data providers</li>
+    <li><a href="attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on this page</li>
+    <li><a href="attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a JavaScript function to include on this page</li>
+    <li><a href="attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how JavaScript and CSS should be deployed for this page</li>
+    <li><a href="attributes/description"><span class="code">[Description]</span></a> a description to output into the page documentation</li>
+    <li><a href="attributes/example"><span class="code">[Example]</span></a> an example usage to output into the page documentation</li>
+    <li><a href="attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a dependent component</li>
+    <li><a href="attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this page</li>
+    <li><a href="attributes/option"><span class="code">[Option]</span></a> documents an optional part of the request for this page</li>
+    <li><a href="attributes/pagetitle"><span class="code">[PageTitle]</span></a> specifies the title to output into the page head</li>
+    <li><a href="attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript on this page</li>
+    <li><a href="attributes/requirespermission"><span class="code">[RequiresPermission]</span></a> specifies a permission that users must have to see this page</li>
+    <li><a href="attributes/route"><span class="code">[Route]</span></a> defines which requests will be routed to this page</li>
+    <li><a href="attributes/style"><span class="code">[Style]</span></a> adds CSS style to the body element of the page</li>
+    <li><a href="attributes/usescomponent"><span class="code">[UsesComponent]</span></a> adds a non-visual component to the page</li>
+    <li><a href="attributes/useslayout"><span class="code">[UsesLayout]</span></a> specifies the layout for the page</li>
+</ul>
+
+<h3>Layout Attributes</h3>
+<p>
+    The attributes that can be applied to layouts are:
+</p>
+<ul>
+    <li><a href="attributes/islayout"><span class="code">[IsLayout]</span></a> identifies this class as a layout</li>
+    <li><a href="attributes/childcontainer"><span class="code">[ChildContainer]</span></a> configures the html element to use when grouping layout regions</li>
+    <li><a href="attributes/container"><span class="code">[Container]</span></a> configures the html element to use as a container for this layout</li>
+    <li><a href="attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on any page that includes this layout</li>
+    <li><a href="attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a JavaScript function to include on any page that has this layout on it</li>
+    <li><a href="attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how JavaScript and CSS should be deployed for this layout</li>
+    <li><a href="attributes/layoutregion"><span class="code">[LayoutRegion]</span></a> defines the region element to place into a region of the layout</li>
+    <li><a href="attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a dependent component</li>
+    <li><a href="attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this layout</li>
+    <li><a href="attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript in this layout</li>
+    <li><a href="attributes/regioncomponent"><span class="code">[RegionComponent]</span></a> fills a region of the layout with a component</li>
+    <li><a href="attributes/regionhtml"><span class="code">[RegionHtml]</span></a> fills a region of the layout with localized HTML</li>
+    <li><a href="attributes/regionlayout"><span class="code">[RegionHtml]</span></a> fills a region of the layout with a layout</li>
+    <li><a href="attributes/regiontemplate"><span class="code">[RegionHtml]</span></a> ffills a region of the layout with a template</li>
+    <li><a href="attributes/style"><span class="code">[Style]</span></a> adds CSS style to layout container</li>
+</ul>
+
+<h3>Region Attributes</h3>
+<p>
+    The attributes that can be applied to regions are:
+</p>
+<ul>
+    <li><a href="attributes/isregion"><span class="code">[IsRegion]</span></a> identifies this class as a region</li>
+    <li><a href="attributes/childcontainer"><span class="code">[ChildContainer]</span></a> configures the html element to use when repeating the contents of the region</li>
+    <li><a href="attributes/childstyle"><span class="code">[ChildStyle]</span></a> a css style to apply to the elements that repeat within the region</li>
+    <li><a href="attributes/container"><span class="code">[Container]</span></a> configures the html element to use as a container for this region</li>
+    <li><a href="attributes/datascope"><span class="code">[DataScope]</span></a> defines a scope name used in resolving data providers</li>
+    <li><a href="attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on any page that includes this region</li>
+    <li><a href="attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a JavaScript function to include on any page that has this region on it</li>
+    <li><a href="attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how JavaScript and CSS should be deployed for this region</li>
+    <li><a href="attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a dependent component</li>
+    <li><a href="attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this region</li>
+    <li><a href="attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript in this region</li>
+    <li><a href="attributes/repeat"><span class="code">[Repeat]</span></a> makes the contents of this region repeat for each object in a list</li>
+    <li><a href="attributes/style"><span class="code">[Style]</span></a> adds CSS style to region container</li>
+    <li><a href="attributes/usescomponent"><span class="code">[UsesComponent]</span></a> specifies that this region contains a component</li>
+    <li><a href="attributes/useslayout"><span class="code">[UsesLayout]</span></a> specifies that this region contains a layout</li>
+    <li><a href="attributes/usestemplate"><span class="code">[UsesTemplate]</span></a> specifies that this region contains a template</li>
+</ul>
+
+<h3>Component Attributes</h3>
+<p>
+    The attributes that can be applied to components are:
+</p>
+<ul>
+    <li><a href="attributes/iscomponent"><span class="code">[IsComponent]</span></a> identifies this class as a component</li>
+    <li><a href="attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on any page that includes this component</li>
+    <li><a href="attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a JavaScript function to include on any page that has this component on it</li>
+    <li><a href="attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how JavaScript and CSS should be deployed for this component</li>
+    <li><a href="attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a dependent component</li>
+    <li><a href="attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this component</li>
+    <li><a href="attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript in this component</li>
+    <li><a href="attributes/renderhtml"><span class="code">[RenderHtml]</span></a> makes this component render localized HTML</li>
+</ul>
+
+<h2>Semi-Custom Elements</h2>
+<p>
+    As well as defining classes and decorating them with attributes as described above,
+    you can also make these classes inherit from the base class and override virtual
+    methods to customize the behavior.
+</p>
+<p>
+    You can use this technique for all types of element. The example below is for a page:
+</p>
+<pre>using System;
+using System.Threading;
+using System.Threading.Tasks;
+using OwinFramework.Pages.Core.Attributes;
+using OwinFramework.Pages.Core.Interfaces.Builder;
+using OwinFramework.Pages.Core.Interfaces.Runtime;
+using OwinFramework.Pages.Html.Runtime;
+namespace Sample1.SamplePages
+{
+    [Description("&lt;p>This is an example of how to add a semi custom page that inherits from the base Page base class&lt;/p>")]
+    [Example("&lt;a href='/pages/semiCustom.html'>/pages/semiCustom.html&lt;/a>")]
+    internal class SemiCustomPage : Page
+    {
+        public SemiCustomPage(IPageDependenciesFactory dependenciesFactory)
+            : base(dependenciesFactory)
+        {
+            TitleFunc = context => "Page title";
+        }
+
+        public override IWriteResult WriteBodyArea(IRenderContext context)
+        {
+            var html = context.Html;
+
+            // Save this location in the output buffer
+            var begining = html.CreateInsertionPoint();
+
+            // Write a paragraph of text
+            html.WriteElementLine("p", "This is a semi custom page", "class", "normal");
+
+            // Use the saved buffer location to write the heading before the paragraph
+            // and do this in a separate thread
+            var task = Task.Factory.StartNew(() =>
+                {
+                    // Simulate a call to a service or database here
+                    Thread.Sleep(10);
+                    begining.WriteElementLine("h1", "Semi Custom", "class", "page-heading");
+                });
+
+            // Write a second paragraph of text
+            html.WriteElementLine("p", "My second paragraph of text", "class", "normal");
+
+            return WriteResult.WaitFor(task);
+        }
+
+        public override IWriteResult WriteInPageStyles(
+            ICssWriter writer, 
+            Func&lt;ICssWriter, IWriteResult, IWriteResult> childrenWriter)
+        {
+            writer.WriteRule(".normal", "background-color: linen; font-size: 12px;");
+            writer.WriteRule(".page-heading", "font-size: 16px;");
+            return base.WriteInPageStyles(writer, childrenWriter);
+        }
+
+        public override IWriteResult WriteHeadArea(IRenderContext context)
+        {
+            var result = base.WriteHeadArea(context);
+            context.Html.WriteUnclosedElement(
+                "link", "rel",
+                "stylesheet", "href", "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+            context.Html.WriteLine();
+            return result;
+        }
+    }
+}</pre>
+
+<h2>Fully Custom Elements</h2>
+<p>
+    As well as defining classes and decorating them with attributes as described above,
+    you can also make these classes implement an interface to fully define the behavior.
+</p>
+<p>
+    You can use this technique for all types of element. The example below is for a page:
+</p>
+<pre>using System;
+using System.Threading.Tasks;
+using Microsoft.Owin;
+using OwinFramework.InterfacesV1.Middleware;
+using OwinFramework.Pages.Core.Attributes;
+using OwinFramework.Pages.Core.Debug;
+using OwinFramework.Pages.Core.Enums;
+using OwinFramework.Pages.Core.Interfaces;
+using OwinFramework.Pages.Core.Interfaces.Runtime;
+namespace Sample1.SamplePages
+{
+    [Description("&lt;p>This is an example of how to add a full custom page that directly implements IPage&lt;/p>")]
+    [Option(OptionType.Method, "GET", "&lt;p>Returns the html for this custom page&lt;/p>")]
+    [Option(OptionType.Header, "Accept", "text/html")]
+    [Example("&lt;a href='/pages/anything.html'>/pages/anything.html&lt;/a>")]
+    internal class FullCustomPage : IPage
+    {
+        public ElementType ElementType { get { return ElementType.Page; } }
+        public string Name { get; set; }
+        public IPackage Package { get; set; }
+        string IRunable.RequiredPermission { get { return null; } set { } }
+        string IRunable.SecureResource { get { return null; } set { } }
+        bool IRunable.AllowAnonymous { get { return true; } set { } }
+        Func&lt;IOwinContext, bool> IRunable.AuthenticationFunc { get { return null; } }
+        Func&lt;IRenderContext, string> IPage.CanonicalUrlFunc { get; set; }
+        string IRunable.CacheCategory { get; set; }
+        CachePriority IRunable.CachePriority { get; set; }
+        public void Initialize()
+        {
+        }
+        public DebugInfo GetDebugInfo(int parentDepth, int childDepth)
+        {
+            return new DebugPage
+            {
+                Name = Name,
+                Instance = this
+            };
+        }
+        Task IRunable.Run(IOwinContext context, Action&lt;IOwinContext, Func&lt;string>> trace)
+        {
+            context.Response.ContentType = "text/html";
+            return context.Response.WriteAsync("&lt;html>&lt;head>&lt;title>Full custom&lt;/title>&lt;/head>&lt;body>This is a fully custom page&lt;/body>&lt;/html>");
+        }
+    }
+}</pre>

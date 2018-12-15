@@ -94,6 +94,11 @@
     <Content Include="Templates\Content\Project\OwinFramework.Mocks\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.NotFound\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.OutputCache\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Core\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.DebugMiddleware\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Framework\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ispage.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Authorization\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Facilities\Landing.html" />
@@ -174,10 +179,6 @@
     <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Templates\Content\Interface\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Core\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Pages.DebugMiddleware\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Framework\" />
-    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Html\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Pages.Mocks\" />
     <Folder Include="Templates\Content\Project\OwinFramework.Pages.Restful\" />
     <Folder Include="Templates\Content\Project\OwinFramework.RouteVisualizer\" />

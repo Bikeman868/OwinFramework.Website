@@ -1,0 +1,22 @@
+﻿<h2><span class="code">[IsPage]</span> Attribute</h2>
+<p>
+    Attach this attribute to a class to identify it as a webpage.
+    To register this page with the router and send requests to it you must get the
+    fluent builder to scan the assembly containing your class.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+    [IsPage]
+    [Route("/", Methods.Get)]
+    [UsesLayout("homePageLayout")]
+    internal class HomePage { }
+</pre>
+
+<h2>Example Startup Code</h2>
+
+<pre>
+    var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
+    fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));
+</pre>

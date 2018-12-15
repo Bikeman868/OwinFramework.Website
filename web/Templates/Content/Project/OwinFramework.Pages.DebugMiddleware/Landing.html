@@ -1,0 +1,44 @@
+﻿<p>
+    This middleware provides a debug view of web pages produced by the Pages middleware.
+</p>
+<p>
+    To use this middleware add it to the OWIN pipeline then run your code and
+    request pages from your website but include <span class="code">debug=true</span>
+    in the query string of the page.
+</p>
+<p>
+    When you do this, instead of rendering the page itself, the Debug Middleware will
+    intercept the request and render a page showing how that page would be rendered,
+    including how the data binding context will be established etc.
+</p>
+
+<h2>Adding this middleware to the Owin pipeline</h2>
+<pre>
+ builder.Register(ninject.Get&lt;OwinFramework.Pages.DebugMiddleware.DebugInfoMiddleware>())
+    .As("Pages debug");    
+</pre>
+<div class="app_warning">
+    The assumes that you are using Ninject as your IoC container, and followed the
+    <a href="/content/general/helloworld">getting started walkthrough</a>. If this is not the case
+    then you will need to adjust the code to work in your application.
+</div>
+
+<h2>Displaying Debug Information</h2>
+<p>
+    You can view debug information for any page that is produced by the Pages middleware
+    by adding a query string parameter to the page URL. Below are some examples:
+</p>
+<pre>
+    http://mywebsite.com/folder/page1?debug=true
+    http://mywebsite.com/folder/page1?debug=xml
+    http://mywebsite.com/folder/page1?debug=json
+    http://mywebsite.com/folder/page1?debug=html
+    http://mywebsite.com/folder/page1?debug=svg
+</pre>
+
+<h2>Enhancing Debug Information</h2>
+<p>
+    If you write custom regions, layouts, components etc, you can include more
+    detailed information in the debug output by overriding a protected method
+    of the base class called <span class="code">PopulateDebugInfo&lt;T></span>.
+</p>
