@@ -24,8 +24,8 @@ namespace Website.Pages
     internal class HomePageLayout : FixedRightColumnLayout { }
 
     [IsPage("home", "/home")]
-    [Route("/home", Methods.Get, Priority = 100)]
-    [Route("/", Methods.Get, Priority = 100)]
+    [Route("/home", Method.Get, Priority = 100)]
+    [Route("/", Method.Get, Priority = 100)]
     [PageTitle("OWIN Framework Home")]
     [RegionLayout("body", "home")]
     public class HomePage: NavigationMasterPage{ }

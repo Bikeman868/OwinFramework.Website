@@ -22,7 +22,7 @@ namespace Website.Pages.InterfaceDefinition
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("interfaceLanding")]
-    [Route("/content/interface/**", Methods.Get, Priority = -80)]
+    [Route("/content/interface/**", Method.Get, Priority = -80)]
     [PageTitle("OWIN Framework Interface")]
     [RegionLayout("body", "interfaceLanding")]
     public class LandingPage: NavigationMasterPage{ }

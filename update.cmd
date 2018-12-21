@@ -1,1 +1,2 @@
-.paket\paket.exe update > update.log
+.paket\paket.exe update
+pause

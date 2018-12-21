@@ -28,7 +28,7 @@ namespace Website.Pages.FunctionalArea
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("areaLanding")]
-    [Route("/content/area/**", Methods.Get, Priority = -80)]
+    [Route("/content/area/**", Method.Get, Priority = -80)]
     [PageTitle("OWIN Framework Area")]
     [RegionLayout("body", "areaLanding")]
     public class LandingPage: NavigationMasterPage{ }

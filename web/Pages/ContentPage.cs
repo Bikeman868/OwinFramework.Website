@@ -19,7 +19,7 @@ namespace Website.Pages
     internal class ContentPageLayout : FixedRightColumnLayout { }
 
     [IsPage("content")]
-    [Route("/content/**", Methods.Get, Priority = -100)]
+    [Route("/content/**", Method.Get, Priority = -100)]
     [PageTitle("OWIN Framework")]
     [RegionLayout("body", "content")]
     public class ContentPage: NavigationMasterPage{ }

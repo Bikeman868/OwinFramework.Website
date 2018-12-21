@@ -28,7 +28,7 @@ namespace Website.Pages.Repository
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("repositoryLanding")]
-    [Route("/content/repository/**", Methods.Get, Priority = -80)]
+    [Route("/content/repository/**", Method.Get, Priority = -80)]
     [PageTitle("GitHub Repository")]
     [RegionLayout("body", "repositoryLanding")]
     public class LandingPage: NavigationMasterPage{ }

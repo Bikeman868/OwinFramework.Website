@@ -28,7 +28,7 @@ namespace Website.Pages.Project
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("projectLanding")]
-    [Route("/content/project/**", Methods.Get, Priority = -80)]
+    [Route("/content/project/**", Method.Get, Priority = -80)]
     [PageTitle("OWIN Framework Project")]
     [RegionLayout("body", "projectLanding")]
     public class LandingPage: NavigationMasterPage{ }

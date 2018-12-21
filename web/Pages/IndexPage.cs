@@ -11,7 +11,7 @@ namespace Website.Pages
     internal class IndexPageLayout : ContentElement { }
 
     [IsPage("index")]
-    [Route("/content/index/*", Methods.Get, Priority = -10)]
+    [Route("/content/index/*", Method.Get, Priority = -10)]
     [PageTitle("OWIN Framework Index")]
     [RegionLayout("body", "index")]
     public class IndexPage: NavigationMasterPage{ }

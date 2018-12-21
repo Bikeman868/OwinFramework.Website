@@ -1,1 +1,2 @@
-.paket\paket.exe install > install.log
+.paket\paket.exe install
+pause
