@@ -188,7 +188,7 @@ namespace Website.Components.Content
             context.Data.Set(new TextEffectsPackage.VerticalText("Index", 30, 90)
             {
                 Background = null,
-                TextStyle = "font: 20px serif; fill: #e2e8ff;"
+                TextStyle = "font: 20px serif; fill: white;"
             });
             verticalTextComponent.WritePageArea(context, PageArea.Body);
             context.Html.WriteCloseTag("div");

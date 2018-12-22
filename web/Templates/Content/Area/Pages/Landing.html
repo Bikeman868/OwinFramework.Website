@@ -1,14 +1,85 @@
 ﻿<p>
     This area of the Owin Framework contains equivalent functionallity to Microsoft
-    ASP.Net + MVC. It provides very powerful and flexible ways of adding web pages and
-    web service endpoints to your application.
+    ASP.Net + MVC, Microsoft Katana, or Microsoft Core. Unlike the Microsoft implementations,
+    this was designed from the outset to be an open architecture that can be built
+    to by many independent contributors.
 </p>
 
-<h2>Further reading</h2>
+<h2>Architecture Overview</h2>
 
-<p>The <a href="/content/repository/owinframework.pages/landing">Pages repository</a></p>
-<p>Walkthrough of <a href="/content/general/walkthrough/website">how to build a website</a> with the Owin Framework</p>
-<p>Walkthrough of <a href="/content/general/walkthrough/microservice">how to build a microservice</a> with the Owin Framework</p>
+<p>The Pages Middleware has the following architecture at the highest level:</p>
+
+<img class="app_diagram" src="/assets/images/drawings/Pages_architecture_overview.svg" alt="Layers of OWIN" />
+
+<p>
+    At the core is a Fluent Builder. This class implements interfaces for building
+    various elements by delegating to plug-in builders. The Pages middleware project
+    contains a complate set of builders already, but other developers can publish
+    alternate implementations and application developers can also register custom
+    builders with the fluent builder.
+</p>
+
+<p>
+    The Fluent Builder provides a fluent syntax for defining pages, layouts, regions
+    etc that define your entire website and webservice endpoints but it is too
+    long winded and detailed for many situations so there is another layer on top
+    of it to make common tasks more straightforward.
+</p>
+
+<p>
+    Packages use the Fluent Builder directly to define reusable packages. For example
+    the Owin Framework Pages Middleware comes with a number of packages. These packages
+    contain layouts, regions, components and services that can be added to your website
+    in a single line of code. An example of one of these packages is the menu package
+    which can render a responsive drop-down menu which becomes a slide-out hamburger
+    menu at small sizes. You can see this package in operation on this website.
+</p>
+
+<p>
+    Template parsers parse text files that are deployed with the website and contain
+    templated content. There are a few parsers built into these packages, other
+    developers can also publish parsers that support different syntaxes and data
+    binding and repeating schemes. Template parsers use the Fluent Builder to
+    construct various elements from the templates that they parse.
+</p>
+
+<p>
+    Template loaders retrieve templates and push them through a specific parser.
+    The template loaders then watch for changes and update the elements by parsing
+    the changed templates. There are template loaders for the local file system
+    and for downloading from a URL. It would also be quite easy to write an
+    application specific one that reads templates from an application database.
+</p>
+
+<p>
+    The CMS portion is a combination of a specific database schema, a template
+    loader that understands this schema, a UI for creating and managing webpage
+    elements in the browser, and a back-end service to support the UI. This provides
+    a way for non-developers to make simple changes to pages on the website. Note
+    that this is not a comprehensive Content Management System, more of a page
+    layout editor.
+</p>
+
+<h2>Further Reading</h2>
+
+<p>
+    The <a href="/content/general/helloworld">Hello World</a> getting started tutorial 
+    will walk you through the first steps of buiiding a website with this technology.
+</p>
+
+<p>
+    Walkthrough of <a href="/content/general/walkthrough/website">how to build a website</a>
+    with the Owin Framework will show you step by step how to build a complete website.
+    Note that this website was written entirely using the Pages middleware and is also
+    open source and therefore is a good source of examples.
+</p>
+<p>
+    Walkthrough of <a href="/content/general/walkthrough/microservice">how to build
+    a microservice</a> with the Owin Framework will show you step by step how to
+    build a microservice. There are large commerial websites that have millions of
+    users build entirely using this technology. The Owin Framework Pages middleware
+    is designed to scale up to hundreds of millions of users on a website.
+</p>
 
 <h2>Related Projects</h2>
 

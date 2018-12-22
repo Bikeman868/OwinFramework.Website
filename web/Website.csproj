@@ -62,6 +62,7 @@
     <Content Include="Assets\Images\Drawings\Layers_of_OWIN.svg" />
     <Content Include="Assets\Images\Drawings\Owin_framework_world_view.svg" />
     <Content Include="Assets\Images\Drawings\OWIN_world_view.svg" />
+    <Content Include="Assets\Images\Drawings\Pages_architecture_overview.svg" />
     <Content Include="Assets\Images\Drawings\Pages_rendering_model.svg" />
     <Content Include="Templates\Content\Area\Testing\Landing.html" />
     <Content Include="Templates\Content\Area\Pages\Landing.html" />

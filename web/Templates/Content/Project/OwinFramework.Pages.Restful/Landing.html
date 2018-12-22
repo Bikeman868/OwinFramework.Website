@@ -104,12 +104,16 @@ namespace Sample1.SampleServices
 <p>
     Your class can contain any number of methods. Any or all of these
     methods can be exposed as REST endpoints by decorating the method
-    with an <span class="code">[Endpoint()]</span> attribute.
+    with an <span class="code">[Endpoint()]</span> attribute. These
+    methods must taks a single parameter of type <span class="code">IEndpointRequest</span>
+    and have a return type of <span class="code">void</span>
 </p>
 <p>
     Endpoint methods can optionally be decorated with one or more 
     <span class="code">[EndpointParameter()]</span> attribute
-    to define the parameters that can be passed to the method.
+    to define the parameters that can be passed to the method. These
+    attributes also define the mechanisms that are supported for
+    parameter passing and the parameter parser to use.
 </p>
 
 <h2>Supported Features</h2>
@@ -146,24 +150,28 @@ namespace Sample1.SampleServices
     </li>
     <li>
         Endpoint parameter attributes define the name of the parameter and
-        the validator to use. The validator is specified as a 
+        the parser to use. The parser is specified as a 
         <span class="code">Type</span>. This <span class="code">Type</span> can
         be a value type like <span class="code">int</span> or <span class="code">double</span>
         which makes the parameter required, or it can be a nullable type like
         <span class="code">int?</span> which makes the parameter optional but when
-        present must be of the correct type.
+        present must be of the specified type.
     </li>
     <li>
-        For the endpoint parameter validation you can also supply a <span class="code">Type</span>
-        that implements <span class="code">IParameterValidator</span>. A few
-        validators are provided with this package. You can also write your own
-        validator containing your application logic.
+        For the endpoint parameter parser you can also supply a <span class="code">Type</span>
+        that implements <span class="code">IParameterParser</span>. A few
+        parsers are provided with this package. You can also write your own
+        parser containing your application logic, custom documentation and custom
+        error messages.
     </li>
     <li>
         Endpoint parameter attributes also define the methods that the caller can
         use to pass the parameter. The default is to only allow parameters in
         the query string, but you can have any combination of: query string, custom header
-        form field or path element.
+        form field or path element. When parameters are passed as path elements the
+        url of the service must contain placeholders for the parameters. These
+        placeholders are the parameter name in curly braces - for example 
+        <span class="code">"/myservice/mymethod/{param1}/{param2}"</span>.
     </li>
 </ul>
 
@@ -175,5 +183,5 @@ namespace Sample1.SampleServices
     <li><a href="customserialization">How to provide custom response serialization</a></li>
     <li><a href="permissions">How restrict access using permissions</a></li>
     <li><a href="parameters">How define parameters to service endpoints</a></li>
-    <li><a href="validators">How provide application specific parameter validation</a></li>
+    <li><a href="validators">How provide application specific parameter parsing and validation</a></li>
 </ul>
