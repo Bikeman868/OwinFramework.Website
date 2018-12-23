@@ -217,9 +217,45 @@
         }
 </pre>
 <p>
-	In this example the resulting web page will contain the three paragraphs in
-	numeric order even though paragraph 1 was written after the other two.
+    In this example the resulting web page will contain the three paragraphs in
+    numeric order even though paragraph 1 was written after the other two.
 </p>
+
+<h3>Components as Services</h3>
+<p>
+    You can decorate your component's class with the <span class="code">[IsService]</span>
+    attribute to allow it to handle AJAX calls and Postbacks from the browser. There
+    are a few supported use cases as follows:
+</p>
+<ul>
+    <li>
+        Make your component class inherit from the <span class="code">Service</span>
+        class then implement the <span class="code">IComponent</span> inferface.
+    </li>
+    <li>
+        Make your component class inherit from the <span class="code">Component</span>
+        class but also add a default public constructor that can be used to construct
+        the class as a service.
+    </li>
+    <li>
+        Make your component class inherit from the <span class="code">Component</span>
+        class but and pass the optional factory method when registering with the
+        fluent builder. The builder will use the factory to construct a second
+        instance of your component to act as the service.
+    </li>
+</ul>
+<div>
+    This technique is especially useful for modulariing your AJAX calls because you
+    can write a component the will write JavaScript functions to call the service,
+    and also implement the service endpoints within the same class keeping these
+    things close together. In this case adding the component to a website adds both
+    the JavaScrpipt to call the service and the service endpoints.
+</div>
+<div>
+    Postbacks are a bit more tricky in that they have to re-render the page after
+    handling the postback. Exactly how you do that depends a lot in the overall
+    architecture of your solution.
+</div>
 
 <h3>Component Attributes</h3>
 

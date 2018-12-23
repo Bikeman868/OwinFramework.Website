@@ -1,4 +1,4 @@
-<h2>Pages Framework Elements</h2>
+<h2>Elements</h2>
 
 <p>
     In the Pages Framework you build your web application by defining
@@ -73,6 +73,9 @@
 	The CSS and JavaScript of the layout and the regions within it define how the layout
 	is rendered and how it interacts with content and with the user.
 </p>
+<div>
+    Read more about <a href="layouts">Layout Elements here</a>
+</div>
 
 <h3><a href="regions">Region Elements</a></h3>
 <p>
@@ -90,10 +93,13 @@
 	<ul>
 	    <li>A <a href="layouts">Layout Element</a></li>
 	    <li>A <a href="components">Component Element</a></li>
-	    <li>Localized HTML</li>
-	    <li>A template</li>
+	    <li><a href="localization">Localized HTML</a> that you can customize for each geographic locale</li>
+	    <li>A <a href="templates">template</a> that was loaded by the template loading and parsing system</li>
 	</ul>
 </p>
+<div>
+    Read more about <a href="regions">Region Elements here</a>
+</div>
 
 <h3><a href="components">Component Elements</a></h3>
 <p>
@@ -103,19 +109,147 @@
 </p>
 <div class="app_hint">
     Note that you do not have to use components, you can use one of the template parsing
-	mechanisms instead. Template parsers construct components for you by parsing a
-	template language. Many parsers support syntaxes for data binding and repeating.
+    mechanisms instead. Template parsers construct components for you by parsing a
+    template language. Many parsers support syntaxes for data binding and repeating.
+</div>
+<div>
+    Read more about <a href="components">Component Elements here</a>
 </div>
 
 <h3><a href="packages">Package Elements</a></h3>
-<p>TBD</p>
+<p>
+    Packages define a namespace for browser assets, especially CSS classes and
+    JavaScript functions. You might want to break your own assets into namespaces
+    if you have a very large and complex application, but this is not the reason
+    why packages exist in this design.
+</p>
+<p>
+    Packages solve the problem of how to publish reusable libraries of plug-in
+    functionallity and have these all integrate without stepping on each other's
+    toes. The packaging system allows third party contributors to build a package
+    that includes layouts, regions, components etc where these things have custom
+    CSS and JavaScript associated with them.
+</p>
+<p>
+    Each package has a default namespace that is prepended to CSS class names and
+    is used to encapsulate JavaScript functions. The application developer can
+    override the namespace when integrating the package into their solution
+    to ensure that package namespaces do not clash.
+</p>
+<p>
+    As well as creating a Package Element, you can also attach the 
+    <span class="code">[PartOf]</span> attribute to add them to a package namespace.
+</p>
+<p>
+    It is recommended that you create an "app" package for your application but
+    this is not required.
+</p>
+<div>
+    Read more about <a href="packages">Package Elements here</a>
+</div>
 
 <h3><a href="modules">Module Elements</a></h3>
-<p>TBD</p>
+<p>
+    Modules are a way of grouping browser assets that have the same deployment
+    rules. Essentially the Pages Framework dynamically constructs one CSS and
+    one JavaScript resource for each page, for each module, and for the website
+    as a whole. These are generated in memory and served to the browser by the
+    <span class="code">AssetManager</span> class. The HTML pages produced by
+    the framework contain references to any of these assets that are not empty.
+</p>
+<p>
+    When you create Elements such as Regions, Components and Pages, you can add
+    a <span class="code">[DeployedAs]</span> attribute to the class to specify
+    how the assets for this element should be deployed. The default is to inherit
+    from the parent element.
+</p>
+<div>
+    Read more about <a href="modules">Module Elements here</a>
+</div>
 
 <h3><a href="services">Service Elements</a></h3>
-<p>TBD</p>
+<p>
+    Service elements have Http requests routed directly to them and are responsible
+    for constructing the whole response. Services can also produce responses that
+    are not Html, in fact the default format is JSON.
+</p>
+<p>
+    You should use services to handle AJAX calls and form POSTs from your website.
+    You can also use service elements to provide APIs, especially in the case where
+    you are writing a microservice.
+</p>
+<div class="app_hint">
+    This is very different from most other element types which are built into a
+    tree structure of layouts inside regions inside layouts etc. with a page
+    at the top. In the case of pages. the page renders all of the elements in 
+    the tree to produce the response.
+</div>
+<div>
+    Read more about <a href="/content/project/owinframework.pages.restful/landing">Service Elements here</a>
+</div>
 
 <h3><a href="dataproviders">Data Provider Elements</a></h3>
-<p>TBD</p>
-
+<p>
+    The data provisioning model is very complex internally to make it as easy
+    as possible for the developer. The design goals are based on these principals:
+</p>
+<ul>
+    <li>
+        We want to modularize for reuse. This means that if I produce something
+        that renders the presentation of an address I want to use the same code
+        nomatter what kind of address it is or where it came from.
+    </li>
+    <li>
+        We want to have good separation of concerns, ie the presentation layer
+        to know nothing about where the data came from and the data layer to
+        know nothing about how the data is presented.
+    </li>
+    <li>
+        Pages need to be able to contain the same type of data multiple times
+        from different sources. For example if I have presentation for a user
+        profile, I might have a page that shows another user's profile and my
+        own profile on the same page, and therefore these two instances of the
+        same presentation need to connect with different instances of the
+        profile data. In this framework this is referred to as "scope", and
+        data scoping is handled by <a href="regions">Region Elements</a>.
+    </li>
+    <li>
+        The same data can appear in multiple places on a page, but we don't
+        want to fetch it multiple times because this is inefficient.
+    </li>
+    <li>
+        There are many situations where a sub-tree of presentation elements
+        need to be rendered once for each object in a list of objects in the
+        body of the Html but rendred once only in other parts of the page.
+    </li>
+</ul>
+<div>
+    These goals are realized by the following design:
+</div>
+<ul>
+    <li>
+        The <a href="dataproviders">Data Provider Elements</a> know how to retrieve
+        specific kinds of data (optionally in specific scopes).
+    </li>
+    <li>
+        Any element can have one or more <span class="code">[NeedsData]</span> attributes
+        attached that specifies what data it needs. This includes the Data Provider elements.
+    </li>
+    <li>
+        The <a href="regions">Region Elements</a> can introduce a new scope for
+        the sub-tree beneath the region.
+    </li>
+    <li>
+        The <a href="regions">Region Elements</a> can repeat their contents for each
+        object in a list of objects.
+    </li>
+    <li>
+        Pages perform a one-time resolution of data needs, scopes and data providers.
+        This produces a list of the data sources that need to be run for the page. For
+        each page request the data sources are executed in the context of the request
+        before any rendering takes place. This ensures that data is only retrieved once.
+    </li>
+</ul>
+<div>
+    Read more about <a href="dataproviders">Data Provider Elements here</a>
+</div>
