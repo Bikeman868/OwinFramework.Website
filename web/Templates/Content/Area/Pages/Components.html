@@ -1,0 +1,277 @@
+<h2>Component Elements</h2>
+
+<p>
+    Component elements are the leaves of the tree structure that defines
+	an HTML page. The components are responsible for writing the HTML
+	to the response that is sent back to the browser. The HTML to write
+	is defined in C# code.
+</p>
+<div class="app_hint">
+    <p>
+        Note that you do not have to create C# classes for every piece of content,
+	    that would be extremely time consuming and hard to manage. There are higher
+	    level facilities that create components for you, for example the template
+	    loader and template parser mechanism.
+	</p>
+	<p>
+	    You should only write component classes to gain access to low level control
+		over the HTML that is produced, for example to write custom headers into the
+	    <span class="code">&lt;head>&lt;/head></span> section of the page.
+	</p>
+</div>
+<p>
+    Components have the following features:
+</p>
+<ul>
+	<li>
+		You can set an array of lambda functions into the <span class="code">HtmlWriters</span>
+		property and they will be called during the rendering of the page body. This is
+		how things like template parsers configure components to render the template.
+	</li>
+	<li>
+		You can set an array of lambda functions into the <span class="code">CssRules</span>
+		property and they will be called during the rendering of the CSS. The CSS can
+		be rendered into the page head, or into a separate CSS file depending on the 
+		asset deployment mechanism selected.
+	</li>
+	<li>
+		You can set an array of lambda functions into the <span class="code">JavascriptFunctions</span>
+		property and they will be called during the rendering of the JavaScript. The JavaScript can
+		be rendered into the page head, or into a separate JavaScript file depending on the 
+		asset deployment mechanism selected.
+	</li>
+    <li>
+	    You can override the <span class="code">GetPageAreas</span> method to indicate
+		which areas of the page your component will write to. To improve page rendering
+		efficiency the rendering engine will prune areas of the tree that contain no
+		components that render to a specific portion of the page when that part of the
+		page is being rendered.
+	</li>
+    <li>
+	    You can override the <span class="code">GetCommentName</span> method to provide a
+		custom comment. These comments are written to the HTML when comments are turned on
+		for debugging purposes.
+	</li>
+    <li>
+	    You can override the <span class="code">WritePageArea</span> method to output custom
+		HTML in any area of the page where this component exists.
+	</li>
+</ul>
+
+<h3>Writing Custom HTML</h3>
+
+<p>
+	To write custom HTML to anywhere on the page override the <span class="code">WritePageArea</span>
+	and <span class="code">GetPageAreas</span> methods. For example:
+</p>
+<pre>
+    [IsComponent("person")]
+    [NeedsData(typeof(Person))]
+    internal class PersonComponent : Component
+    {
+        public PersonComponent(IComponentDependenciesFactory dependencies)
+            : base(dependencies)
+        {
+        }
+
+        public override IEnumerable&lt;PageArea> GetPageAreas()
+        {
+            return new[] { PageArea.Body };
+        }
+
+        public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
+        {
+            if (pageArea == PageArea.Body)
+            {
+                var person = context.Data.Get&lt;Person>();
+                context.Html.WriteElementLine("p", person.Name);
+            }
+            return WriteResult.Continue();
+        }
+    }
+</pre>
+
+<p>
+	The <span class="code">WritePageArea</span> method is called once for each component
+	instance on the page when rendering the body of the page, but when there are multiple
+	components of the same type on a page, or the component is inside a repeating region
+	the <span class="code">WritePageArea</span> method is called only once when writing
+	other parts of the page. For example if your component writes to the 
+	<span class="code">&lt;head>&lt;/head></span> section of the page and the component is 
+	included multiple times on a page, then the <span class="code">WritePageArea</span> method
+	will only be called once for each page with the <span class="code">pageArea</span>
+	parameter set to <span class="code">PageArea.Head</span>.
+</p>
+
+<p>
+	The <span class="code">WritePageArea</span> method must return an instance of the
+	<span class="code">IWriteResult</span> interface. You can implement this interface
+	yourself, or you can use static methods of the <span class="code">WriteResult</span>
+	class. The purpose of the <span class="code">IWriteResult</span> is to let the rendering
+	engine know if or when you are finished writing your HTML. The static methods of 
+	<span class="code">WriteResult</span> work like this:
+</p>
+
+<ul>
+    <li>
+		<span class="code">WriteResult.Continue()</span> means I have finished writing all of my Html
+		but other components should be run to contribute output as well. This is the most frequently
+		used use case.
+	</li>
+    <li>
+		<span class="code">WriteResult.ResponseComplete()</span> means I have finished writing all of my Html
+		and the response is now complete so do not render output from any other controls. This is
+		mostly usefull when wtiring to the page title and you do not want to concatenate the results
+		of all component that write to the page title.
+	</li>
+    <li>
+		<span class="code">WriteResult.ContinueAsync(action)</span> means that my Html takes a long
+		time to produce, so kick it off in a background thread and continue running other components.
+		If other components also return <span class="code">WriteResult.ContinueAsync(action)</span> then
+		these operations will continue in parallel on different threads. This option requires some special
+		programmming to ensure that the asyncrhronously produced Html ends up in the correct sequence
+		in the response. See section on this below.
+	</li>
+    <li>
+		<span class="code">WriteResult.WaitFor(task)</span> means that I started a background task to
+		write my Html. Please wait for this task to complete before sending the response back to thebrowser. 
+		In the meantime the other components on the page will continue processing and outputting their Html.
+		See section below on asyncrhronously writing to the Html output stream.
+	</li>
+</ul>
+
+<h3>Consuming Data in your Component</h3>
+<p>
+	If your component needs data from a data provider it is better NOT to inject the data provider
+	directly or look in the data catalog for it. Instead you should decorate your class with the
+	<span class="code">[NeedsData()]</span> attribute. If you do it this way there are several advantages:
+</p>
+<ul>
+	<li>If you place multiple components on the page the data provider will only be called once.</li>
+	<li>If you place the component inside a repeater that repeats the data it needs then it will work as expected.</li>
+	<li>If the dependant data is available with multiple scopes then the page designer can choose which scope to apply and your component will receive the correct version of the data.</li>
+</ul>
+
+<p>
+	Here is an example of a component that uses data. This example will render Html for an address
+</p>
+<pre>
+    [IsComponent("address")]
+    [NeedsData(typeof(Address))]
+    internal class AddressComponent : Component
+    {
+        public AddressComponent(IComponentDependenciesFactory dependencies)
+            : base(dependencies)
+        {
+        }
+
+        public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
+        {
+            if (pageArea == PageArea.Body)
+            {
+                var address = context.Data.Get&lt;Address>();
+                context.Html.WriteElementLine("p", address.Street);
+                context.Html.WriteElementLine("p", address.City);
+                context.Html.WriteElementLine("p", address.ZipCode);
+            }
+            return WriteResult.Continue();
+        }
+    }
+</pre>
+
+<p>
+	The <span class="code">[NeedsData()]</span> attribute causes the requested type of data to be
+	added to the <span class="code">IRenderContext</span> where you can retrieve it by calling the
+	<span class="code">Get&lt;T>()</span> method of its <span class="code">Data</span> property.
+</p>
+
+<h3>Asyncronous HTML Output</h3>
+<P>
+	The Pages Framework is designed to be extremely flexible and scaleable and therefore prvides
+	a mecahnism to allow components to contribute asynchronously to the Html output. Here is an example:
+</p>
+<pre>
+        public override IWriteResult WriteBodyArea(IRenderContext context)
+        {
+            var html = context.Html;
+
+            // Save this location in the output buffer
+            var begining = html.CreateInsertionPoint();
+
+            // Write a paragraph of text
+            html.WriteElementLine("p", "This is paragraph 2");
+
+            // Write a paragraph of text in a background thread
+            var task = Task.Factory.StartNew(() =>
+                {
+                    // Simulate a call to a service or database here
+                    Thread.Sleep(10);
+
+                    begining.WriteElementLine("p", "This is paragraph 1");
+                });
+
+            // Write a third paragraph of text
+            html.WriteElementLine("p", "This is paragraph 3");
+
+            return WriteResult.WaitFor(task);
+        }
+</pre>
+<p>
+	In this example the resulting web page will contain the three paragraphs in
+	numeric order even though paragraph 1 was written after the other two.
+</p>
+
+<h3>Component Attributes</h3>
+
+<p>
+	You can do some things with components without writing any code, this example is adapted
+	from the menu package that is shipped with the Pages Framework:
+</p>
+<pre>
+        // Desktop menu behavior
+        [DeployCss("ul.{ns}_dt_menu", "list-style-type: none; overflow: hidden; white-space: nowrap;", 1)]
+        [DeployCss("li.{ns}_dt_option", "display: inline-block;", 2)]
+        [DeployCss("li.{ns}_dt_option a, a.{ns}_dt_option", "display: inline-block; text-decoration: none;", 3)]
+        [DeployCss("div.{ns}_dt_dropdown", "display: none; position: absolute; overflow: hidden; z-index: 1;", 4)]
+        [DeployCss("div.{ns}_dt_dropdown a", "text-decoration: none; display: block; text-align: left", 5)]
+        [DeployCss("li.{ns}_dt_option:hover div.{ns}_dt_dropdown", "display: block;", 6)]
+
+        // Hamburger button behavior
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button", "display: none;", 20)]
+        [DeployCss("label.{ns}_mb_hamburger_button", "transition: all 0.3s; cursor: pointer; ", 21)]
+        [DeployCss("div.{ns}_mb_hamburger_icon", "transition: all 0.3s; position: relative; float: left; width: 100%;", 22)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_1", "transition: all 0.3s; transform: rotate(135deg);", 23)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_2", "transition: all 0.3s; opacity: 0;", 23)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "transition: all 0.3s; transform: rotate(-135deg);", 23)]
+
+        // Slideout menu behavior
+        [DeployCss("ul.{ns}_mb_slideout", "position: absolute;", 24)]
+        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked ~ ul.{ns}_mb_slideout", "transform: translateX(0);", 25)]
+		[IsComponent("menu_styles")]
+        public class MenuStyles
+        { }
+
+</pre>
+
+<p>
+	By decorating your component with the <span class="code">[IsComponent("component_name")]</span> attribute
+	you do not have to manually register each component with the Fluent Builder, instead you can ask the
+	Fluent Builder to register everything in your assembly and it will use reflection to find all of the
+	components.
+</p>
+
+<p>
+	The other attributes you can add are:
+</p>
+
+<ul>
+    <li><a href="/content/project/owinframework.pages.html/attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on any page that includes this component</li>
+    <li><a href="/content/project/owinframework.pages.html/attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a JavaScript function to include on any page that has this component on it</li>
+    <li><a href="/content/project/owinframework.pages.html/attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how JavaScript and CSS should be deployed for this component</li>
+    <li><a href="/content/project/owinframework.pages.html/attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a dependent component</li>
+    <li><a href="/content/project/owinframework.pages.html/attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this component</li>
+    <li><a href="/content/project/owinframework.pages.html/attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript in this component</li>
+    <li><a href="/content/project/owinframework.pages.html/attributes/renderhtml"><span class="code">[RenderHtml]</span></a> makes this component render localized HTML</li>
+</ul>
+
+

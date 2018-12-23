@@ -1,0 +1,121 @@
+<h2>Pages Framework Elements</h2>
+
+<p>
+    In the Pages Framework you build your web application by defining
+	elements. These elements are of specific types that fit into the
+	overall design of the Pages Framework. This page briefly describes
+	each type of element and provides a link to a page that provides
+	more detail.
+</p>
+
+<p>
+    The Fluent Builder is the entry point for building elements, it is
+	used by the template parsers, CMS and other high level pieces that
+	help to define your web application.
+</p>
+<p>
+    The fluent builder has a plug-in architecture allowing specific build
+	engines to be selected for each type of element. This documentation
+	describes the build engines that come with the Pages Framework itself.
+	If you configure a third party build engine for a specifc element type,
+	then you should refer to the third party documentation instead.
+</p>
+<p>
+    You can also write a build engine as part of your application if you
+	want to change how elements are built, but still want to use the 
+	template languages or CMS features of the Pages Framework.
+</p>
+
+<h3><a href="pages">Page Elements</a></h3>
+<p>
+    These elements are the html pages of your website. Each page element
+	can be dynamic and parameterized resulting in what appears to be many
+	pages to a visitor to your website. If you look at the source code for
+	this website you will see it contains very few Page Elements even though
+	this website contains many pages of content.
+</p>
+<p>
+    Every Page Element must specify a <a href="layouts">Layout Element</a>
+	that defines the arangement of content on the page. Several pages can
+	share the same layout but populate the regions of the layout differently.
+</p>
+
+<h3><a href="layouts">Layout Elements</a></h3>
+<p>
+    These elements define a fixed arrangement of regions that can have
+	content placed in them. Each region of the layout must be named so that 
+	the contents of each region can be defined for the various places where 
+	the layout is used.
+</p>
+<div class="app_hint">
+    Note that the regions of a layout contain <a href="regions">Region Elements</a> 
+	but the name of	the regions within the layout do not have to match the name 
+	of the Region Element within it, and typically it is more readable if these 
+	names are different, for example:
+	<pre>
+    [IsLayout("two_column", "left,right")]
+    [LayoutRegion("left", "fixed_left_region")]
+    [LayoutRegion("right", "flexible_right_region")]
+    [RegionHtml("left", null, "Left column content")]
+    [RegionHtml("right", null, "Right column content")]
+    internal class TwoColumnLayout { }
+	</pre>
+</div>
+<p>
+    The layout itself can also be named, and this name can be used to specify
+	which layout to use (for example on a specific page). Elements with name
+	references can be defined in any order - all of the name references are 
+	resolved after all of the elements are loaded.
+</p>
+<p>
+    Each region of the layout can contain one <a href="regions">Region Element</a>
+	that defines how this region of the layout behaves (alignment, wrapping, resizing etc).
+	The CSS and JavaScript of the layout and the regions within it define how the layout
+	is rendered and how it interacts with content and with the user.
+</p>
+
+<h3><a href="regions">Region Elements</a></h3>
+<p>
+    These elements define the appearence and behavior of a rectangular 
+	area of your web pages. The same Region Element can be used in every
+	place where the same visual appearence and interaction behaviour is needed.
+</p>
+<p>
+    Region Elements can be bound to a list of obejcts and will repeat the contents
+	of the region for each object in the list. Region Elements can also define
+	a data binding scope for everything inside the region.
+</p>
+<p>
+    Each region can contain one of the following:
+	<ul>
+	    <li>A <a href="layouts">Layout Element</a></li>
+	    <li>A <a href="components">Component Element</a></li>
+	    <li>Localized HTML</li>
+	    <li>A template</li>
+	</ul>
+</p>
+
+<h3><a href="components">Component Elements</a></h3>
+<p>
+    These elements render the majority of the html on the page. You would typically
+	write these as classes that inherit from the <span class="code">Component</span>
+	base class and override virtual methods to output html.
+</p>
+<div class="app_hint">
+    Note that you do not have to use components, you can use one of the template parsing
+	mechanisms instead. Template parsers construct components for you by parsing a
+	template language. Many parsers support syntaxes for data binding and repeating.
+</div>
+
+<h3><a href="packages">Package Elements</a></h3>
+<p>TBD</p>
+
+<h3><a href="modules">Module Elements</a></h3>
+<p>TBD</p>
+
+<h3><a href="services">Service Elements</a></h3>
+<p>TBD</p>
+
+<h3><a href="dataproviders">Data Provider Elements</a></h3>
+<p>TBD</p>
+
