@@ -1,2 +1,27 @@
 ﻿<h2>Service Endpoint Permissions</h2>
 
+<p>
+    Services and service endpoints can have a required permission set.
+    When calls are made to the service by identities that do not have this
+    permission they will receive an access denied response and the 
+    service endpoint code will not execute.
+</p>
+<p>
+    For this to work you must include Authorization middleware in your
+    OWIN pipeline. Any middleware that implements the the authorization 
+    mechanism can be used.
+</p>
+
+<h3><span class="code">EndpointSpecificPermission</span></h3>
+
+<p>
+    This property of the <span class="code">[Endpoint]</span> attribute
+    and the <span class="code">[IsService]</span> attribute. When this
+    property is <span class="code">true</span> the name of the service
+    and method name are passed as the asset name to the authentication
+    check separated by a forward slash. This allows you to define
+    permissions that allow access to service methods using wildcards,
+    for example you can give one group of users permission to call any
+    endpoint in the service whilst other groups of users can only call
+    certain specific endpoints.
+</p>
