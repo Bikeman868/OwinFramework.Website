@@ -18,3 +18,11 @@
     If the service endpoint method reads the body of the request multiple
     times then the body of the request will only be deserialized once.
 </p>
+<p>
+    The standard libraries already contain some implementations of 
+    <span class="code">IRequestDeserializer</span>  that you can take
+    advantage of in your application, but this interface is also
+    straightforward to implement. These classes are in the 
+    <span class="code">OwinFramework.Pages.Restful.Serializers</span>
+    namespace.
+</p>

@@ -103,7 +103,7 @@
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsPage.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Mocks\Landing.html" />
-    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Validators.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Routing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Parameters.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Permissions.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\CustomSerialization.html" />

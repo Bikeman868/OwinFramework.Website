@@ -1,0 +1,132 @@
+﻿<h2>Service Routing</h2>
+
+<p>
+    The <span class="code">[IsService()]</span> attribute has properties 
+    that specify how Http requests are routed to the service as folllows.
+</p>
+
+<h3><span class="code">BasePath</span></h3>
+
+<p>
+    This property of the <span class="code">[IsService()]</span>
+    attribute establishes a route for the service. Any Http requests
+    that match this at the start of their path will be compared to the
+    service endpoints for possible routing to that endpoint. If the
+    base path does not match the Http request then this service is
+    skipped and routing moves onto the next service.
+</p>
+<p>
+    For efficiency you should always specify a base path for each
+    service and organize your service endpoints so that all the
+    endpoints in a serice have the same base path. This arrangement
+    provides the most efficient routing of requests.
+</p>
+<p>
+    If you do not specify a base path then it defaults to
+    <span class="code">/</span> effectively making all of
+    endpoints within the service have absolute paths.
+</p>
+<p>
+    The base path should end with a forward slash because it is
+    concatenated with the relative path of each endpoint to form the
+    full path of the endpoint. If you forget to append a forward
+    slash then one will be appended automatically for you.
+</p>
+<p>
+    The base path can contain wildcards for some path elements but must
+    not end with a wildcard. Since it is designed to match the start of 
+    the Http request it will be added to the routing table with <span class="code">**</span> 
+    on the end allowing the endpoints to have any relative path below 
+    this base.
+</p>
+
+<h3><span class="code">Methods</span></h3>
+
+<p>
+    This property of the <span class="code">[IsService()]</span> 
+    attribute defines the Http methods that will be routed to the
+    service. If you do not specify the <span class="code">Methods</span>
+    it will default to <span class="code">new []{ Method.Post }</span>. In this
+    case the service will only receive Http POST requests. To handle other
+    kinds of Http request you must set the <span class="code">Methods</span>
+    property.
+</p>
+<p>
+    You can route all Http methods to the service by setting 
+    <span class="code">Methods</span> to an empty
+    array like this: <span class="code">new Method[]{ }</span>
+</p>
+<p>
+    Only methods that are routed to the service itself can be further routed
+    to the endpoints within the service with relative paths. Endpoints with
+    absolute paths are chained into the routing at the root level and do not
+    have this restriction.
+</p>
+
+<h3><span class="code">Priority</span></h3>
+
+<p>
+    This property of the <span class="code">[IsService()]</span>
+    attribute defines the order in which routing will be evaluated.
+    The highest priority routes are considered before the lower priority ones.
+    Since the default priority is zero, the recommentation is to make very
+    specific routes have positive priorities and wildcard routes have negative
+    priority so that the wildcard routes do not mask the more specific routes
+    by matching the request first.
+</p>
+<p>
+    Priorities also affect performance because the router will try to match
+    routes in order or highest to lowest priority until it finds a match.
+    You can make routing more efficient by giving higher priority to routes
+    that are matched more frequently.
+</p>
+
+<h2>Endpoint Routing</h2>
+
+<p>
+    Endpoints can have relative or absolute paths. This decision fundamentally
+    changes the routing model for the endpoint.
+</p>
+<p>
+    When endpoints have a relative url path (that does not begin with a forward slash)
+    the endpoint is considered to be within the service and only requests routed to 
+    that service can end up at this endpoint.
+</p>
+<p>
+    When endpoints have an absolute url path (that begins with a forward slash)
+    the endpoint is included directly into the root routing table and is indendant
+    of any routing applied to the containing service. In this case there is still
+    advantages in building a service with multiple endpoints because they inherit
+    the settings for serialization, deserialization etc.
+</p>
+
+<p>
+    The <span class="code">[Endpoint()]</span> attribute has properties
+    that specify how Http requests are routed to the service as folllows.
+</p>
+
+<h3><span class="code">UrlPath</span></h3>
+
+<p>
+    Specifies the Http path of this endpoint relative to the service <span class="code">BaseUrl</span>
+    property. The endpoint can also specify an absolute path by starting this
+    property value with a forward slash.
+</p>
+
+<p>
+    If you do not set this property value then the name of the C# method 
+    will be used as the relative path.
+</p>
+
+<h3><span class="code">Methods</span></h3>
+
+<p>
+    For endpoints with an absolute <span class="code">UrlPath</span> this property
+    defines the Http methods that will be routed to this endpoint.
+</p>
+<p>
+    For endpoints with a relative <span class="code">UrlPath</span> this property is 
+    a further restriction that is applied after the request is successfully routed 
+    to the service. In this case there is no point in adding methods here that are
+    not also in the <span class="code">Methods</span> property of the service.
+</p>

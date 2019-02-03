@@ -105,16 +105,60 @@ namespace Sample1.SampleServices
     Your class can contain any number of methods. Any or all of these
     methods can be exposed as REST endpoints by decorating the method
     with an <span class="code">[Endpoint()]</span> attribute. These
-    methods must taks a single parameter of type <span class="code">IEndpointRequest</span>
-    and have a return type of <span class="code">void</span>
+    methods can be executed by sending Httl requests to your website.
 </p>
+
+<div class="app_warning">
+    Methods decorated with the <span class="code">[Endpoint()]</span> attribute 
+    must have a return type of <span class="code">void</span> and the first 
+    argument must be of type <span class="code">IEndpointRequest</span>. Other
+    arguments are optional as described below.
+</div>
+
 <p>
     Endpoint methods can optionally be decorated with one or more 
-    <span class="code">[EndpointParameter()]</span> attribute
+    <span class="code">[EndpointParameter()]</span> attributes
     to define the parameters that can be passed to the method. These
     attributes also define the mechanisms that are supported for
     parameter passing and the parameter parser to use.
 </p>
+
+<p>
+    Endpoint methods can optionally have additional arguments and these
+    arguments can be decorated with <span class="code">[EndpointParameter()]</span> 
+    attributes to define how parameters passed in the Html request are bound
+    to those method arguments.
+</p>
+
+<p>
+    The two endpoints below will function identically to the caller of 
+    the Http endpoint. The first version produces slightly better API
+    documentation and is the recommended syntax, but you can also use the
+    second version of the syntax if you prefer.
+</p>
+
+<pre>
+[Endpoint]
+[EndpointParameter("a", typeof(double))]
+[EndpointParameter("b", typeof(double))]
+public void Add(IEndpointRequest request)
+{
+    var a = request.Parameter&lt;double>("a");
+    var b = request.Parameter&lt;double>("b");
+    request.Success(a + b);
+}
+</pre>
+
+<pre>
+[Endpoint]
+public void Add(
+    IEndpointRequest request,
+    [EndpointParameter] double a,
+    [EndpointParameter] double b)
+{
+    request.Success(a + b);
+}
+</pre>
 
 <h2>Supported Features</h2>
 <p>
@@ -179,9 +223,9 @@ namespace Sample1.SampleServices
     For more details on how to take advantage of these features, click the links below:
 </p>
 <ul>
+    <li><a href="routing">Routing requests to endpoint methods</a></li>
     <li><a href="customdeserialization">How to provide custom request body deserialization</a></li>
     <li><a href="customserialization">How to provide custom response serialization</a></li>
     <li><a href="permissions">How restrict access using permissions</a></li>
     <li><a href="parameters">How define parameters to service endpoints</a></li>
-    <li><a href="validators">How provide application specific parameter parsing and validation</a></li>
 </ul>
