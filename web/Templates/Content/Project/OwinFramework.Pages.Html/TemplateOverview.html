@@ -1,0 +1,119 @@
+﻿<h2>The templating system</h2>
+
+<p>
+    Templates are a really important concept in building a website using this framework. Writing classes 
+    and decorating them with attributes to define pages, layouts, regions etc is very powerful and flexible, 
+    especially when those classes inherit from the standard implementation and override some of the virtual 
+    methods, but this technique has two important drawbacks: All of the website content is compiled into the 
+    asemblies which means you need to recompile and redepoly to change anything; Writing html and JavaScript 
+    as strings that are passed to attribute constructors is ugly, and you don't get any help from the 
+    development tool (syntax highlighting and intellisense).
+</p>
+<p>
+    The templating system addresses these two issues by allowing you to place snippets of html, css and JavaScript
+    into separate resources then referencing them from region and layout elements.
+</p>
+
+<h3>Template Loaders</h3>
+
+<p>
+    You can easily write your own template loader, or you can use one of the ones that are provided as standard.
+    The job of the template loader is to retrieve templates from somewhere and pass them to a template parser,
+    then optionally register them with the Name Manager.
+</p>
+<p>
+    The template loaders that are included in the standard package are:
+</p>
+
+<h4>OwinFramework.Pages.Html.Templates.FileSystemLoader</h4>
+
+<p>
+    This template loader scans files in a directory within the file system, loads files and parses them
+    then adds the parsed template to the name manager.
+</p>
+<p>
+    The folder to scan, whether to include sub-folders or not, the mapping of file path onto the parser
+    to use and periodic checking and reloading of templates are all configurable. When reloading is
+    enabled the file system loader will calculate a hash for each template and only re-parse and re-register
+    templates when the hash changes.
+</p>
+<p>
+    Below is an example of how to use the <span class="code">/span> FileSystemLoader</span>. The full
+    source code that this was taken from can be seen 
+    <a href="https://github.com/Bikeman868/OwinFramework.Website/blob/master/web/Startup.cs">here</a>.
+</p>
+<pre>
+var fileLoader = ninject.Get&lt;OwinFramework.Pages.Html.Templates.FileSystemLoader>();
+fileLoader.Load(markdownParser, p => p.Value.EndsWith(".md"));
+fileLoader.Load(asIsParser, p => p.Value.EndsWith(".html"));
+fileLoader.Load(mustacheParser, p => p.Value.EndsWith(".mustache"));
+</pre>
+
+<h4>OwinFramework.Pages.Html.Templates.UriLoader</h4>
+
+<p>
+    This template loader takes a URI that defines a template location, downloads the content from that
+    URI, passes the content to a template parser and registers the template with the name manager.
+    The Uri loader can also be configured to download the content periodically in which case it will 
+    calculate a checksum and only reparse and reregister the template if the checksum has changed.
+</p>
+<p>
+    Below is an example of how to use the <span class="code">/span> FileSystemLoader</span>. The full
+    source code that this was taken from can be seen
+    <a href="https://github.com/Bikeman868/OwinFramework.Website/blob/master/web/Startup.cs">here</a>.
+</p>
+<pre>
+var uriLoader = ninject.Get&lt;OwinFramework.Pages.Html.Templates.UriLoader>();
+uriLoader.ReloadInterval = TimeSpan.FromHours(6);
+
+foreach (var project in SiteMap.Instance.Projects)
+{
+    var repository = project.Repository;
+    var repositoryName = repository.GitHubRepositoryName;
+    var ownerName = repository.Owner.GitHubAccountName;
+    var uri = new Uri("https://raw.githubusercontent.com/" + ownerName + "/" + repositoryName + "/master/" + project.ProjectName + "/readme.md");
+    var templatePath = "/content/project/" + project.ProjectName + "/readme";
+    uriLoader.LoadUri(uri, markdownParser, templatePath);
+}
+</pre>
+
+<h3>Template Parsers</h3>
+
+<p>
+    Template parsers are responsible for taking a text document and turning it into an 
+    <span class="code">ITemplate</span> implementation. You can write your own template
+    parser and use it with any of the template loaders or you can use the built-in template 
+    parsers.
+</p>
+
+<h4>OwinFramework.Pages.Html.Templates.AsIsParser</h4>
+
+<p>
+    This template parser does very little and yet is one of the most useful parsers.
+    It simply takes the original text of the template resource and writes it directly
+    into the page at runtime.
+</p>
+<p>
+    You can use this template parser whenever you have literal content in your
+    template that you want to be directly inserted into the page content
+    without any additional processing.
+</p>
+
+<h4>OwinFramework.Pages.Html.Templates.MarkdownParser</h4>
+
+<p>
+    This template parser assumes that the template contains static text in
+    markdown format. It parses the markdown and converts it into Html, then
+    outputs the Html into the page each time the template is rendered.
+</p>
+
+<h4>OwinFramework.Pages.Html.Templates.MustacheParser</h4>
+
+<p>
+    This template parser assumes that the template contains html with data
+    binding expressions in Mustache format. The data binding expressions will
+    be replaced with data from the rendering context each time the template
+    is rendered. You will need to add data providers to your solution to
+    provide the data that is referenced in the data binding expressions.
+</p>
+

@@ -22,6 +22,13 @@
     these classes and use the attributes to configure these elements.
 </p>
 
+<p>
+    This package also contains a templating system. You can choose from a variety of template
+    loaders and template parsers to add templates to the name manager, or you can programatically
+    construct templates using a fluent syntax. These templates can be referenced by pages, layouts
+    and regions to define their content. See <a href="TemplateOverview">template overview</a> for more details.
+</p>
+
 <h2>Sample Page</h2>
 <p>
     The code below is taken from the <a href="/content/general/helloworld">getting started walkthrough</a>.
@@ -63,6 +70,7 @@
     <li><a href="attributes/option"><span class="code">[Option]</span></a> documents an optional part of the request for this page</li>
     <li><a href="attributes/pagetitle"><span class="code">[PageTitle]</span></a> specifies the title to output into the page head</li>
     <li><a href="attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript on this page</li>
+    <li><a href="attributes/regiontemplate"><span class="code">[RegionTemplate]</span></a> defines a template to render into a region of the page layout</li>
     <li><a href="attributes/requirespermission"><span class="code">[RequiresPermission]</span></a> specifies a permission that users must have to see this page</li>
     <li><a href="attributes/route"><span class="code">[Route]</span></a> defines which requests will be routed to this page</li>
     <li><a href="attributes/style"><span class="code">[Style]</span></a> adds CSS style to the body element of the page</li>
@@ -88,7 +96,7 @@
     <li><a href="attributes/regioncomponent"><span class="code">[RegionComponent]</span></a> fills a region of the layout with a component</li>
     <li><a href="attributes/regionhtml"><span class="code">[RegionHtml]</span></a> fills a region of the layout with localized HTML</li>
     <li><a href="attributes/regionlayout"><span class="code">[RegionLayout]</span></a> fills a region of the layout with a layout</li>
-    <li><a href="attributes/regiontemplate"><span class="code">[RegionTemplate]</span></a> ffills a region of the layout with a template</li>
+    <li><a href="attributes/regiontemplate"><span class="code">[RegionTemplate]</span></a> fills a region of the layout with a template</li>
     <li><a href="attributes/style"><span class="code">[Style]</span></a> adds CSS style to layout container</li>
 </ul>
 
@@ -109,10 +117,10 @@
     <li><a href="attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this region</li>
     <li><a href="attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript in this region</li>
     <li><a href="attributes/repeat"><span class="code">[Repeat]</span></a> makes the contents of this region repeat for each object in a list</li>
+    <li><a href="attributes/rendertemplate"><span class="code">[RenderTemplate]</span></a> specifies a template to render into an area of the page</li>
     <li><a href="attributes/style"><span class="code">[Style]</span></a> adds CSS style to region container</li>
     <li><a href="attributes/usescomponent"><span class="code">[UsesComponent]</span></a> specifies that this region contains a component</li>
     <li><a href="attributes/useslayout"><span class="code">[UsesLayout]</span></a> specifies that this region contains a layout</li>
-    <li><a href="attributes/usestemplate"><span class="code">[UsesTemplate]</span></a> specifies that this region contains a template</li>
 </ul>
 
 <h3>Component Attributes</h3>
@@ -129,6 +137,25 @@
     <li><a href="attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and JavaScript in this component</li>
     <li><a href="attributes/renderhtml"><span class="code">[RenderHtml]</span></a> makes this component render localized HTML</li>
 </ul>
+
+<h2>Templates</h2>
+<p>
+    Templates are a really important concept in building a website. Writing classes and decorating
+    them with attributes to define pages, layouts, regions etc is very powerful and flexible, especially
+    when those classes inherit from the standard implementation and override some of the virtual methods,
+    but this technique has two important drawbacks: All of the website content is compiled into the asemblies
+    which means you need to recompile and redepoly to change anything; Writing html and JavaScript as strings
+    that are passed to attribute constructors is ugly, and you don't get any help from the development tool
+    (syntax highlighting and intellisense).
+</p>
+<p>
+    The templating system addresses these two issues by allowing you to place snippets of html, css and JavaScript
+    into separate resources then referencing them from region and layout elements.
+</p>
+<p>
+    The <a href="TemplateOverview">template system overview</a> contains a lot more information about how to use templates. Note that
+    all of the content of this website is defined in templates.
+</p>
 
 <h2>Semi-Custom Elements</h2>
 <p>

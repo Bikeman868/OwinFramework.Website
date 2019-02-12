@@ -101,6 +101,7 @@
     <Content Include="Templates\Content\Project\OwinFramework.Pages.DebugMiddleware\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Framework\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsPage.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\TemplateOverview.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Mocks\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Routing.html" />
