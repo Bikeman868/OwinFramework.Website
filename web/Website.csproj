@@ -103,6 +103,9 @@
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsPage.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\TemplateOverview.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Templates\MustacheParser.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Templates\MultiPartParser.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Templates\MarkdownParser.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Mocks\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Routing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Parameters.html" />

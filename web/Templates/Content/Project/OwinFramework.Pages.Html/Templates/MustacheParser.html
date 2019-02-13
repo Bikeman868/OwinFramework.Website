@@ -1,0 +1,89 @@
+﻿<p>
+    The Mustache template parser takes template files and replaces text
+    within double curly braces with data. It can be used to parse Html,
+    CSS or JavaScript templates.
+</p>
+<p>
+    Mustache is a well established library that contains alot of functionallity.
+    This parser is not an attempt to duplicate or replace Mustache, but rather to
+    provide a simple server-side data binding that is somewhat familiar to
+    developers that already know Mustache. As such this is a subset of the
+    features provided by the full Mustache library.
+</p>
+<p>
+    Below is an example of a valid template:
+</p>
+<pre>
+{{VerticalText = Sample1.SampleDataProviders.VerticalText}}
+&lt;svg width="{{VerticalText: Width}}" height="{{VerticalText: Height}}">
+  &lt;style>
+    text { {{VerticalText: TextStyle}} }
+  &lt;/style>
+  &lt;rect width="100%" height="100%" fill="{{VerticalText: Background}}" />
+  &lt;g transform="translate({{VerticalText: X}},{{VerticalText: Y}}) rotate(-90)">
+    &lt;text class="title" textLength="{{VerticalText: TextHeight}}" lengthAdjust="spacingAndGlyphs">{{VerticalText: Caption}}&lt;/text>
+  &lt;/g>
+&lt;/svg>
+</pre>
+<p>
+    This example happens to be SVG but any language that does not conflict
+    with double curly braces will work.
+</p>
+
+<h3>Simple Data Binding</h3>
+
+<p>
+    The simplest thing you can do is put a class name and a property name separated
+    by a colon inside double curly braces. This will cause the template to have
+    a dependency on the type of data identified by the class name, and each time
+    the template is rendered it will look for this type of data in the render context
+    and then
+</p>
+<div class="information">
+    Note that the classes and properties in binding expression are resolved using 
+    reflection. This might seem slow, except that this resolution only happens once
+    when the template is parsed, and reading the property on each rendering
+    operation is just as fast as compiled code.
+</div>
+
+<h3>Class Name Aliases</h3>
+
+<p>
+    To avoid repeating the full class name over and over you can define an
+    alias for the class at the start of the template. You do this by putting the
+    alias name and the full class name separated by and equals sign within double
+    curly braces at the top of the template.
+</p>
+<div class="warning">
+    Class name aliases must be the very first thing in the template. You can not
+    add these definitions further down the file.
+</div>
+
+<h3>Interfaces</h3>
+
+<p>
+    You are not restricted to using class names in your binding expressions, any
+    type will work, it just needs to have a data provider defined within your
+    application.
+</p>
+
+<h3>Repeating</h3>
+
+<p>
+    To repeat a peice of content for each item in a list, use this syntax:
+</p>
+<pre>
+{{Address=MyApp.DataModels.IAddress}}
+{{#Address}}&lt;p>{{Street}},{{City}},{{Zip}}&lt;/p>{{/Address}}
+</pre>
+<p>
+    This example creates a template that has a dependency on 
+    <span class="code">IList&lt;MyApp.DataModels.IAddress></span>. It will look
+    for <span class="code">IList&lt;MyApp.DataModels.IAddress></span> in the rendering
+    conttext and repeat the piece between <span class="code">{{#Address}}</span> and
+    <span class="code">{{/Address}}</span> for each address in the list.
+</p>
+<div class="warning">
+    Note that your data provider must add an <span code="code">IList&lt;T></span> to the
+    data context, other types of collection will not work!
+</div>

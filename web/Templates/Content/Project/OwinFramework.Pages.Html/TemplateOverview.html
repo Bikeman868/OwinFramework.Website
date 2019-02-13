@@ -29,8 +29,26 @@
 
 <p>
     This template loader scans files in a directory within the file system, loads files and parses them
-    then adds the parsed template to the name manager.
+    then adds the parsed template to the name manager. When registering templates it maps the file path
+    onto the template path using two configuration options that define the root of the folder tree
+    and the root of the template path heirachy. By default the <span class="code">FileSystemLoader</span> 
+    loads template files from a <span class="code">~\Templates</span> folder and maps them onto the root
+    of the template path heirachy. What this means is that if you have a template file in 
+    <span class="code">~\Templates\Profile\MyProfile.html</span> this will be registered with the name
+    manager as the <span class="code">/profile/myprofile</span> template. Template paths are not case
+    sensitive so you can also refer to this template as <span class="code">/Profile/MyProfile</span>
+    if you like.
 </p>
+<div class="information">
+    Note that the Windows file system uses backslashes in folder paths but template paths use forward slash
+    so the <span class="code">FileSystemLoader</span> replaces backslash with forward slash when registering
+    templates in the name manager.
+</div>
+<div class="information">
+    Note that <span class="code">FileSystemLoader</span> does not include the file extension when registering
+    templates with the name manager. This is useful if you use the file extension to determine which parser
+    to use and want to be able to switch parser without updating all references to the template.
+</div>
 <p>
     The folder to scan, whether to include sub-folders or not, the mapping of file path onto the parser
     to use and periodic checking and reloading of templates are all configurable. When reloading is
@@ -77,6 +95,11 @@ foreach (var project in SiteMap.Instance.Projects)
 }
 </pre>
 
+<div class="information">
+    I strongly recommend using forward slash in template paths as shown in the above example but this
+    is not required by the framework.
+</div>
+
 <h3>Template Parsers</h3>
 
 <p>
@@ -84,6 +107,12 @@ foreach (var project in SiteMap.Instance.Projects)
     <span class="code">ITemplate</span> implementation. You can write your own template
     parser and use it with any of the template loaders or you can use the built-in template 
     parsers.
+</p>
+<p>
+    If you are writing your own parser you don't need to implement <span class="code">ITemplate</span>,
+    you just need to make your parser have an injected dependency on <span class="code">ITemplateBuilder</span> 
+    and use it to build your templates. Take a look at the source code for the <span class="code">AsIsParser</span>
+    to see how simple this can be.
 </p>
 
 <h4>OwinFramework.Pages.Html.Templates.AsIsParser</h4>
@@ -106,6 +135,9 @@ foreach (var project in SiteMap.Instance.Projects)
     markdown format. It parses the markdown and converts it into Html, then
     outputs the Html into the page each time the template is rendered.
 </p>
+<p>
+   See <a href="templates/markdownparser">more details</a> about the markdown template parser.
+</p>
 
 <h4>OwinFramework.Pages.Html.Templates.MustacheParser</h4>
 
@@ -116,4 +148,107 @@ foreach (var project in SiteMap.Instance.Projects)
     is rendered. You will need to add data providers to your solution to
     provide the data that is referenced in the data binding expressions.
 </p>
+<p>
+    See <a href="templates/mustacheparser">more details</a> about the mustache template parser.
+</p>
 
+<h4>OwinFramework.Pages.Html.Templates.MultiPartParser</h4>
+
+<p>
+    This template parser allows you to combine content from various parts of
+    the page into a single template resource using a special separator between
+    sections. For example you can combine CSS, html and JavaScript templates
+    into a single file and the <span class="code">MultiPartParser</span> will
+    separate out the different areas and render them into different parts of
+    the page.
+</p>
+
+<p>
+    See <a href="templates/multipartparser">more details</a> about the multi-part template parser.
+</p>
+
+<h3>Building Templates Directly</h3>
+<p>
+    Instead of using a loader to load template files then applying a parser to
+    create the template, it is also possible to use the <span class="code">ITemplateBuilder</span>
+    to directly construct templates within your application. This is illustrated below:
+</p>
+<pre>
+var templateBuilder = ninject.Get&lt;ITemplateBuilder>();
+var template = templateBuilder.BuildUpTemplate()
+      .AddElementOpen("p", "class", "dummy")
+      .AddText("this-is-the", "This is the ")
+      .AddDataField<applicationinfo>(a => a.Name)
+      .AddText("application", " application")
+      .AddElementClose()
+      .Build();
+  nameManager.Register(template, "/demo/template1");
+</pre>
+
+<h3>Populating Layouts and Pages with Templates</h3>
+
+<p>
+    Layouts and pages can have a <span class="code">[RegionTemplate]</span> attribute
+    attached to the class to specify a template to render into a named region of the 
+    layout. When you do this for a template with a single part, the template will be 
+    rendered into the body of the page. If you do this with a multi-part template then
+    it will be rendered into all parts of the page that are templated.
+</p>
+
+<h3>Populating Regions with Templates</h3>
+
+<p>
+    To populate a region with templates attach one or more <span class="code">[RenderTemplate]</span>
+    attributes to it. Each attribute specifies a template path and the area of the
+    page to render the template into.
+</p>
+<div class="warning">
+    Note that this technique only works with single-part templates. You can only
+    attack one multi-part template and it already defines the page areas within
+    the template itself.
+</div>
+<p>
+    Lets say for example I want to create a login form. The login form consists of
+    some html, some CSS and some JavaScript. It is convenient to create three separate
+    templates because your development tool will provide syntax highlighting and
+    intellisense within each file according to the type of content. These three
+    templates need to be written to different parts of the page. You might
+    create a region like the one below to accomplish this:
+</p>
+<pre>
+[IsRegion("login-form")]
+[RenderTemplate("/forms/loginStyle", PageArea.Styles)]
+[RenderTemplate("/forms/loginLayout", PageArea.Body)]
+[RenderTemplate("/forms/loginModel", PageArea.Initialization)]
+internal class LoginFormRegion { }
+</pre>
+
+<h3>Multi-part vs Single Part Templates</h3>
+
+<p>
+    Most template parsers take a text file, parse it into some html and then write
+    that html into the body of the page when the page is rendered These are referred
+    to as single part templates in this documentation. It is also possible to create
+    templates that write different content into different parts of the page, i.e they
+    can write styles and scripts into the head, html into the body and initialization
+    scripts at the bottom of the page. These are referred to as multi-part templates.
+</p>
+<p>
+    When a single part template is rendered into a page or layout then it will always
+    be rendered into the body of the page. In contrast the region provides more flexibility
+    by allowing you to specify which part of the page you want to render into. The region
+    also allows you to choose different templates to render into each part of the page. This
+    is especially useful when creating self-contained reuasble pieces of UI functionallity
+    because you can create different templates for the CSS Javascript and Html (possibly
+    using different parsers) and combine these into a single region element by writing the
+    templates into the appropriate places in the page.
+</p>
+<p>
+    If you want even more flexibility than regions provide, then you can create a component
+    that can retrieve as many templates as you like from the name manager and render 
+    them however you want. This website it a good example of this technique; it has a component
+    that maps the URL of the page onto the path of a template and renders that template making
+    it possible to add new pages to the website just by adding new templates. Take a 
+    look at the <a href="https://github.com/Bikeman868/OwinFramework.Website/blob/master/web/Components/ContentTemplate.cs">source code</a> 
+    to see how this works.
+</p>

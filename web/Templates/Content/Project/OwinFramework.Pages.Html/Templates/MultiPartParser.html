@@ -1,0 +1,47 @@
+﻿<p>
+    The Multi-Part template parser creates multi-part templates by allowing
+    you to combine multiple templates into one file, then rendering those
+    templates into different parts of the page at runtime.
+</p>
+<p>
+    For example the following template:
+</p>
+<pre>
+--head
+
+&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">&lt;/script>
+
+--init
+
+$("p").hide();
+
+</pre>
+<p>
+    When added to a page will cause all of the paragraphs in the page to be hidden.
+    This works because the line that references jQuery will be rendered into the 
+    page head, and the part after <span class="code">--init</span> will be written
+    into the initialization script at the bottom of the page after all of the Html.
+</p>
+
+<h3>Section Dividers</h3>
+
+<p>
+    The sections of the multi-part template are separated by special dividers that
+    comprise two hyphens and a word that identifies the area of the page to render into.
+    These dividers are:
+</p>
+
+<ul>
+    <li><span class="code">--head</span> identifies html to render directly into the page head</li>
+    <li><span class="code">--css</span> identifies css style definitions to render into the page head</li>
+    <li><span class="code">--javascript</span> identifies JavaScript functions to render into the page head</li>
+    <li><span class="code">--html</span> identifies html to render into the body of the page</li>
+    <li><span class="code">--init</span> identifies JavaScript statements render into a script block at the bottom of the page after all of the Html</li>
+</ul>
+<div class="information">
+    Note that the CSS styles should not be wrapped in a &lt;style> tag, and JavaScript 
+    functions should not be wrapped in a &lt;script> tag. All of the styles and functions 
+    are gathered up together and wrapped appropriately.
+</div>
+
+
