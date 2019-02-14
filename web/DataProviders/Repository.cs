@@ -12,6 +12,7 @@ using Website.Navigation;
 namespace Website.DataProviders
 {
     [IsDataProvider(typeof(SiteMap.Repository))]
+    [SuppliesData(typeof(SiteMap.RepositoryOwner))]
     public class Repository : DataProvider
     {
         private readonly Regex _urlRegex = new Regex(

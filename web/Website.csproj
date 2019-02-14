@@ -472,7 +472,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
         <Reference Include="Svg">
-          <HintPath>..\packages\Svg\lib\net35\Svg.dll</HintPath>
+          <HintPath>..\packages\Svg\lib\Svg.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
