@@ -32,32 +32,27 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
+            IList<SiteMap.InterfaceDefinition> interfaces = null;
 
-            if (dependency.DataType == typeof(IList<SiteMap.InterfaceDefinition>))
+            if (dependency != null && dependency.DataType == typeof(IList<SiteMap.InterfaceDefinition>))
             {
                 var path = renderContext.OwinContext.Request.Path.Value;
-
                 var projectMatch = _projectRegex.Match(path);
 
                 if (projectMatch.Success)
                 {
                     var projectName = projectMatch.Groups[1].Value;
-                    var interfaces = _interfaces
+                    interfaces = _interfaces
                         .Where(i => string.Equals(i.Project.ProjectName, projectName, StringComparison.OrdinalIgnoreCase))
                         .ToList();
-                    dataContext.Set<IList<SiteMap.InterfaceDefinition>>(interfaces);
                 }
                 else
                 {
-                    dataContext.Set(_interfaces);
+                    interfaces = _interfaces;
                 }
-                return;
             }
 
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+            dataContext.Set(interfaces);
         }
     }
 }

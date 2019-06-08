@@ -13,9 +13,9 @@ namespace Website.Content.Layouts.PageStructure
     [Container("div", "{ns}_detail")]
     internal class DocumentHeadDetailRegion : ContentElement { }
 
-    [LayoutRegion("title", "documentHead_Title")]
-    [LayoutRegion("detail", "documentHead_Detail")]
-    [RegionComponent("title", "text:verticalText")]
+    [ZoneRegion("title", "documentHead_Title")]
+    [ZoneRegion("detail", "documentHead_Detail")]
+    [ZoneComponent("title", "text:verticalText")]
     [Container("div", "{ns}_document_head_layout")]
     internal class DocumentHeadLayout : ContentElement { }
 }

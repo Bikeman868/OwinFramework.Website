@@ -29,22 +29,18 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
+            SiteMap.Repository repository = null;
+            SiteMap.RepositoryOwner owner = null;
 
-            if (dependency.DataType == typeof(SiteMap.Repository))
+            if (dependency != null && dependency.DataType == typeof(SiteMap.Repository))
             {
-                var repository = GetRepository(renderContext);
+                repository = GetRepository(renderContext);
                 if (repository != null)
-                {
-                    dataContext.Set(repository);
-                    dataContext.Set(repository.Owner);
-                }
-                return;
+                    owner = repository.Owner;
             }
 
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+            dataContext.Set(repository);
+            dataContext.Set(owner);
         }
 
         private SiteMap.Repository GetRepository(IRenderContext renderContext)

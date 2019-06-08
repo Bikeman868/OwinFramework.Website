@@ -7,29 +7,29 @@ using Website.PageBase;
 namespace Website.Pages.Repository
 {
     [IsLayout("repositoryLandingPage_Header", "title,detail")]
-    [RegionTemplate("detail", "/data/repository")]
+    [ZoneTemplate("detail", "/data/repository")]
     internal class LandingPageHeaderLayout : DocumentHeadLayout { }
 
     [IsLayout("repositoryLandingPage_LeftColumn", "header,body")]
-    [LayoutRegion("header", "layouts:null")]
-    [LayoutRegion("body", "layouts:null")]
-    [RegionLayout("header", "repositoryLandingPage_Header")]
-    [RegionComponent("body", "content__template")]
+    [ZoneRegion("header", "layouts:null")]
+    [ZoneRegion("body", "layouts:null")]
+    [ZoneLayout("header", "repositoryLandingPage_Header")]
+    [ZoneComponent("body", "content__template")]
     internal class LandingPageLeftColumnLayout : ContentElement { }
 
     [IsLayout("repositoryLandingPage_RightColumn", "panel1")]
-    [LayoutRegion("panel1", "layouts:null")]
-    [RegionLayout("panel1", "project__list")]
+    [ZoneRegion("panel1", "layouts:null")]
+    [ZoneLayout("panel1", "project__list")]
     internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("repositoryLanding", "right,left")]
-    [RegionLayout("left", "repositoryLandingPage_LeftColumn")]
-    [RegionLayout("right", "repositoryLandingPage_RightColumn")]
+    [ZoneLayout("left", "repositoryLandingPage_LeftColumn")]
+    [ZoneLayout("right", "repositoryLandingPage_RightColumn")]
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("repositoryLanding")]
     [Route("/content/repository/**", Method.Get, Priority = -80)]
     [PageTitle("GitHub Repository")]
-    [RegionLayout("body", "repositoryLanding")]
+    [ZoneLayout("body", "repositoryLanding")]
     public class LandingPage: NavigationMasterPage{ }
 }

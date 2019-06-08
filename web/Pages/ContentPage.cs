@@ -7,20 +7,20 @@ using Website.PageBase;
 namespace Website.Pages
 {
     [IsLayout("contentPage_RightColumn", "panel1,panel2")]
-    [LayoutRegion("panel1", "layouts:null")]
-    [LayoutRegion("panel2", "layouts:null")]
-    [RegionLayout("panel1", "functional_area__list")]
-    [RegionLayout("panel2", "project__list")]
+    [ZoneRegion("panel1", "layouts:null")]
+    [ZoneRegion("panel2", "layouts:null")]
+    [ZoneLayout("panel1", "functional_area__list")]
+    [ZoneLayout("panel2", "project__list")]
     internal class ContentPageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("content", "right,left")]
-    [RegionComponent("left", "content__template")]
-    [RegionLayout("right", "contentPage_RightColumn")]
+    [ZoneComponent("left", "content__template")]
+    [ZoneLayout("right", "contentPage_RightColumn")]
     internal class ContentPageLayout : FixedRightColumnLayout { }
 
     [IsPage("content")]
     [Route("/content/**", Method.Get, Priority = -100)]
     [PageTitle("OWIN Framework")]
-    [RegionLayout("body", "content")]
+    [ZoneLayout("body", "content")]
     public class ContentPage: NavigationMasterPage{ }
 }

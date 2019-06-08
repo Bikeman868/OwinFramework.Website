@@ -23,19 +23,16 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
+            SiteMap.Document document = null;
 
-            if (dependency.DataType == typeof(SiteMap.Document))
+            if (dependency != null && dependency.DataType == typeof(SiteMap.Document))
             {
                 var interfaceDefinition = dataContext.Get<SiteMap.InterfaceDefinition>();
                 if (interfaceDefinition != null)
-                    dataContext.Set(interfaceDefinition.Document);
-                return;
+                    document = interfaceDefinition.Document;
             }
 
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+            dataContext.Set(document);
         }
     }
 }

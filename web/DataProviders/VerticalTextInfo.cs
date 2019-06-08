@@ -28,25 +28,25 @@ namespace Website.DataProviders
             IDataDependency dependency)
         {
             if (dependency == null)
-                return;
-
-            if (dependency.DataType == typeof(TextEffectsPackage.VerticalText))
             {
+                dataContext.Set<TextEffectsPackage.VerticalText>(null);
+            }
+            else if (dependency.DataType == typeof(TextEffectsPackage.VerticalText))
+            {
+                TextEffectsPackage.VerticalText verticalTextInfo = null;
                 var area = GetContentArea(renderContext);
                 if (area != null)
                 {
                     area = char.ToUpper(area[0]) + area.Substring(1);
-                    var verticalTextInfo = new TextEffectsPackage.VerticalText(area, 60, 160)
+                    verticalTextInfo = new TextEffectsPackage.VerticalText(area, 60, 160)
                     {
                         Background = null,
                         TextStyle = "font: 30px serif; fill: white;"
                     };
-                    dataContext.Set(verticalTextInfo);
                 }
-                return;
+                dataContext.Set(verticalTextInfo);
             }
-
-            throw new Exception(GetType().DisplayName() + " can not supply " +
+            else throw new Exception(GetType().DisplayName() + " can not supply " +
                 dependency.DataType.DisplayName());
         }
 

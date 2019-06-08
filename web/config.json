@@ -37,8 +37,16 @@
     },
     "owinFramework": {
         "pages": {
+            "framework": {
+                "assetRootPath": "/assets",
+                "assetVersion": "1",
+                "defaultLanguage": "en-US",
+                "debugLogging": true
+            },
             "html": {
-                "includeComments": false
+                "includeComments": false,
+                "indented": true,
+                "htmlFormat": "Html"
             }
         }
     }

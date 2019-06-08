@@ -4,9 +4,9 @@ namespace Website.Content.Layouts.Lists
 {
     [IsLayout("interface__list", "title,list")]
     [PartOf("application")]
-    [LayoutRegion("title", "layouts:null")]
-    [LayoutRegion("list", "interface__list")]
-    [RegionComponent("title", "interface__list_heading")] // TODO: When RegionHtml is implemented use here
+    [ZoneRegion("title", "layouts:null")]
+    [ZoneRegion("list", "interface__list")]
+    [ZoneHtml("title", "interface__list_heading", "<h3>Interfaces</h3>")]
     internal class InterfaceList : ContentElement
     {
     }

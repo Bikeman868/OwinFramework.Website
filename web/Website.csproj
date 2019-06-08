@@ -134,15 +134,11 @@
     <Compile Include="Components\Content\DocumentTitle.cs" />
     <Compile Include="Components\Content\DocumentIcon.cs" />
     <Compile Include="Components\Content\DocumentListItem.cs" />
-    <Compile Include="Components\FunctionalArea\ListHeading.cs" />
     <Compile Include="Components\FunctionalArea\ListItem.cs" />
-    <Compile Include="Components\InterfaceDefinition\ListHeading.cs" />
     <Compile Include="Components\InterfaceDefinition\InterfaceListItem.cs" />
     <Compile Include="Components\ContentTemplate.cs" />
-    <Compile Include="Components\Repository\ListHeading.cs" />
     <Compile Include="Components\Repository\ListItem.cs" />
     <Compile Include="Components\Project\ListItem.cs" />
-    <Compile Include="Components\Project\ListHeading.cs" />
     <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />
     <Compile Include="Content\Layouts\Lists\RepositoryList.cs" />
     <Compile Include="Content\Layouts\PageStructure\DocumentHeadLayout.cs" />
@@ -474,7 +470,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
         <Reference Include="Svg">
-          <HintPath>..\packages\Svg\lib\Svg.dll</HintPath>
+          <HintPath>..\packages\Svg\lib\net35\Svg.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

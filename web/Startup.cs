@@ -56,9 +56,9 @@ namespace Website
             ninject.Get<OwinFramework.Pages.Framework.BuildEngine>().Install(fluentBuilder);
             ninject.Get<OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
 
-            fluentBuilder.Register(ninject.Get<MenuPackage>(), "menu");
-            fluentBuilder.Register(ninject.Get<LayoutsPackage>(), "layouts");
-            fluentBuilder.Register(ninject.Get<TextEffectsPackage>(), "text");
+            fluentBuilder.RegisterPackage(ninject.Get<MenuPackage>(), "menu");
+            fluentBuilder.RegisterPackage(ninject.Get<LayoutsPackage>(), "layouts");
+            fluentBuilder.RegisterPackage(ninject.Get<TextEffectsPackage>(), "text");
 
             fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));
 

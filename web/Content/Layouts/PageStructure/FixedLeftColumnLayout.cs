@@ -13,8 +13,8 @@ namespace Website.Content.Layouts.PageStructure
     [Container("div", "{ns}_right")]
     internal class FixedLeftColumnMiddleRegion : ContentElement { }
 
-    [LayoutRegion("left", "fixedLeft_Left")]
-    [LayoutRegion("right", "fixedLeft_Right")]
+    [ZoneRegion("left", "fixedLeft_Left")]
+    [ZoneRegion("right", "fixedLeft_Right")]
     [Container("div", "{ns}_fixed-left-layout")]
     internal class FixedLeftColumnLayout : ContentElement { }
 }

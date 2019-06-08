@@ -7,26 +7,26 @@ using Website.PageBase;
 namespace Website.Pages
 {
     [IsLayout("homePage_LeftColumn", "main")]
-    [LayoutRegion("main", "content__document")]
-    [RegionTemplate("main", "/content/general/home")]
+    [ZoneRegion("main", "content__document")]
+    [ZoneTemplate("main", "/content/general/home")]
     internal class HomePageLeftColumnLayout : ContentElement { }
 
     [IsLayout("homePage_RightColumn", "panel1,panel2")]
-    [LayoutRegion("panel1", "layouts:null")]
-    [LayoutRegion("panel2", "layouts:null")]
-    [RegionLayout("panel1", "functional_area__list")]
-    [RegionLayout("panel2", "project__list")]
+    [ZoneRegion("panel1", "layouts:null")]
+    [ZoneRegion("panel2", "layouts:null")]
+    [ZoneLayout("panel1", "functional_area__list")]
+    [ZoneLayout("panel2", "project__list")]
     internal class HomePageRightColumnLayout : ContentElement { }
 
     [IsLayout("home", "right,left")]
-    [RegionLayout("left", "homePage_LeftColumn")]
-    [RegionLayout("right", "homePage_RightColumn")]
+    [ZoneLayout("left", "homePage_LeftColumn")]
+    [ZoneLayout("right", "homePage_RightColumn")]
     internal class HomePageLayout : FixedRightColumnLayout { }
 
     [IsPage("home", "/home")]
     [Route("/home", Method.Get, Priority = 100)]
     [Route("/", Method.Get, Priority = 100)]
     [PageTitle("OWIN Framework Home")]
-    [RegionLayout("body", "home")]
+    [ZoneLayout("body", "home")]
     public class HomePage: NavigationMasterPage{ }
 }

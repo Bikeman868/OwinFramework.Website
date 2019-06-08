@@ -12,6 +12,7 @@ using Website.Navigation;
 namespace Website.DataProviders
 {
     [IsDataProvider(typeof(SiteMap.FunctionalArea))]
+    [SuppliesData(typeof(SiteMap.Document))]
     public class FunctionalArea : DataProvider
     {
         private readonly Regex _urlRegex = new Regex(
@@ -28,22 +29,19 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
+            SiteMap.FunctionalArea functionalArea = null;
+            SiteMap.Document document = null;
 
-            if (dependency.DataType == typeof(SiteMap.FunctionalArea))
+            if (dependency != null && dependency.DataType == typeof(SiteMap.FunctionalArea))
             {
-                var functionalArea = GetFunctionalArea(renderContext);
-                if (functionalArea != null)
-                {
-                    dataContext.Set(functionalArea);
-                    dataContext.Set(functionalArea.Document);
-                }
-                return;
-            }
+                functionalArea = GetFunctionalArea(renderContext);
 
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+                if (functionalArea != null)
+                    document = functionalArea.Document;
+            }
+            
+            dataContext.Set(functionalArea);
+            dataContext.Set(document);
         }
 
         private SiteMap.FunctionalArea GetFunctionalArea(IRenderContext renderContext)

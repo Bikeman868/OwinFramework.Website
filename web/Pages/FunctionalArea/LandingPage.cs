@@ -7,29 +7,29 @@ using Website.PageBase;
 namespace Website.Pages.FunctionalArea
 {
     [IsLayout("areaLandingPage_Header", "title,detail")]
-    [RegionTemplate("detail", "/data/area")]
+    [ZoneTemplate("detail", "/data/area")]
     internal class LandingPageHeaderLayout : DocumentHeadLayout { }
 
     [IsLayout("areaLandingPage_LeftColumn", "header,body")]
-    [LayoutRegion("header", "layouts:null")]
-    [LayoutRegion("body", "layouts:null")]
-    [RegionLayout("header", "areaLandingPage_Header")]
-    [RegionComponent("body", "content__template")]
+    [ZoneRegion("header", "layouts:null")]
+    [ZoneRegion("body", "layouts:null")]
+    [ZoneLayout("header", "areaLandingPage_Header")]
+    [ZoneComponent("body", "content__template")]
     internal class LandingPageLeftColumnLayout : ContentElement { }
 
     [IsLayout("areaLandingPage_RightColumn", "panel1")]
-    [LayoutRegion("panel1", "layouts:null")]
-    [RegionLayout("panel1", "project__list")]
+    [ZoneRegion("panel1", "layouts:null")]
+    [ZoneLayout("panel1", "project__list")]
     internal class LandingPageRightColumnLayout : FixedRightColumnLayout { }
 
     [IsLayout("areaLanding", "right,left")]
-    [RegionLayout("left", "areaLandingPage_LeftColumn")]
-    [RegionLayout("right", "areaLandingPage_RightColumn")]
+    [ZoneLayout("left", "areaLandingPage_LeftColumn")]
+    [ZoneLayout("right", "areaLandingPage_RightColumn")]
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("areaLanding")]
     [Route("/content/area/**", Method.Get, Priority = -80)]
     [PageTitle("OWIN Framework Area")]
-    [RegionLayout("body", "areaLanding")]
+    [ZoneLayout("body", "areaLanding")]
     public class LandingPage: NavigationMasterPage{ }
 }

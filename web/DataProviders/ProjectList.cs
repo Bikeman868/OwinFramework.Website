@@ -36,10 +36,9 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
+            IList<SiteMap.Project> projects = null;
 
-            if (dependency.DataType == typeof(IList<SiteMap.Project>))
+            if (dependency != null && dependency.DataType == typeof(IList<SiteMap.Project>))
             {
                 var path = renderContext.OwinContext.Request.Path.Value;
 
@@ -49,28 +48,24 @@ namespace Website.DataProviders
                 if (repositoryMatch.Success)
                 {
                     var repositoryName = repositoryMatch.Groups[1].Value;
-                    var projects = _projects
+                    projects = _projects
                         .Where(p => string.Equals(p.Repository.GitHubRepositoryName, repositoryName, StringComparison.OrdinalIgnoreCase))
                         .ToList();
-                    dataContext.Set<IList<SiteMap.Project>>(projects);
                 }
                 else if (areaMatch.Success)
                 {
                     var areaName = areaMatch.Groups[1].Value;
-                    var projects = _projects
+                    projects = _projects
                         .Where(p => string.Equals(p.FunctionalArea.Identifier, areaName, StringComparison.OrdinalIgnoreCase))
                         .ToList();
-                    dataContext.Set<IList<SiteMap.Project>>(projects);
                 }
                 else
                 {
-                    dataContext.Set(_projects);
+                    projects = _projects;
                 }
-                return;
             }
 
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+            dataContext.Set(projects);
         }
     }
 }

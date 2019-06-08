@@ -12,6 +12,8 @@ using Website.Navigation;
 namespace Website.DataProviders
 {
     [IsDataProvider(typeof(SiteMap.Project))]
+    [SuppliesData(typeof(SiteMap.Repository))]
+    [SuppliesData(typeof(SiteMap.Document))]
     public class Project : DataProvider
     {
         private readonly Regex _urlRegex = new Regex(
@@ -28,23 +30,23 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
+            SiteMap.Project project = null;
+            SiteMap.Document document = null;
+            SiteMap.Repository repository = null;
 
-            if (dependency.DataType == typeof(SiteMap.Project))
+            if (dependency != null && dependency.DataType == typeof(SiteMap.Project))
             {
-                var project = GetProject(renderContext);
+                project = GetProject(renderContext);
                 if (project != null)
                 {
-                    dataContext.Set(project);
-                    dataContext.Set(project.Document);
-                    dataContext.Set(project.Repository);
+                    document = project.Document;
+                    repository = project.Repository;
                 }
-                return;
             }
 
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+            dataContext.Set(project);
+            dataContext.Set(document);
+            dataContext.Set(repository);
         }
 
         private SiteMap.Project GetProject(IRenderContext renderContext)

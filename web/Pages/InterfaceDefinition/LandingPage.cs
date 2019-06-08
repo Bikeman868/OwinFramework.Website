@@ -7,23 +7,23 @@ using Website.PageBase;
 namespace Website.Pages.InterfaceDefinition
 {
     [IsLayout("interfaceLandingPage_Header", "title,detail")]
-    [RegionTemplate("detail", "/data/interfacedefinition")]
+    [ZoneTemplate("detail", "/data/interfacedefinition")]
     internal class LandingPageHeaderLayout : DocumentHeadLayout { }
 
     [IsLayout("interfaceLandingPage_LeftColumn", "header,body")]
-    [LayoutRegion("header", "layouts:null")]
-    [LayoutRegion("body", "layouts:null")]
-    [RegionLayout("header", "interfaceLandingPage_Header")]
-    [RegionComponent("body", "content__template")]
+    [ZoneRegion("header", "layouts:null")]
+    [ZoneRegion("body", "layouts:null")]
+    [ZoneLayout("header", "interfaceLandingPage_Header")]
+    [ZoneComponent("body", "content__template")]
     internal class LandingPageLeftColumnLayout : ContentElement { }
     
     [IsLayout("interfaceLanding", "right,left")]
-    [RegionLayout("left", "interfaceLandingPage_LeftColumn")]
+    [ZoneLayout("left", "interfaceLandingPage_LeftColumn")]
     internal class LandingPageLayout : FixedRightColumnLayout { }
 
     [IsPage("interfaceLanding")]
     [Route("/content/interface/**", Method.Get, Priority = -80)]
     [PageTitle("OWIN Framework Interface")]
-    [RegionLayout("body", "interfaceLanding")]
+    [ZoneLayout("body", "interfaceLanding")]
     public class LandingPage: NavigationMasterPage{ }
 }

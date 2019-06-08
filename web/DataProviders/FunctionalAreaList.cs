@@ -27,17 +27,7 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
-
-            if (dependency.DataType == typeof(IList<SiteMap.FunctionalArea>))
-            {
-                dataContext.Set(_functionalAreas);
-                return;
-            }
-
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+            dataContext.Set(_functionalAreas);
         }
     }
 }

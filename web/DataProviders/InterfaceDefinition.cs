@@ -12,6 +12,7 @@ using Website.Navigation;
 namespace Website.DataProviders
 {
     [IsDataProvider(typeof(SiteMap.InterfaceDefinition))]
+    [SuppliesData(typeof(SiteMap.Document))]
     public class InterfaceDefinition : DataProvider
     {
         private readonly Regex _urlRegex = new Regex(
@@ -28,22 +29,19 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
-            if (dependency == null)
-                return;
+            SiteMap.InterfaceDefinition interfaceDefinition = null;
+            SiteMap.Document document = null;
 
-            if (dependency.DataType == typeof(SiteMap.InterfaceDefinition))
+            if (dependency != null && dependency.DataType == typeof(SiteMap.InterfaceDefinition))
             {
-                var interfaceDefinition = GetInterfaceDefinition(renderContext);
+                interfaceDefinition = GetInterfaceDefinition(renderContext);
+
                 if (interfaceDefinition != null)
-                {
-                    dataContext.Set(interfaceDefinition);
-                    dataContext.Set(interfaceDefinition.Document);
-                }
-                return;
+                    document = interfaceDefinition.Document;
             }
 
-            throw new Exception(GetType().DisplayName() + " can not supply " +
-                dependency.DataType.DisplayName());
+            dataContext.Set(interfaceDefinition);
+            dataContext.Set(document);
         }
 
         private SiteMap.InterfaceDefinition GetInterfaceDefinition(IRenderContext renderContext)
