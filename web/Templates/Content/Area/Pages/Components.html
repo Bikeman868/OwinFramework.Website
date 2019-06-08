@@ -11,12 +11,18 @@
         Note that you do not have to create C# classes for every piece of content,
 	    that would be extremely time consuming and hard to manage. There are higher
 	    level facilities that create components for you, for example the template
-	    loader and template parser mechanism.
+	    loader and template parser mechanism and the CMS packages.
 	</p>
 	<p>
-	    You should only write component classes to gain access to low level control
+	    You will typically only write component classes to gain access to low level control
 		over the HTML that is produced, for example to write custom headers into the
 	    <span class="code">&lt;head>&lt;/head></span> section of the page.
+	</p>
+	<p>
+		You can also write components to simplify your chosen scheme for editing and presenting
+		content. For example this website that documents the Owin Framework has a component
+		that maps the page URL onto a template path allowing me to define one page that
+		renders hundreds of different templates creating all of the pages on the website.
 	</p>
 </div>
 <p>
@@ -54,7 +60,8 @@
 	</li>
     <li>
 	    You can override the <span class="code">WritePageArea</span> method to output custom
-		HTML in any area of the page where this component exists.
+		HTML in any area of the page where this component exists. Note that this is only
+		guaranteed to be called for page areas returned by the <span class="code">GetPageAreas</span> method.
 	</li>
 </ul>
 
@@ -134,7 +141,7 @@
 	</li>
     <li>
 		<span class="code">WriteResult.WaitFor(task)</span> means that I started a background task to
-		write my Html. Please wait for this task to complete before sending the response back to thebrowser. 
+		write my Html. Please wait for this task to complete before sending the response back to the browser. 
 		In the meantime the other components on the page will continue processing and outputting their Html.
 		See section below on asyncrhronously writing to the Html output stream.
 	</li>
@@ -147,7 +154,7 @@
 	<span class="code">[NeedsData()]</span> attribute. If you do it this way there are several advantages:
 </p>
 <ul>
-	<li>If you place multiple components on the page the data provider will only be called once.</li>
+	<li>If you place multiple components on the page that need the same data the data provider will only be called once.</li>
 	<li>If you place the component inside a repeater that repeats the data it needs then it will work as expected.</li>
 	<li>If the dependant data is available with multiple scopes then the page designer can choose which scope to apply and your component will receive the correct version of the data.</li>
 </ul>
@@ -245,7 +252,7 @@
     </li>
 </ul>
 <div>
-    This technique is especially useful for modulariing your AJAX calls because you
+    This technique is especially useful for modularizing your AJAX calls because you
     can write a component the will write JavaScript functions to call the service,
     and also implement the service endpoints within the same class keeping these
     things close together. In this case adding the component to a website adds both
@@ -286,7 +293,6 @@
 		[IsComponent("menu_styles")]
         public class MenuStyles
         { }
-
 </pre>
 
 <p>
@@ -303,6 +309,7 @@
 <ul>
     <li><a href="/content/project/owinframework.pages.html/attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on any page that includes this component</li>
     <li><a href="/content/project/owinframework.pages.html/attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a JavaScript function to include on any page that has this component on it</li>
+    <li><a href="/content/project/owinframework.pages.html/attributes/deployscript"><span class="code">[DeployCss]</span></a> css rules to include on any page that includes this component</li>
     <li><a href="/content/project/owinframework.pages.html/attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how JavaScript and CSS should be deployed for this component</li>
     <li><a href="/content/project/owinframework.pages.html/attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a dependent component</li>
     <li><a href="/content/project/owinframework.pages.html/attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this component</li>
@@ -310,4 +317,102 @@
     <li><a href="/content/project/owinframework.pages.html/attributes/renderhtml"><span class="code">[RenderHtml]</span></a> makes this component render localized HTML</li>
 </ul>
 
+<h3>Components in packages</h3>
 
+<p>
+	You can create a reusable plug-in package. These packages can contain functionallity that can be added to
+	a website with a single line of code. This technique is most often used to build open-source packages that
+	are designed to be added to many websites and fulfill some common need, but you can also manage your own
+	application using packages if you choose.
+<p>
+<p>
+	When you create a package, the package's <span class="code">Build</span> method is called at startup. This is
+	where the package creates all of the pages, layouts, components etc that comprise the package contents. This
+	<span class="code">Build</span> method is passed an instance of <span class="code">IFluentBuilder</span> that
+	can be used to build all of the package contents. The fluent builder has a namespace context that avoids namespace
+	clashes with other packages and/or application code.
+</p>
+<p>
+	This is an example of using the fluent builder to build a component.
+<p>
+<pre>
+    public class CmsEditorPackage: IPackage
+    {
+        public CmsEditorPackage()
+        {
+            Name = "cms_editor";
+            NamespaceName = "cmseditor";
+        }
+
+        IPackage IPackage.Build(IFluentBuilder fluentBuilder)
+        {
+			// ... some code omitted here for brevity
+			
+            var assetsComponent = fluentBuilder.BuildUpComponent(null)
+                .Name("assets")
+                .DeployIn(module)
+                .DeployFunction(null, "initVue", null, script.ToString(), true)
+                .RenderInitialization("cms-editor-init", "<script>ns." + NamespaceName + ".initVue();</script>")
+                .DeployLess(less.ToString())
+				.Build();
+
+            return this;
+        }
+	}
+</pre>
+<p>
+	Note that the Owin Framework NuGet package installs the xml documentation file alongside the dlls
+	so you can get intellisense for the methods available in the fluent syntax.
+</p>
+<p>
+	Note that you can combine all of these techniques together, for example you can write a class that
+	inherits from <span class="code">Component</span> but also overrides methods of the base class, and
+	uses the fluent builder syntax. This is illustrated in the example below:
+</p>
+<pre>
+    public class LibrariesPackage : Framework.Runtime.Package
+    {
+        public LibrariesPackage(IPackageDependenciesFactory dependencies)
+            : base(dependencies)
+        {
+            Name = "libraries";
+            NamespaceName = "libraries";
+        }
+
+		[DeployedAs(AssetDeployment.InPage)]
+        private class LibraryComponent : Component
+        {
+            public string[] Urls { get; set; }
+
+            public LibraryComponent(IComponentDependenciesFactory dependencies, params string[] urls)
+                : base(dependencies)
+            {
+                PageAreas = new[] { PageArea.Head };
+                Urls = urls;
+            }
+
+            public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
+            {
+                if (pageArea == PageArea.Head)
+                {
+                    foreach (var url in Urls)
+                        context.Html.WriteElementLine("script", string.Empty, "src", url);
+                }
+
+                return WriteResult.Continue();
+            }
+        }
+
+        public override IPackage Build(IFluentBuilder builder)
+        {
+            builder.BuildUpComponent(
+                new LibraryComponent(
+                    Dependencies.ComponentDependenciesFactory, 
+                    "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"))
+                .Name("jQuery1")
+                .Build();
+
+            return this;
+        }
+    }
+</pre>

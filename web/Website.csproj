@@ -123,7 +123,9 @@
     <Content Include="Templates\Content\Repository\OwinFramework.Middleware\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework.Pages\Landing.html" />
     <Content Include="Templates\Content\Repository\OwinFramework\Landing.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Templates\Content\Documentation\Configuration\Urchin.md" />
     <Content Include="Templates\Content\Documentation\Configuration\ConfigurationManager.md" />
   </ItemGroup>
