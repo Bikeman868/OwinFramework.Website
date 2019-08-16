@@ -29,15 +29,14 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
+            if (dependency == null || dependency.DataType != typeof(SiteMap.Repository)) return;
+
             SiteMap.Repository repository = null;
             SiteMap.RepositoryOwner owner = null;
 
-            if (dependency != null && dependency.DataType == typeof(SiteMap.Repository))
-            {
-                repository = GetRepository(renderContext);
-                if (repository != null)
-                    owner = repository.Owner;
-            }
+            repository = GetRepository(renderContext);
+            if (repository != null)
+                owner = repository.Owner;
 
             dataContext.Set(repository);
             dataContext.Set(owner);
@@ -45,6 +44,8 @@ namespace Website.DataProviders
 
         private SiteMap.Repository GetRepository(IRenderContext renderContext)
         {
+            if (renderContext.OwinContext == null) return null;
+
             var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
             if (match.Success)
             {

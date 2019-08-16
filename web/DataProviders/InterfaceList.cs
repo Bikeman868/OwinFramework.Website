@@ -32,24 +32,25 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
+            if (dependency == null) return;
+            if (dependency.DataType != typeof(IList<SiteMap.InterfaceDefinition>)) return;
+            if (renderContext.OwinContext == null) return;
+
             IList<SiteMap.InterfaceDefinition> interfaces = null;
 
-            if (dependency != null && dependency.DataType == typeof(IList<SiteMap.InterfaceDefinition>))
-            {
-                var path = renderContext.OwinContext.Request.Path.Value;
-                var projectMatch = _projectRegex.Match(path);
+            var path = renderContext.OwinContext.Request.Path.Value;
+            var projectMatch = _projectRegex.Match(path);
 
-                if (projectMatch.Success)
-                {
-                    var projectName = projectMatch.Groups[1].Value;
-                    interfaces = _interfaces
-                        .Where(i => string.Equals(i.Project.ProjectName, projectName, StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                }
-                else
-                {
-                    interfaces = _interfaces;
-                }
+            if (projectMatch.Success)
+            {
+                var projectName = projectMatch.Groups[1].Value;
+                interfaces = _interfaces
+                    .Where(i => string.Equals(i.Project.ProjectName, projectName, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+            else
+            {
+                interfaces = _interfaces;
             }
 
             dataContext.Set(interfaces);

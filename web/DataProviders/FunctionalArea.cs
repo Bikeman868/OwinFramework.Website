@@ -46,6 +46,8 @@ namespace Website.DataProviders
 
         private SiteMap.FunctionalArea GetFunctionalArea(IRenderContext renderContext)
         {
+            if (renderContext.OwinContext == null) return null;
+
             var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
             if (match.Success)
             {

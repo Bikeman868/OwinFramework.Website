@@ -6,6 +6,7 @@
 *.pdb
 *.err
 *.manifest
+.vs/
 
 web/bin/*
 !/web/bin/website.dll

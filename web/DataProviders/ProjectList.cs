@@ -36,33 +36,33 @@ namespace Website.DataProviders
             IDataContext dataContext, 
             IDataDependency dependency)
         {
+            if (renderContext.OwinContext == null) return;
+            if (dependency == null || dependency.DataType != typeof(IList<SiteMap.Project>)) return;
+
             IList<SiteMap.Project> projects = null;
 
-            if (dependency != null && dependency.DataType == typeof(IList<SiteMap.Project>))
+            var path = renderContext.OwinContext.Request.Path.Value;
+
+            var repositoryMatch = _repositoryRegex.Match(path);
+            var areaMatch = _areaRegex.Match(path);
+
+            if (repositoryMatch.Success)
             {
-                var path = renderContext.OwinContext.Request.Path.Value;
-
-                var repositoryMatch = _repositoryRegex.Match(path);
-                var areaMatch = _areaRegex.Match(path);
-
-                if (repositoryMatch.Success)
-                {
-                    var repositoryName = repositoryMatch.Groups[1].Value;
-                    projects = _projects
-                        .Where(p => string.Equals(p.Repository.GitHubRepositoryName, repositoryName, StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                }
-                else if (areaMatch.Success)
-                {
-                    var areaName = areaMatch.Groups[1].Value;
-                    projects = _projects
-                        .Where(p => string.Equals(p.FunctionalArea.Identifier, areaName, StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                }
-                else
-                {
-                    projects = _projects;
-                }
+                var repositoryName = repositoryMatch.Groups[1].Value;
+                projects = _projects
+                    .Where(p => string.Equals(p.Repository.GitHubRepositoryName, repositoryName, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+            else if (areaMatch.Success)
+            {
+                var areaName = areaMatch.Groups[1].Value;
+                projects = _projects
+                    .Where(p => string.Equals(p.FunctionalArea.Identifier, areaName, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+            else
+            {
+                projects = _projects;
             }
 
             dataContext.Set(projects);

@@ -46,6 +46,8 @@ namespace Website.DataProviders
 
         private SiteMap.InterfaceDefinition GetInterfaceDefinition(IRenderContext renderContext)
         {
+            if (renderContext.OwinContext == null) return null;
+
             var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
             if (match.Success)
             {

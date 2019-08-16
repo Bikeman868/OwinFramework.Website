@@ -52,11 +52,10 @@ namespace Website.DataProviders
 
         private string GetContentArea(IRenderContext renderContext)
         {
-            var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
-            if (match.Success)
-                return match.Groups[1].Value;
+            if (renderContext.OwinContext == null) return null;
 
-            return null;
+            var match = _urlRegex.Match(renderContext.OwinContext.Request.Path.Value);
+            return match.Success ? match.Groups[1].Value : null;
         }
     }
 }
