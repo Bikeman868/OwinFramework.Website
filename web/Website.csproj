@@ -20,6 +20,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,8 +77,9 @@
     <Content Include="Templates\Content\Documentation\Concepts\Overview.html" />
     <None Include="Templates\Content\Documentation\Configuration\Overview.md" />
     <Content Include="Templates\Content\General\SampleWebsites.html" />
-    <Content Include="Templates\Content\General\HelloWorld.html" />
     <Content Include="Templates\Content\General\Home.html" />
+    <Content Include="Templates\Content\General\Walkthrough\HelloWorld.html" />
+    <Content Include="Templates\Content\General\Walkthrough\UserService.html" />
     <Content Include="Templates\Content\Project\OwinFramework.AnalysisReporter\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Authorization.Core\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Authorization.Prius\Landing.html" />

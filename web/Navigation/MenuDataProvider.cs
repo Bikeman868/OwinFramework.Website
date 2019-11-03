@@ -26,7 +26,7 @@ namespace Website.Navigation
                 Name = "Getting started",
                 SubMenu = new []
                     {
-                        new MenuPackage.MenuItem { Name = "Hello world", Url = "/content/general/helloworld" },
+                        new MenuPackage.MenuItem { Name = "Hello world", Url = "/content/general/walkthrough/helloworld" },
                         new MenuPackage.MenuItem { Name = "Sample websites", Url = "/content/general/samplewebsites" },
                         new MenuPackage.MenuItem { Name = "Configuration", Url = "/content/documentation/configuration/overview" },
                     }
@@ -38,7 +38,7 @@ namespace Website.Navigation
                 SubMenu = new[]
                     {
                         new MenuPackage.MenuItem { Name = "Website walkthrough", Url = "/content/general/walkthrough/website" },
-                        new MenuPackage.MenuItem { Name = "Microservice walkthrough", Url = "/content/general/walkthrough/microservice" },
+                        new MenuPackage.MenuItem { Name = "Microservice walkthrough", Url = "/content/general/walkthrough/userservice" },
                         new MenuPackage.MenuItem { Name = "Localization", Url = "/content/general/walkthrough/localization" },
                         new MenuPackage.MenuItem { Name = "Best practices", Url = "/content/general/bestpractice/landing" },
                     }
