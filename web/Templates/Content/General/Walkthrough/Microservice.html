@@ -1115,7 +1115,11 @@ new Vue({
 </ol>
 <p>The new service endpoint can be added to the existing service like this:</p>
 <pre>
-... to be completed...
+[IsService("user", BasePath = "/auth/", Methods = new[] { Method.Get, Method.Post })]
+[GenerateClientScript("userServiceClient")]
+public class UserServiceEndpoints
+{
+}
 </pre>
 <p>
     Note that we added an extra attribute here because we will be calling this from javaScript, and we can take
