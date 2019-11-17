@@ -626,10 +626,12 @@ public class UserServiceEndpoints
 </p>
 <pre>
 &lt;html>
-&lt;head>&lt;title>Hello, world - again&lt;/title>&lt;/head>
-&lt;body>
-&lt;p>Hello, world&lt;/p>
-&lt;/body>
+    &lt;head>
+        &lt;title>Hello, world - again&lt;/title>
+    &lt;/head>
+    &lt;body>
+        &lt;p>Hello, world&lt;/p>
+    &lt;/body>
 &lt;/html>
 </pre>
 <p>
@@ -716,6 +718,7 @@ public class UserServiceEndpoints
 	
 	&lt;form action="/auth/logout" method="post">
 		&lt;h3>Logout&lt;/h3>
+		&lt;input type="text" name="token" placeholder="Login token">
 		&lt;input type="submit" value="Logout">
 	&lt;/form>
     
@@ -728,13 +731,21 @@ public class UserServiceEndpoints
         Note that the <span class="code">name</span> attributes of the <span class="code">input</span>
         elements define the names that will be used to send the request to the microservice when
         the user submits the form. These names must match the names of the parameters that the service
-        endpoint is expecting. For example the name of this element:
+        endpoint is expecting. For example the name attribute of this element:
     </p>
     <pre>&lt;input type="email" name="email" placeholder="Email"></pre>
     <p>
-        Must correspond to this service endpoint parameter:
+        Must correspond with the parameter name this service endpoint parameter:
     </p>
     <pre>[EndpointParameter("email", typeof(RequiredString), EndpointParameterType.FormField)]</pre>
+</div>
+
+<div class="app_hint">
+    In this walkthrough I used html forms because they have very few moving parts so it is easy
+    to follow what is going on, which makes it a good learning tool, but this is not the way that
+    modern web development is done, and it is unlikely that this is the best approach for your
+    production implementation. The next section uses a more sophisticated approach that has many
+    benefits over html forms, and is a valid way to build a production quality website.
 </div>
 
 <h2>Adding a management UI</h2>
@@ -743,10 +754,449 @@ public class UserServiceEndpoints
     There are many choices available for creating a UI. The Pages part of the Owin Framework is
     designed to provide complete flexibility to cater to all the different kinds of website and
     web services that exist from a simple UI on a microservice to a website with millions of pages
-    being served to billions of users. For the purpose of this walkthrough I have decided to show
-    how to build pages where each page in a <span class="code">Vue.js</span> view model defined
-    by a JavaScript file and an html file, but this is by no means the only way to do this.
+    being served to billions of users.
 </p>
 <p>
-    To be completed ...
+    The Owin Framework deliberately does not define anything about how your website
+    works so that you have the freedom to choose any architectural pattern that you like. This
+    does however mean that you need to choose an architecture and write some logic to glue the
+    pieces together in a way that realizes that design. The Owin Framework has all of the pieces
+    that you need and makes every effort to make these pieces fit together easily in any configuration
+    that you want, but it is not designed to be an off-the-shelf solution that chooses the design
+    pattern for you.
+</p>
+<p>
+    For the purpose of this walkthrough I have decided to show you how to build website pages where each
+    page is defined by a <span class="code">Vue.js</span> view model. I will define each page of the website
+    with a JavaScript file and an html file. This is simple and efficient way of doing things for a
+    microservice that has only a few pages. It does provide all the features that we need to build a UI
+    that displays all of the logged in users and dynamically updates as users log in and out without
+    refreshing the page, and it demonstrates a few more features of the Owin Framework.
+</p>
+<p>The steps for this part of the walkthrough are:</p>
+<ol>
+    <li>Create a folder containing html and JavaScript files that will be loaded and parsed as templates</li>
+    <li>Configure the template loader to load and parse these templates at startup and reload them if they change</li>
+    <li>Add a component that takes the path of the URL and uses this to form a template path, then renders the contents of the html and JavaScript templates into the page</li>
+    <li>Add a web page that matches a wildcard path and renders the component.</li>
+</ol>
+<p>
+    After these steps are completed we will be able to add as many pages as we like to the microservice
+    simply by adding new files to the folder containing the templates
+</p>
+
+<h3>Loading templates</h3>
+
+<p>
+    The Owin framework comes with a template loader and a selection of template parsers. The framework
+    was designed to make it easy to write your own loader and/or add your own parsers and have them
+    work together.
+</p>
+<p>
+    For this tutorial we are going to add a <span class="code">/templates</span> folder to our project and
+    put some html and JavaScript files into it, then we are going to load and parse these files so that
+    they will render extremely quickly even if they contain data binding expressions etc.
+</p>
+<p>
+    Go ahead and open up your <span class="code">Startup.cs</span> file and just before calling the
+    <span class="code">Bind()</span> method of the name manager, add these lines of code:
+</p>
+<pre>
+var parser = ninject.Get&lt;OwinFramework.Pages.Html.Templates.AsIsParser>();
+var fileLoader = ninject.Get&lt;OwinFramework.Pages.Html.Templates.FileSystemLoader>();
+fileLoader.Load(parser);
+</pre>
+<div class="app_hint">
+    The <span class="code">AsIsParser</span> implements the parser interface but does no actual
+    parsing, it simply outputs the text into the page exactly as it appeared in the original file.
+    This is fine for this tutorial, and may also work for your user case, but there are other parsers
+    that, for example, provide server-side data binding using the Mustache syntax.
+</div>
+<p>
+    At this point your <span class="code">Startup.cs</span> file might look something like this:
+</p>
+<pre>
+using Ioc.Modules;
+using Microsoft.Owin;
+using Ninject;
+using Owin;
+using OwinFramework.Builder;
+using OwinFramework.Interfaces.Builder;
+using OwinFramework.StaticFiles;
+using OwinFramework.Pages.Core;
+using OwinFramework.Pages.Core.Interfaces.Builder;
+using OwinFramework.Pages.Core.Interfaces.Managers;
+using System.Reflection;
+
+[assembly: OwinStartup(typeof(Startup))]
+
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        var packageLocator = new PackageLocator()
+            .ProbeBinFolderAssemblies()
+            .Add(Assembly.GetExecutingAssembly());
+
+        var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+
+        var config = ninject.Get&lt;IConfiguration>();
+
+        var pipelineBuilder = ninject.Get&lt;IBuilder>();
+        pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config, "/pages");
+        pipelineBuilder.Register(ninject.Get&lt;StaticFilesMiddleware>()).ConfigureWith(config, "/staticFiles");
+
+        app.UseBuilder(pipelineBuilder);
+
+        var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
+        ninject.Get&lt;OwinFramework.Pages.Restful.BuildEngine>().Install(fluentBuilder);
+        ninject.Get&lt;OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
+
+        fluentBuilder.Register(Assembly.GetExecutingAssembly());
+
+        var parser = ninject.Get&lt;OwinFramework.Pages.Html.Templates.AsIsParser>();
+        var fileLoader = ninject.Get&lt;OwinFramework.Pages.Html.Templates.FileSystemLoader>();
+        fileLoader.ReloadInterval = TimeSpan.FromSeconds(3);
+        fileLoader.Load(parser);
+
+        ninject.Get&lt;INameManager>().Bind();
+    }
+}
+</pre>
+
+<h3>Adding a component</h3>
+
+<p>
+    The next step is to add a component that will translate the URL of the page it is on into
+    the path of the template files, load these templates and render them into the page.
+</p>
+<p>
+    In this framework the page class is responsible for writing the page structure to the
+    output stream and components are responsible for everything that is written within the page
+    structure. In practice you are unlikely to write your own page classes because the structure
+    of an html page is well defined, but you are very likely to want to write components.
+</p>
+<div class="app_hint">
+    Note that some of the framework elements like regions, layouts and templates create components
+    for you under the hood for common use cases like outputing localized static content. You only need
+    to write components for more specialized use cases.
+</div>
+<p>
+    The code required for this component is shown below:
+</p>
+<pre>
+    [IsComponent("vue_template")]
+    [NeedsComponent("libraries:vue")]
+    [NeedsComponent("ajax:ajax")]
+    internal class VueTemplate : Component
+    {
+        private readonly INameManager _nameManager;
+        private readonly PathString _basePath = new PathString("/ui");
+
+        public VueTemplate(
+            IComponentDependenciesFactory dependencies,
+            INameManager nameManager)
+            : base(dependencies)
+        {
+            _nameManager = nameManager;
+            PageAreas = new[] { PageArea.Body, PageArea.Initialization };
+        }
+
+        public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
+        {
+            if (pageArea == PageArea.Initialization)
+            {
+                PathString relativePath;
+                if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out relativePath))
+                {
+                    var templateName = relativePath.Value + "model";
+                    var modelTemplate = _nameManager.ResolveTemplate(templateName);
+
+                    if (modelTemplate == null)
+                    {
+                        context.Html.WriteComment("No model template found in '" + templateName + "'");
+                    }
+                    else
+                    {
+                        context.Html.WriteComment("Model template '" + templateName + "'");
+                        context.Html.WriteScriptOpen();
+                        context.Html.WriteLine();
+
+                        modelTemplate.WritePageArea(context, PageArea.Body);
+
+                        context.Html.WriteScriptClose();
+                    }
+                }
+            }
+
+            if (pageArea == PageArea.Body)
+            {
+                if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out var relativePath))
+                {
+                    var templateName = relativePath.Value + "view";
+                    var viewTemplate = _nameManager.ResolveTemplate(templateName);
+
+                    if (viewTemplate == null)
+                    {
+                        context.Html.WriteComment("No view template found in '" + templateName + "'");
+                    }
+                    else
+                    {
+                        context.Html.WriteComment("View template '" + templateName + "'");
+                        viewTemplate.WritePageArea(context, PageArea.Body);
+                    }
+                }
+            }
+
+            return WriteResult.Continue();
+        }
+    }
+</pre>
+<p>
+    As you can see, a component is just a class with an <span class="code">IsComponent</span> attribute
+    attached to it. The fluent builder will discover this component through reflection at startup and
+    register it with the name manager so that other elements can refer to it by name. The name of this
+    component is defined by the <span class="code">IsComponent</span> properties. In this case the component
+    name is <span class="code">vue_template</span>
+</p>
+<p>
+    Most components inherit from the <span class="code">Component</span> class and override the <span class="code">WritePageArea</span>
+    method. This is also what this component does. There are a number of other virtual methods that you can override
+    and you can also choose to build a fully custom component by directly implementing the <span class="code">Component</span> interface.
+</p>
+<p>
+    The <span class="code">WritePageArea</span> method is passed a <span class="code">PageArea</span> parameter that
+    defines which part of the page is currently being written. Components should check this parameter and write
+    appropriate content to each area of the page. In the case of this component it writes the html template into the
+    body of the page and the JavaScript at the very bottom of the page where page initialization takes place.
+</p>
+<p>
+    Note how this class uses the name manager to find templates that are registered with a specific path. The
+    template loader that we configured earlier will register the templates that it loads using the relative
+    path of the template file without the file extension. This component constructs the template name from the
+    path from the page URL and the words "model" and "view", so we need to create template files with this naming
+    convention for this to all work.
+</p>
+
+<h3>Serving pages</h3>
+
+<p>
+    In order to handle requests and return pages of html we need to add some page elements to our project.
+    This is as simple as adding classes decorated with the <span class="code">IsPage</span> attribute. Each page
+    has a defined layout and the layout can define regions and each region can contain various things including
+    components and further layouts.
+</p>
+<p>
+    For the purpose of this tutorial we just need to define one page class with a wildcard path specification
+    to that it will handle requests for all URLs that match the wildcard pattern. In this case we just need
+    a very simple layout for the page that has a single region that contains the component that we wrote earlier.
+    The page, layout and region classes look like this:
+</p>
+<pre>
+    [IsPage("vue_template"), Route("/ui/**"), UsesLayout("vue_template_page")]
+    public class VueTemplatePage { }
+
+    [IsLayout("vue_template_page", "page"), ZoneRegion("page", "vue_template_page")]
+    public class VueTemplatePageLayout { }
+
+    [IsRegion("vue_template_page"), UsesComponent("vue_template"), Container(null)]
+    public class VueTemplatePageRegion { }
+</pre>
+
+<h3>Pulling in additional libraries</h3>
+
+<p>
+    We decided that we were going to use Vue.js and that's great, but we did not put
+    anything in our source code yet to actually include the Vue.js libraries in our
+    pages - or did we?
+</p>
+<p>
+    Take a look at the code for our component, it has an attribute attached like this:
+</p>
+<pre>[NeedsComponent("libraries:vue")]</pre>
+<p>
+    This attribute tells the Pages framework that any page containing this component
+    must also contain a component called "libraries:vue". This component will be added
+    into any page that contains our "vue_template" component. This brings up the topic of
+    packages.
+</p>
+<p>
+    A package in this framework is a collection of pages, layouts, components, templates etc
+    that can be deployed in a .Net assembly and included in any other project. These exist
+    because websites often need the same functionallity and we do not want to rewrite it
+    over and over. This website for example is built with the Pages framework and contains
+    a responsive menu. The menu implementation is not part of this websites source code,
+    it is contained in a package that is distributed with the pages framework itself.
+</p>
+<p>
+    Packages can be very small and contain very little, or they can be really big. For example
+    the standard "libraries" package contains components that just render a reference to
+    various standard libraries (like Vue.js, Angular, React etc) into the head of the page,
+    whereas the Pages framework contains an entire Content Management System UI that is also
+    shipped as a package and can be added into any website.
+</p>
+<p>
+    To add the packages we need for this tutorial we need to go back to the <span class="code">Startup.cs</span>
+    file and register these packages with the fluent builder. The code to add to <span class="code">Startup.cs</span>
+    looks like this:
+</p>
+<pre>
+fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;LibrariesPackage>(), t => ninject.Get(t));
+fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;AjaxPackage>(), t => ninject.Get(t));
+</pre>
+
+<h3>Adding templates</h3>
+
+<p>
+    Most of this microservice is now built, and most of the work we did so far is a one-time setup that
+    will allow us to add as many pages as we like in the future. It is time now to add some templates
+    and see some output from all this coding.
+</p>
+<p>
+    The way that we wrote our component says that it will take a URL path like <span class="code">/ui/hello</span>
+    and try to load two templates called <span class="code">HelloModel</span> and <span class="code">HelloView</span>
+    from the name manager. We configured the template loader to load files from the <span class="code">/templates</span>
+    folder. It will register these as templates without the file extension, so in this case we need to create
+    two files called <span class="code">/templates/HelloView.html</span> and <span class="code">/templates/HelloModel.js</span>.
+    In fact the file extensions do not matter at all since they are discarded, but they are useful for getting Visual
+    Studio to provide the correct Intellisense. In fact the template loader deliberately discards the file extension
+    when creating the template name so that you can change the extension and potentially change the parser without
+    having to change any of the places where you reference this template.
+</p>
+<p>
+    Go ahead and create these two files. Sample source code follows:
+</p>
+
+<h4>/templates/HelloView.html</h4>
+<pre>
+    &lt;div id="hello">{{message}}&lt;/div>
+</pre>
+
+<h4>/templates/HelloModel.js</h4>
+<pre>
+new Vue({
+    el: "#hello",
+    data: {
+        message:"Hello, world"
+    }
+})
+</pre>
+
+<p>
+    Now debug your solution and navigate to <span class="code">/ui/hello</span> and you should see a page
+    rendered by Vue.js using the two templates that we just created. Here are some things for you to try:
+</p>
+<ul>
+    <li>
+        Right click and view source. Take note of how the page is constructed, and see the comments
+        that were output by our component. Naturally enough you can turn comments off for your
+        production deployment through a configuration switch in the Pages framework.
+    </li>
+    <li>
+        Try modifying the templates whilst the website is running then refresh the page. You should
+        see the updated version because we configured to the template loader to check the templates
+        for updates every few seconds.
+    </li>
+    <li>
+        Change the layout of the page to include another region that contains some static html. Note
+        how this would allow us to add headers and footers to every page served by the microservice
+        without having to add these elements to our Vue templates.
+    </li>
+</ul>
+
+<h3>Displaying a list of logged in users</h3>
+<p>
+    The steps required for this part of the tutorial are:
+</p>
+<ol>
+    <li>Add a new endpoint to our service that returns a list of logged in users</li>
+    <li>Add a new pair of template files for the view and the model just like we did for the hello example</li>
+    <li>Add JavaScript to call the new service endpoint when the template is loaded in the browser</li>
+</ol>
+<p>The new service endpoint can be added to the existing service like this:</p>
+<pre>
+
+</pre>
+<p>
+    Note that we added an extra attribute here because we will be calling this from javaScript, and we can take
+    advantage of a cool feature of the Pages framework where it will generate a component that will render JavaScript
+    for us that makes it easy to make Ajax calls to this endpoint.
+</p>
+<p>
+    We need to add the new component to our pages. We can do this by directly adding it to the page,
+    or making our "vue_template" component have a dependency on it. Since not all templates need this
+    I am going to add it to my page like this
+</p>
+<pre>
+
+</pre>
+<p>
+    Now that we have the endpoint we need and some JavaScript generated for us that makes it easy
+    to call, we can go ahead and add the new template files as follows:
+</p>
+
+<h4>/templates/UsersView.html</h4>
+<pre>
+&lt;div id="users">
+    &lt;table>
+        &lt;tr>
+            &lt;th>When&lt;/th>
+            &lt;th>User&lt;/th>
+        &lt;/tr>
+        &lt;tr v-for="user in users">
+            &lt;td>{{user.displayName}}&lt;/td>
+            &lt;td>{{user.displayName}}&lt;/td>
+        &lt;/tr>
+    &lt;/table>
+&lt;/div>
+</pre>
+
+<h4>/templates/UsersModel.js</h4>
+<pre>
+new Vue({
+    el: "#users",
+    data: {
+        users:[]
+    },
+    created: function () {
+        var vm = this;
+        usersService.ajaxGet(
+            "/auth/users",
+            function (xhttp) { vm.users = JSON.parse(xhttp.response); },
+            function (xhttp) { vm.users = []; });
+    }
+})
+</pre>
+<p>
+    And we can see this in our browser by navigating to <span class="code">/ui/users</span>. You
+    will have to use the forms we created earlier to register or login or course to see any
+    users in the list.
+</p>
+
+<h3>Dynamically updating the list of logged in users</h3>
+<p>
+    There are lots of ways to do this. If i wanted to get all fancy I could use SignalR, but
+    keeping it relatively simple, we can just do a long poll. The changes needed are actually
+    very small. We just need the service endpoint to not return right away, but wait a bit before
+    returning. In a robust implementation it would wait for a login/logout event then complete
+    all of the outstanding long poll requests, but that would be getting all fancy again. On the
+    JavaScript side we just need to kick off another call to the service endpoint each time the
+    current one completes.
+</p>
+<p>
+    The new service endpoint looks like this:
+</p>
+<pre>
+
+</pre>
+<p>
+    And the updated Vue.js model looks like this:
+</p>
+<pre>
+
+</pre>
+<p>
+    That is is for this tutorial. I hope you learned a lot about how to get started writing
+    microservices with the Pages framework. If you have more questions please contact the
+    authors who will be happy to help you.
 </p>
