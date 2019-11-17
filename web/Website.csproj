@@ -76,10 +76,13 @@
     <Content Include="Templates\Content\Area\Framework\Landing.html" />
     <Content Include="Templates\Content\Documentation\Concepts\Overview.html" />
     <None Include="Templates\Content\Documentation\Configuration\Overview.md" />
+    <Content Include="Templates\Content\General\Bestpractice\Landing.html" />
     <Content Include="Templates\Content\General\SampleWebsites.html" />
     <Content Include="Templates\Content\General\Home.html" />
     <Content Include="Templates\Content\General\Walkthrough\HelloWorld.html" />
-    <Content Include="Templates\Content\General\Walkthrough\UserService.html" />
+    <Content Include="Templates\Content\General\Walkthrough\Microservice.html" />
+    <Content Include="Templates\Content\General\Walkthrough\Localization.html" />
+    <Content Include="Templates\Content\General\Walkthrough\Website.html" />
     <Content Include="Templates\Content\Project\OwinFramework.AnalysisReporter\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Authorization.Core\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Authorization.Prius\Landing.html" />

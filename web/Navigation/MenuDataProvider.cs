@@ -38,7 +38,7 @@ namespace Website.Navigation
                 SubMenu = new[]
                     {
                         new MenuPackage.MenuItem { Name = "Website walkthrough", Url = "/content/general/walkthrough/website" },
-                        new MenuPackage.MenuItem { Name = "Microservice walkthrough", Url = "/content/general/walkthrough/userservice" },
+                        new MenuPackage.MenuItem { Name = "Microservice walkthrough", Url = "/content/general/walkthrough/microservice" },
                         new MenuPackage.MenuItem { Name = "Localization", Url = "/content/general/walkthrough/localization" },
                         new MenuPackage.MenuItem { Name = "Best practices", Url = "/content/general/bestpractice/landing" },
                     }
