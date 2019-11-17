@@ -1069,7 +1069,7 @@ fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;AjaxPackage>(), t 
 
 <h4>/templates/HelloView.html</h4>
 <pre>
-    &lt;div id="hello">{{message}}&lt;/div>
+&lt;div id="hello">{{message}}&lt;/div>
 </pre>
 
 <h4>/templates/HelloModel.js</h4>
@@ -1115,7 +1115,7 @@ new Vue({
 </ol>
 <p>The new service endpoint can be added to the existing service like this:</p>
 <pre>
-
+... to be completed...
 </pre>
 <p>
     Note that we added an extra attribute here because we will be calling this from javaScript, and we can take
@@ -1128,7 +1128,8 @@ new Vue({
     I am going to add it to my page like this
 </p>
 <pre>
-
+[IsPage("vue_template"), Route("/ui/**"), UsesLayout("vue_template_page"). NeedsComponent("userServiceClient")]
+public class VueTemplatePage { }
 </pre>
 <p>
     Now that we have the endpoint we need and some JavaScript generated for us that makes it easy
@@ -1140,12 +1141,12 @@ new Vue({
 &lt;div id="users">
     &lt;table>
         &lt;tr>
-            &lt;th>When&lt;/th>
-            &lt;th>User&lt;/th>
+            &lt;th>Email&lt;/th>
+            &lt;th>Token&lt;/th>
         &lt;/tr>
         &lt;tr v-for="user in users">
-            &lt;td>{{user.displayName}}&lt;/td>
-            &lt;td>{{user.displayName}}&lt;/td>
+            &lt;td>{{user.Email}}&lt;/td>
+            &lt;td>{{user.LoginToken}}&lt;/td>
         &lt;/tr>
     &lt;/table>
 &lt;/div>
@@ -1160,10 +1161,7 @@ new Vue({
     },
     created: function () {
         var vm = this;
-        usersService.ajaxGet(
-            "/auth/users",
-            function (xhttp) { vm.users = JSON.parse(xhttp.response); },
-            function (xhttp) { vm.users = []; });
+        userService.users({}, function (users) { vm.users = users; });
     }
 })
 </pre>
@@ -1187,16 +1185,17 @@ new Vue({
     The new service endpoint looks like this:
 </p>
 <pre>
-
+... to be completed...
 </pre>
 <p>
     And the updated Vue.js model looks like this:
 </p>
 <pre>
-
+... to be completed...
 </pre>
 <p>
     That is is for this tutorial. I hope you learned a lot about how to get started writing
-    microservices with the Pages framework. If you have more questions please contact the
-    authors who will be happy to help you.
+    microservices with the Pages framework. Please read the 
+    <a href="/content/project/owinframework.pages.restful/landing">documentation for the Owin.Framework.Pages.Restful Nuget package</a> 
+    for further information.
 </p>
