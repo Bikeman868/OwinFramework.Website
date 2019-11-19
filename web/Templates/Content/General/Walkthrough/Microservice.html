@@ -1,0 +1,1201 @@
+﻿<h1>Microservice Walkthrough</h1>
+
+<p>
+    This is a step-by-step walkthrough of creating a simple microservice using the Owin Framework.
+</p>
+<p>
+    This walkthrough assumes that you have already completed the <a href="helloworld">Hello, World</a>
+    walkthrough. If you have not completed it yet I suggest you at least read through these instructions
+    before continuing with this walkthrough.
+</p>
+<p>
+    This walkthrough builds a microservice with these features:
+</p>
+<ul>
+    <li>
+        The microservice has an endpoint where you can POST a form to
+        register a new user based on an email address and a password. Each user
+        is allocated a unique ID.
+    </li>
+    <li>
+        The microservice will not allow the same email address to be registered twice.
+    </li>
+    <li>
+        The microservice has endpoints that you can POST a form to for logging in and
+        logging out.
+    </li>
+    <li>
+        The microservice has an endpoint that returns the user ID for the logged
+        in user (based on session cookie) or empty string if the user is not logged
+        in.
+    </li>
+    <li>
+        The microservice has a very simple administration UI that shows a list of
+        all of the registered users and whether they are currently logged in or not.
+    </li>
+</ul>
+
+<p>
+    To keep down the scope of this walkthrough and concentrate on the aspects of how
+    to build a microservice and not how to build a database, this solution will only
+    retain data in memory. All of the registered users will be wiped each time the
+    service is restarted.
+</p>
+
+<h2>Overview</h2>
+
+<p>
+    The steps you will follow in this walktrhough are as follows:
+</p>
+<ol>
+    <li>Create a new Visual Studio solution using the "ASP.Net Empty Web Site" project template</li>
+    <li>Add the required Nuget packages to the solution</li>
+    <li>Write a <span class="code">Startup.cs</span> and a <span class="code">Package.cs</span> file that configures all the libraries and wires everything up</li>
+    <li>Define an interface to the data layer and create a test implementation that only saves data in memory</li>
+    <li>Add a class that implements the user service endpoints</li>
+    <li>Add a test page with forms for registration, login and log out just for testing</li>
+    <li>Add an administration page that shows users and live updates when there are changes</li>
+</ol>
+<p>
+    This walktrhough differs from writing a real microservice in these ways:
+</p>
+<ul>
+    <li>
+        The service would not normally implement the required business logic. This should be
+        contained in a separate class and injected into the service implementation using IoC
+    </li>
+    <li>
+        The data layer would need to persist the data to a persistent storage mechanism such
+        as an RDBMS, NOSQL or Graph Database.
+    </li>
+    <li>
+        All of the important classes should have unit tests. This is a much better approach than
+        adding a test page because the tests are thorough, repeatable and can be automated.
+    </li>
+</ul>
+
+<h2>Starting a new Visual Studio solution</h2>
+
+<p>
+    The most educational way of doing this walkthrough is by starting from a completely
+    empty project and add all of the code. You don't need to actually type the code, copy/paste
+    will work just fine.
+</p>
+
+<ol>
+    <li>
+        In Visual Studio start a new project of type "ASP.NET Empty Web Site".
+        This will create a project that contains very little. In Visual Studio 2019
+        the project template looks like this:
+        <img class="app_diagram" src="/assets/images/walkthrough/microservice1/select-project-type.png">
+    </li>
+    <li>
+        Install these NuGet packages
+        <ul>
+            <li><span class="code">Ioc.Modules.Ninject</span></li>
+            <li><span class="code">Owin.Framework</span></li>
+            <li><span class="code">Owin.Framework.Urchin</span></li>
+            <li><span class="code">Owin.Framework.Pages.Core</span></li>
+            <li><span class="code">Owin.Framework.Pages.Framework</span></li>
+            <li><span class="code">Owin.Framework.Pages.Restful</span></li>
+            <li><span class="code">Owin.Framework.Pages.Html</span></li>
+            <li><span class="code">Microsoft.Owin.Host.SystemWeb</span></li>
+        </ul>
+    </li>
+</ol>
+
+<p>
+    After installing, the Nuget Package Manager will look something like this
+    (version numbers will vary depending on which .Net Framework version you chose)
+</p>
+<img class="app_diagram" src="/assets/images/walkthrough/microservice1/nuget-packages.png">
+
+<div class="app_hint">
+    There are many other <a href="/content/index/nuget">Owin Framework NuGet packages</a> that
+    are not illustrated by this walkthrough.
+</div>
+
+<h2>Configure your project as an OWIN website hosted on IIS</h2>
+
+<p>
+    Note that this step would be required for any OWIN application and is not
+    specific to the Owin Framework.
+</p>
+<p>
+    The steps required here are the same as for the <a href="helloworld">Hello, World</a>
+    walkthrough. Please refer back to it for more details.
+</p>
+
+<h2>Configure an IoC container</h2>
+
+<p>
+    For this walkthrough we are going to use <a href="http://www.ninject.org/">Ninject</a> and <a href="https://github.com/Bikeman868/Urchin">Urchin</a>, but you can use any IoC container
+    and any configuration mechanism you choose. There is <a href="/content/documentation/configuration/urchin">documentation</a> you can read and copy
+    code from, or you can copy from <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs">the hello world example</a>
+</p>
+
+<p>
+    Read the documentation to figure out what code you need to add, or just copy the code
+    below to get going quickly.
+</p>
+
+<pre>
+var packageLocator = new PackageLocator()
+   .ProbeBinFolderAssemblies()
+   .Add(Assembly.GetExecutingAssembly());
+var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+</pre>
+
+<h2>Set up the Owin Framework middleware pipeline</h2>
+
+<p>
+    This is the first step in this walktrhough that is specific to the Owin Framework
+</p>
+
+<p>
+    You can review the <a href="/content/documentation/configuration/overview">documentation on Owin Framework configuration</a>, or you can look
+    at <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs"><span class="code">Startup.cs</span></a>
+    for a working example to copy from.
+</p>
+
+<p>
+    An example of the type of code you will need to add to your <span class="code">Startup</span>
+    class is shown below for reference. In a real application there are a number of ways that you
+    can write this code. For this walkthrough you can copy/paste if you like.
+</p>
+
+<pre>
+var config = ninject.Get&lt;IConfiguration>();
+
+var pipelineBuilder = ninject.Get&lt;IBuilder>();
+pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config, "/pages");
+
+app.UseBuilder(pipelineBuilder);
+</pre>
+
+<h2>Configure the Pages middleware</h2>
+
+<p>
+    In this section you will configure the Pages middleware to scan your compiled code
+    and construct services and web pages from classes that are decorated with custom attributes.
+</p>
+
+<ol>
+    <li>
+        At the end of the <span class="code">Configuration</span> method in your <span class="code">Startup</span> class,
+        resolve <span class="code">IFluentBuilder</span> from your IoC container, for example
+        <pre>var fluentBuilder = ninject.Get&lt;IFluentBuilder>();</pre>
+    </li>
+    <li>
+        Install the Restful service build engine so that we can define services by decorating classes
+        with attributes. The code will be similar to this:
+        <pre>ninject.Get&lt;OwinFramework.Pages.Restful.BuildEngine>().Install(fluentBuilder);</pre>
+    </li>
+    <li>
+        Install the Html element build engine so that we can add web pages to our microservice by
+        decorating classes with attributes. The required code is similar to this:
+        <pre>ninject.Get&lt;OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);</pre>
+    </li>
+    <li>
+        Get the fluent builder to scan your application assembly for classes that are
+        decorated with attributes that makes them into definitions of serices, pages, regions,
+        layouts etc. The fluent builder will use the build engines that we configured earlier.
+        The extra line of code you need to add for this is:
+        <pre>fluentBuilder.Register(Assembly.GetExecutingAssembly());</pre>
+    </li>
+    <li>
+        Finally, after registering all of the elements of your website with the fluent
+        builder you need to bind the elements together because they can reference each other
+        by name, and they can be registered in any order. You will need this line of
+        code to do this:
+        <pre>ninject.Get&lt;INameManager>().Bind();</pre>
+    </li>
+</ol>
+
+<div class="app_hint">
+    If your microservice has no UI at all then you can skip the step of registering the html build
+    engine, and you can remove the reference to the <span class="code">Owin.Framework.Pages.Html</span>
+    Nuget package.
+</div>
+
+<div class="app_hint">
+    Note that there are a number of Build Engines included in the base libraries, and you can
+    also install third party Build Engines that provide alternate implementations. Build Engines
+    are like factories that contruct and configure Services, Pages, Layouts, Regions, Components,
+    Templates etc.
+</div>
+
+<p>
+    At this point your <span>Startup.cs</span> file should look something like this:
+<pre>
+using Ioc.Modules;
+using Microsoft.Owin;
+using Ninject;
+using Owin;
+using OwinFramework.Builder;
+using OwinFramework.Interfaces.Builder;
+using OwinFramework.Pages.Core;
+using OwinFramework.Pages.Core.Interfaces.Builder;
+using OwinFramework.Pages.Core.Interfaces.Managers;
+using System.Reflection;
+
+[assembly: OwinStartup(typeof(Startup))]
+
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        var packageLocator = new PackageLocator()
+            .ProbeBinFolderAssemblies()
+            .Add(Assembly.GetExecutingAssembly());
+
+        var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+
+        var config = ninject.Get&lt;IConfiguration>();
+
+        var pipelineBuilder = ninject.Get&lt;IBuilder>();
+        pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config, "/pages");
+
+        app.UseBuilder(pipelineBuilder);
+
+        var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
+        ninject.Get&lt;OwinFramework.Pages.Restful.BuildEngine>().Install(fluentBuilder);
+        ninject.Get&lt;OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
+
+        fluentBuilder.Register(Assembly.GetExecutingAssembly());
+
+        ninject.Get&lt;INameManager>().Bind();
+    }
+}
+</pre>
+</p>
+
+<h2>Adding service endpoints</h2>
+
+<p>
+    There are many ways to add Restful service endpoints, but the easiest way is to add a class
+    and decorate it with attributes, so lets do that. Go ahead and create a new class in the solution called
+    <span class="code">HelloService.cs</span> containing the following code:
+</p>
+<pre>
+    using OwinFramework.Pages.Core.Attributes;
+    using OwinFramework.Pages.Core.Enums;
+    using OwinFramework.Pages.Restful.Interfaces;
+    
+    [IsService("hello", Methods = new[] { Method.Get })]
+    public class HelloService
+    {
+        [Endpoint(UrlPath = "/")]
+        public void Hello(IEndpointRequest request)
+        {
+            request.Success("{message:'Hello, this is a microservice'}");
+        }
+    }
+</pre>
+<p>
+    Now you can press F5 in Visual Studio and your microservice will handle the request and
+    return a hello message.
+</p>
+<p>
+    Wow, that was easy!
+</p>
+<p>
+    All of your basic restful endpoints will be simple like this, but even the most complex
+    scenarios are supported in a way that makes it as easy as possible to hide the complexity
+    without sacrificing scaleability. See the <a href="/content/project/owinframework.pages.restful/landing">Restful builder documentation</a>
+    for more information on how to take this up to the next level.
+</p>
+
+<div class="app_hint">
+    <p>
+        The only issue you are likely to encounter at this point is about version compatibility of
+        Nuget packages. Most open source projects support a wide variety of frameworks and versions
+        of .Net, but Microsoft's packages do not, and this leads to a situation where is can be quite
+        hard to find a combination of Nuget package versions that work together.
+    </p>
+    <p>
+        The developers of the Owin Framework try to provide versions that are compatible with every
+        version but Microsoft makes this very hard and there are many projects to update each time,
+        so this is a far from ideal situation. We appologize if you experience Nuget version
+        incompatibilities at this point in the walkthrough.
+    </p>
+</div>
+
+<h2>Building a dummy data layer</h2>
+
+<p>
+    In order to see a few more features and look at an example closer to the real world we are going
+    to need a bit more code. Go ahead and add a data layer interface definition and an implementation
+    of it from the source code below, then add a <span class="code">Package.cs</span> file so that
+    IoC knows that this class is a singleton that implements the interface.
+</p>
+<p>
+    To keep this example simple we can add all of this to one source file, but in your application
+    you would break this up into one source file per type.
+</p>
+
+<h3>DataLayer.cs</h3>
+<pre>
+using Ioc.Modules;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public enum RegisterResult
+{
+    Registered,
+    PasswordTooSimple,
+    DuplicateEmail,
+    InvalidEmail
+}
+
+public class User
+{
+    [JsonProperty]
+    public string Email { get; set; }
+
+    [JsonIgnore]
+    public string Password { get; set; }
+
+    [JsonProperty]
+    public string LoginToken { get; set; }
+}
+
+public interface IDataLayer
+{
+    RegisterResult Register(string email, string password);
+    string Login(string email, string password);
+    void Logout(string loginToken);
+    User[] GetUsers();
+}
+
+[Package]
+public class DataLayerPackage : IPackage
+{
+    public string Name => "Data layer";
+
+    public IList&lt;IocRegistration> IocRegistrations => new List&lt;IocRegistration>
+    {
+        new IocRegistration().Init&lt;IDataLayer, DataLayer>()
+    };
+}
+
+public class DataLayer: IDataLayer
+{
+    private readonly object _lock = new object();
+    private User[] _users = new User[0];
+
+    public User[] GetUsers()
+    {
+        return _users;
+    }
+
+    public RegisterResult Register(string email, string password)
+    {
+        if (string.IsNullOrWhiteSpace(email) || email.Count(c => c == '@') != 1)
+            return RegisterResult.InvalidEmail;
+
+        if (string.IsNullOrWhiteSpace(password) || password.Length &lt; 5)
+            return RegisterResult.PasswordTooSimple;
+
+        lock(_lock)
+        {
+            if (_users.FirstOrDefault(u => string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase)) != null)
+                return RegisterResult.DuplicateEmail;
+
+            var newUser = new User
+            {
+                Email = email,
+                Password = password,
+                LoginToken = Guid.NewGuid().ToString("n")
+            };
+            var users = _users.ToList();
+            users.Add(newUser);
+            _users = users.ToArray();
+        }
+
+        return RegisterResult.Registered;
+    }
+
+    public string Login(string email, string password)
+    {
+        var user = _users.FirstOrDefault(u => 
+            string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase) &&
+            u.Password == password);
+
+        if (user == null) return string.Empty;
+
+        if (user.LoginToken == null)
+            user.LoginToken = Guid.NewGuid().ToString("n");
+
+        return user.LoginToken;
+    }
+
+    public void Logout(string loginToken)
+    {
+        var user = _users.FirstOrDefault(u => u.LoginToken == loginToken);
+
+        if (user != null)
+            user.LoginToken = null;
+    }
+}
+</pre>
+
+<h2>Adding the user service endpoints</h2>
+
+<p>
+    We did this already for the hello service example. Lets repeat that again with
+    the injected dependency on the data layer we just created. Because we now have
+    an injected dependency, we will also have to provide our Niject container to
+    the fluent builder so that it can build our service.
+</p>
+<p>
+    In your <span class="code">Startup.cs</span> file, modify the line of code that
+    registers our executing assembly with the fluent builder to get it to use Ninject
+    to build our service. The modified line of code looks like this:
+</p>
+<pre>fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));</pre>
+<p>
+    Now we can go ahead and add the service endpoints.
+</p>
+
+<h3>UserServiceEndpoints.cs</h3>
+<pre>
+using OwinFramework.Pages.Core.Attributes;
+using OwinFramework.Pages.Core.Enums;
+using OwinFramework.Pages.Restful.Interfaces;
+using OwinFramework.Pages.Restful.Parameters;
+
+[IsService("user", BasePath = "/auth/", Methods = new[] { Method.Get, Method.Post })]
+public class UserServiceEndpoints
+{
+    private readonly IDataLayer _dataLayer;
+
+    public UserServiceEndpoints(IDataLayer dataLayer)
+    {
+        _dataLayer = dataLayer;
+    }
+
+    [Endpoint(Methods = new[] { Method.Get })]
+    public void Users(IEndpointRequest request)
+    {
+        request.Success(_dataLayer.GetUsers());
+    }
+
+    [Endpoint(Methods = new[] { Method.Post })]
+    [EndpointParameter("email", typeof(RequiredString), EndpointParameterType.FormField)]
+    [EndpointParameter("password", typeof(RequiredString), EndpointParameterType.FormField)]
+    public void Register(IEndpointRequest request)
+    {
+        var email = request.Parameter&lt;string>("email");
+        var password = request.Parameter&lt;string>("password");
+
+        request.Success(_dataLayer.Register(email, password));
+    }
+
+    [Endpoint(Methods = new[] { Method.Post })]
+    [EndpointParameter("email", typeof(RequiredString), EndpointParameterType.FormField)]
+    [EndpointParameter("password", typeof(RequiredString), EndpointParameterType.FormField)]
+    public void Login(IEndpointRequest request)
+    {
+        var email = request.Parameter&lt;string>("email");
+        var password = request.Parameter&lt;string>("password");
+
+        request.Success(_dataLayer.Login(email, password));
+    }
+
+    [Endpoint(Methods = new[] { Method.Post })]
+    [EndpointParameter("token", typeof(RequiredString), EndpointParameterType.QueryString)]
+    public void Logout(IEndpointRequest request)
+    {
+        var token = request.Parameter&lt;string>("token");
+        _dataLayer.Logout(token);
+        request.Success();
+    }
+}    
+</pre>
+
+<p>
+    At this point we have a fully functional microservice and you can test it using a tool
+    like PostMan. Even though it is complete we will be adding more to it below to achieve
+    the specification we were looking for.  First of all lets explain this source file in
+    detail.
+</p>
+
+<p>
+    The <span class="code">Users()</span> method can be called with a GET request to the
+    url <span class="code">/auth/users</span>. This endpoint just calls the data layer and
+    serializes the list of users to JSON. You can press F5 in Visual Studio and append
+    <span class="code">/auth/users</span> to the url and your service should return an empty
+    array of users.
+</p>
+
+<div class="app_hint">
+    If you don't specify the url path for an endpoint it defaults to a concatenation of
+    the <span class="code">BasePath</span> property of the <span class="code">IsService</span>
+    attribute and the name of the endpoint method. If you do specify the url path of the
+    endpoint you can either make it relative to the base path of the service by not starting
+    with a leading forward slash, or absoulte within the website (as we did in the hello
+    service example) by putting forward slash as the first character of the path.
+</div>
+
+<div class="app_hint">
+    You can serialize the response to other formats as well as JSON by explicitly specifying
+    the serializer to use. When no serializer is specified JSON is the default. You can also
+    specify the serializer on the service itself and optionally override this for each
+    endpoint.
+</div>
+
+<p>
+    The <span class="code">Register()</span> method must be called using a POST request, and
+    takes two parameters. The <span class="code">EndpointParameter</span>
+    attributes define that these are form fields and that they must be non-empty strings.
+    If you call this endpoint with invalid parameters then the Owin Framework will return a
+    400 response status with a validation message.
+</p>
+<p>
+    To read the parameters that were passed in, the <span class="code">Users()</span> method
+    calls the <span class="code">Parameter()</span> method of the request passing the name
+    of the parameter. The Owin Framework will parse the body of the POST as a form and
+    extract the form field values, validate them and return the value to the appllication.
+</p>
+
+<div class="app_warning">
+    It is very important when retrieving endpoint parameters that the type specified in the
+    call to the <span class="code">Parameter()</span> method matches the type of data returned
+    by the parameter validator. In this example we passed the <span class="code">typeof(RequiredString)</span>
+    as the parameter validator so we must retrieve the parameter value as <span class="code">string</span>.
+</div>
+
+<h2>Adding some forms to test it</h2>
+
+<p>
+    To fully test this we need to be able to POST some forms, and since some microservices have
+    a user interface, we are going to go ahead and see an example of how we might easily add
+    a user interface to our microservice. Note that this step is completely optional since
+    many microservices do not have any UI. If you are using this tutorial as a stating point
+    for your own microservice and you don't have any UI then I recommend removing the dependency
+    on the <span class="code">Owin.Framework.Pages.Html</span> Nuget package from your project to
+    keep things clean.
+</p>
+<p>
+    In this case we can add some simple forms by adding an html file to our project and
+    serving this as a static asset. We could do this with a service endpoint, but the
+    Owin Framework Static Files middleware will do it much better.
+</p>
+<p>
+    To add the Static File middleware you will need to
+</p>
+<ol>
+    <li>
+        Add the <a href="https://www.nuget.org/packages/Owin.Framework.StaticFiles/" target="_blank">Owin.Framework.StaticFiles</a>
+        Nuget package to the solution.
+    </li>
+    <li>
+        Add the static files middleware to the Owin Framework pipeline builder as described in
+        the <a href="https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.StaticFiles" target="_blank">readme.md</a>
+        file for the Static Files middleware.
+    </li>
+    <li>
+        <p>
+            Optionally define a configuration for the Static Files middleware that tells it which
+            folder to serve files from, the base URL to serve them under, the mime type to
+            return for each file type and the caching policy for each file type.
+        </p>
+        <p>
+            The <a href="https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.StaticFiles" target="_blank">readme.md</a>
+            file for the Static Files middleware has documentation for the configuration options.
+        </p>
+        <p>
+            This step is optional, if you do not configure the Static Files middleware it will default
+            to serving common image formats, html, css and JavaScript from an <span class="code">/assets</span>
+            folder within your website where the URL path matches the file path. This default configuration
+            will work for this walk through.
+        </p>
+    </li>
+</ol>
+<p>
+    Test that the Static Files middleware is working by adding an <span class="code">assets</span> folder
+    to your Visual Studio project and creating a simple html file in this folder.
+</p>
+<p>
+    For example if you create a file <span class="code">/assets/hello.html</span> containing the html below, then
+    you can press F5 to debug the solution, then navigate to <span class="code">/assets/hello.html</span> in your
+    browser.
+</p>
+<pre>
+&lt;html>
+    &lt;head>
+        &lt;title>Hello, world - again&lt;/title>
+    &lt;/head>
+    &lt;body>
+        &lt;p>Hello, world&lt;/p>
+    &lt;/body>
+&lt;/html>
+</pre>
+<p>
+    The next step is to add a page containing a form that we can use to call our microservice endpoint. This
+    is not a tutorial in writing html, so you can just copy and paste the html below into a new page and serve
+    it using the Static Files middleware just like we did for the hello world example above.
+</p>
+<pre>
+&lt;html>
+&lt;head>
+	&lt;title>User microservice tests&lt;/title>
+  &lt;style>
+      * {
+          box-sizing: border-box;
+      }
+
+      body {
+          background-color: #eeeeee;
+      }
+
+      form {
+          background-color: #ffffff;
+          width: 500px;
+          margin: 50px auto 10px auto;
+          padding: 30px;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 10px -3px #333;
+          text-align: center;
+      }
+
+      input {
+          border-radius: 100px;
+          padding: 10px 15px;
+          width: 50%;
+          border: 1px solid #D9D9D9;
+          outline: none;
+          display: block;
+          margin: 20px auto 20px auto;
+      }
+
+      input[type = "submit"] {
+          border-radius: 100px;
+          border: none;
+          background: #719BE6;
+          width: 50%;
+          padding: 10px;
+          color: #FFFFFF;
+          margin-top: 25px;
+          box-shadow: 0 2px 10px -3px #719BE6;
+          display: block;
+          margin: 55px auto 10px auto;
+      }
+
+      a {
+          text-align: center;
+          margin-top: 30px;
+          color: #719BE6;
+          text-decoration: none;
+          padding: 5px;
+          display: inline-block;
+      }
+
+      a:hover {
+          text-decoration: underline;
+      }
+  &lt;/style
+&lt;/head>
+&lt;body>
+    
+	&lt;form action="/auth/register" method="post">
+		&lt;h3>Register&lt;/h3>
+		&lt;input type="email" name="email" placeholder="Email">
+		&lt;input type="password" name="password" placeholder="Password">
+		&lt;input type="submit" value="Register">
+	&lt;/form>
+	
+	&lt;form action="/auth/login" method="post">
+		&lt;h3>Login&lt;/h3>
+		&lt;input type="email" name="email" placeholder="Email">
+		&lt;input type="password" name="password" placeholder="Password">
+		&lt;input type="submit" value="Login">
+	&lt;/form>
+	
+	&lt;form action="/auth/logout" method="post">
+		&lt;h3>Logout&lt;/h3>
+		&lt;input type="text" name="token" placeholder="Login token">
+		&lt;input type="submit" value="Logout">
+	&lt;/form>
+    
+&lt;/body>
+&lt;/html>
+</pre>
+
+<div class="app_warning">
+    <p>
+        Note that the <span class="code">name</span> attributes of the <span class="code">input</span>
+        elements define the names that will be used to send the request to the microservice when
+        the user submits the form. These names must match the names of the parameters that the service
+        endpoint is expecting. For example the name attribute of this element:
+    </p>
+    <pre>&lt;input type="email" name="email" placeholder="Email"></pre>
+    <p>
+        Must correspond with the parameter name this service endpoint parameter:
+    </p>
+    <pre>[EndpointParameter("email", typeof(RequiredString), EndpointParameterType.FormField)]</pre>
+</div>
+
+<div class="app_hint">
+    In this walkthrough I used html forms because they have very few moving parts so it is easy
+    to follow what is going on, which makes it a good learning tool, but this is not the way that
+    modern web development is done, and it is unlikely that this is the best approach for your
+    production implementation. The next section uses a more sophisticated approach that has many
+    benefits over html forms, and is a valid way to build a production quality website.
+</div>
+
+<h2>Adding a management UI</h2>
+
+<p>
+    There are many choices available for creating a UI. The Pages part of the Owin Framework is
+    designed to provide complete flexibility to cater to all the different kinds of website and
+    web services that exist from a simple UI on a microservice to a website with millions of pages
+    being served to billions of users.
+</p>
+<p>
+    The Owin Framework deliberately does not define anything about how your website
+    works so that you have the freedom to choose any architectural pattern that you like. This
+    does however mean that you need to choose an architecture and write some logic to glue the
+    pieces together in a way that realizes that design. The Owin Framework has all of the pieces
+    that you need and makes every effort to make these pieces fit together easily in any configuration
+    that you want, but it is not designed to be an off-the-shelf solution that chooses the design
+    pattern for you.
+</p>
+<p>
+    For the purpose of this walkthrough I have decided to show you how to build website pages where each
+    page is defined by a <span class="code">Vue.js</span> view model. I will define each page of the website
+    with a JavaScript file and an html file. This is simple and efficient way of doing things for a
+    microservice that has only a few pages. It does provide all the features that we need to build a UI
+    that displays all of the logged in users and dynamically updates as users log in and out without
+    refreshing the page, and it demonstrates a few more features of the Owin Framework.
+</p>
+<p>The steps for this part of the walkthrough are:</p>
+<ol>
+    <li>Create a folder containing html and JavaScript files that will be loaded and parsed as templates</li>
+    <li>Configure the template loader to load and parse these templates at startup and reload them if they change</li>
+    <li>Add a component that takes the path of the URL and uses this to form a template path, then renders the contents of the html and JavaScript templates into the page</li>
+    <li>Add a web page that matches a wildcard path and renders the component.</li>
+</ol>
+<p>
+    After these steps are completed we will be able to add as many pages as we like to the microservice
+    simply by adding new files to the folder containing the templates
+</p>
+
+<h3>Loading templates</h3>
+
+<p>
+    The Owin framework comes with a template loader and a selection of template parsers. The framework
+    was designed to make it easy to write your own loader and/or add your own parsers and have them
+    work together.
+</p>
+<p>
+    For this tutorial we are going to add a <span class="code">/templates</span> folder to our project and
+    put some html and JavaScript files into it, then we are going to load and parse these files so that
+    they will render extremely quickly even if they contain data binding expressions etc.
+</p>
+<p>
+    Go ahead and open up your <span class="code">Startup.cs</span> file and just before calling the
+    <span class="code">Bind()</span> method of the name manager, add these lines of code:
+</p>
+<pre>
+var parser = ninject.Get&lt;OwinFramework.Pages.Html.Templates.AsIsParser>();
+var fileLoader = ninject.Get&lt;OwinFramework.Pages.Html.Templates.FileSystemLoader>();
+fileLoader.Load(parser);
+</pre>
+<div class="app_hint">
+    The <span class="code">AsIsParser</span> implements the parser interface but does no actual
+    parsing, it simply outputs the text into the page exactly as it appeared in the original file.
+    This is fine for this tutorial, and may also work for your user case, but there are other parsers
+    that, for example, provide server-side data binding using the Mustache syntax.
+</div>
+<p>
+    At this point your <span class="code">Startup.cs</span> file might look something like this:
+</p>
+<pre>
+using Ioc.Modules;
+using Microsoft.Owin;
+using Ninject;
+using Owin;
+using OwinFramework.Builder;
+using OwinFramework.Interfaces.Builder;
+using OwinFramework.StaticFiles;
+using OwinFramework.Pages.Core;
+using OwinFramework.Pages.Core.Interfaces.Builder;
+using OwinFramework.Pages.Core.Interfaces.Managers;
+using System.Reflection;
+
+[assembly: OwinStartup(typeof(Startup))]
+
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        var packageLocator = new PackageLocator()
+            .ProbeBinFolderAssemblies()
+            .Add(Assembly.GetExecutingAssembly());
+
+        var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+
+        var config = ninject.Get&lt;IConfiguration>();
+
+        var pipelineBuilder = ninject.Get&lt;IBuilder>();
+        pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config, "/pages");
+        pipelineBuilder.Register(ninject.Get&lt;StaticFilesMiddleware>()).ConfigureWith(config, "/staticFiles");
+
+        app.UseBuilder(pipelineBuilder);
+
+        var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
+        ninject.Get&lt;OwinFramework.Pages.Restful.BuildEngine>().Install(fluentBuilder);
+        ninject.Get&lt;OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
+
+        fluentBuilder.Register(Assembly.GetExecutingAssembly());
+
+        var parser = ninject.Get&lt;OwinFramework.Pages.Html.Templates.AsIsParser>();
+        var fileLoader = ninject.Get&lt;OwinFramework.Pages.Html.Templates.FileSystemLoader>();
+        fileLoader.ReloadInterval = TimeSpan.FromSeconds(3);
+        fileLoader.Load(parser);
+
+        ninject.Get&lt;INameManager>().Bind();
+    }
+}
+</pre>
+
+<h3>Adding a component</h3>
+
+<p>
+    The next step is to add a component that will translate the URL of the page it is on into
+    the path of the template files, load these templates and render them into the page.
+</p>
+<p>
+    In this framework the page class is responsible for writing the page structure to the
+    output stream and components are responsible for everything that is written within the page
+    structure. In practice you are unlikely to write your own page classes because the structure
+    of an html page is well defined, but you are very likely to want to write components.
+</p>
+<div class="app_hint">
+    Note that some of the framework elements like regions, layouts and templates create components
+    for you under the hood for common use cases like outputing localized static content. You only need
+    to write components for more specialized use cases.
+</div>
+<p>
+    The code required for this component is shown below:
+</p>
+<pre>
+    [IsComponent("vue_template")]
+    [NeedsComponent("libraries:vue")]
+    [NeedsComponent("ajax:ajax")]
+    internal class VueTemplate : Component
+    {
+        private readonly INameManager _nameManager;
+        private readonly PathString _basePath = new PathString("/ui");
+
+        public VueTemplate(
+            IComponentDependenciesFactory dependencies,
+            INameManager nameManager)
+            : base(dependencies)
+        {
+            _nameManager = nameManager;
+            PageAreas = new[] { PageArea.Body, PageArea.Initialization };
+        }
+
+        public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
+        {
+            if (pageArea == PageArea.Initialization)
+            {
+                PathString relativePath;
+                if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out relativePath))
+                {
+                    var templateName = relativePath.Value + "model";
+                    var modelTemplate = _nameManager.ResolveTemplate(templateName);
+
+                    if (modelTemplate == null)
+                    {
+                        context.Html.WriteComment("No model template found in '" + templateName + "'");
+                    }
+                    else
+                    {
+                        context.Html.WriteComment("Model template '" + templateName + "'");
+                        context.Html.WriteScriptOpen();
+                        context.Html.WriteLine();
+
+                        modelTemplate.WritePageArea(context, PageArea.Body);
+
+                        context.Html.WriteScriptClose();
+                    }
+                }
+            }
+
+            if (pageArea == PageArea.Body)
+            {
+                if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out var relativePath))
+                {
+                    var templateName = relativePath.Value + "view";
+                    var viewTemplate = _nameManager.ResolveTemplate(templateName);
+
+                    if (viewTemplate == null)
+                    {
+                        context.Html.WriteComment("No view template found in '" + templateName + "'");
+                    }
+                    else
+                    {
+                        context.Html.WriteComment("View template '" + templateName + "'");
+                        viewTemplate.WritePageArea(context, PageArea.Body);
+                    }
+                }
+            }
+
+            return WriteResult.Continue();
+        }
+    }
+</pre>
+<p>
+    As you can see, a component is just a class with an <span class="code">IsComponent</span> attribute
+    attached to it. The fluent builder will discover this component through reflection at startup and
+    register it with the name manager so that other elements can refer to it by name. The name of this
+    component is defined by the <span class="code">IsComponent</span> properties. In this case the component
+    name is <span class="code">vue_template</span>
+</p>
+<p>
+    Most components inherit from the <span class="code">Component</span> class and override the <span class="code">WritePageArea</span>
+    method. This is also what this component does. There are a number of other virtual methods that you can override
+    and you can also choose to build a fully custom component by directly implementing the <span class="code">Component</span> interface.
+</p>
+<p>
+    The <span class="code">WritePageArea</span> method is passed a <span class="code">PageArea</span> parameter that
+    defines which part of the page is currently being written. Components should check this parameter and write
+    appropriate content to each area of the page. In the case of this component it writes the html template into the
+    body of the page and the JavaScript at the very bottom of the page where page initialization takes place.
+</p>
+<p>
+    Note how this class uses the name manager to find templates that are registered with a specific path. The
+    template loader that we configured earlier will register the templates that it loads using the relative
+    path of the template file without the file extension. This component constructs the template name from the
+    path from the page URL and the words "model" and "view", so we need to create template files with this naming
+    convention for this to all work.
+</p>
+
+<h3>Serving pages</h3>
+
+<p>
+    In order to handle requests and return pages of html we need to add some page elements to our project.
+    This is as simple as adding classes decorated with the <span class="code">IsPage</span> attribute. Each page
+    has a defined layout and the layout can define regions and each region can contain various things including
+    components and further layouts.
+</p>
+<p>
+    For the purpose of this tutorial we just need to define one page class with a wildcard path specification
+    to that it will handle requests for all URLs that match the wildcard pattern. In this case we just need
+    a very simple layout for the page that has a single region that contains the component that we wrote earlier.
+    The page, layout and region classes look like this:
+</p>
+<pre>
+    [IsPage("vue_template"), Route("/ui/**"), UsesLayout("vue_template_page")]
+    public class VueTemplatePage { }
+
+    [IsLayout("vue_template_page", "page"), ZoneRegion("page", "vue_template_page")]
+    public class VueTemplatePageLayout { }
+
+    [IsRegion("vue_template_page"), UsesComponent("vue_template"), Container(null)]
+    public class VueTemplatePageRegion { }
+</pre>
+
+<h3>Pulling in additional libraries</h3>
+
+<p>
+    We decided that we were going to use Vue.js and that's great, but we did not put
+    anything in our source code yet to actually include the Vue.js libraries in our
+    pages - or did we?
+</p>
+<p>
+    Take a look at the code for our component, it has an attribute attached like this:
+</p>
+<pre>[NeedsComponent("libraries:vue")]</pre>
+<p>
+    This attribute tells the Pages framework that any page containing this component
+    must also contain a component called "libraries:vue". This component will be added
+    into any page that contains our "vue_template" component. This brings up the topic of
+    packages.
+</p>
+<p>
+    A package in this framework is a collection of pages, layouts, components, templates etc
+    that can be deployed in a .Net assembly and included in any other project. These exist
+    because websites often need the same functionallity and we do not want to rewrite it
+    over and over. This website for example is built with the Pages framework and contains
+    a responsive menu. The menu implementation is not part of this websites source code,
+    it is contained in a package that is distributed with the pages framework itself.
+</p>
+<p>
+    Packages can be very small and contain very little, or they can be really big. For example
+    the standard "libraries" package contains components that just render a reference to
+    various standard libraries (like Vue.js, Angular, React etc) into the head of the page,
+    whereas the Pages framework contains an entire Content Management System UI that is also
+    shipped as a package and can be added into any website.
+</p>
+<p>
+    To add the packages we need for this tutorial we need to go back to the <span class="code">Startup.cs</span>
+    file and register these packages with the fluent builder. The code to add to <span class="code">Startup.cs</span>
+    looks like this:
+</p>
+<pre>
+fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;LibrariesPackage>(), t => ninject.Get(t));
+fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;AjaxPackage>(), t => ninject.Get(t));
+</pre>
+
+<h3>Adding templates</h3>
+
+<p>
+    Most of this microservice is now built, and most of the work we did so far is a one-time setup that
+    will allow us to add as many pages as we like in the future. It is time now to add some templates
+    and see some output from all this coding.
+</p>
+<p>
+    The way that we wrote our component says that it will take a URL path like <span class="code">/ui/hello</span>
+    and try to load two templates called <span class="code">HelloModel</span> and <span class="code">HelloView</span>
+    from the name manager. We configured the template loader to load files from the <span class="code">/templates</span>
+    folder. It will register these as templates without the file extension, so in this case we need to create
+    two files called <span class="code">/templates/HelloView.html</span> and <span class="code">/templates/HelloModel.js</span>.
+    In fact the file extensions do not matter at all since they are discarded, but they are useful for getting Visual
+    Studio to provide the correct Intellisense. In fact the template loader deliberately discards the file extension
+    when creating the template name so that you can change the extension and potentially change the parser without
+    having to change any of the places where you reference this template.
+</p>
+<p>
+    Go ahead and create these two files. Sample source code follows:
+</p>
+
+<h4>/templates/HelloView.html</h4>
+<pre>
+&lt;div id="hello">{{message}}&lt;/div>
+</pre>
+
+<h4>/templates/HelloModel.js</h4>
+<pre>
+new Vue({
+    el: "#hello",
+    data: {
+        message:"Hello, world"
+    }
+})
+</pre>
+
+<p>
+    Now debug your solution and navigate to <span class="code">/ui/hello</span> and you should see a page
+    rendered by Vue.js using the two templates that we just created. Here are some things for you to try:
+</p>
+<ul>
+    <li>
+        Right click and view source. Take note of how the page is constructed, and see the comments
+        that were output by our component. Naturally enough you can turn comments off for your
+        production deployment through a configuration switch in the Pages framework.
+    </li>
+    <li>
+        Try modifying the templates whilst the website is running then refresh the page. You should
+        see the updated version because we configured to the template loader to check the templates
+        for updates every few seconds.
+    </li>
+    <li>
+        Change the layout of the page to include another region that contains some static html. Note
+        how this would allow us to add headers and footers to every page served by the microservice
+        without having to add these elements to our Vue templates.
+    </li>
+</ul>
+
+<h3>Displaying a list of logged in users</h3>
+<p>
+    The steps required for this part of the tutorial are:
+</p>
+<ol>
+    <li>Add a new endpoint to our service that returns a list of logged in users</li>
+    <li>Add a new pair of template files for the view and the model just like we did for the hello example</li>
+    <li>Add JavaScript to call the new service endpoint when the template is loaded in the browser</li>
+</ol>
+<p>The new service endpoint can be added to the existing service like this:</p>
+<pre>
+... to be completed...
+</pre>
+<p>
+    Note that we added an extra attribute here because we will be calling this from javaScript, and we can take
+    advantage of a cool feature of the Pages framework where it will generate a component that will render JavaScript
+    for us that makes it easy to make Ajax calls to this endpoint.
+</p>
+<p>
+    We need to add the new component to our pages. We can do this by directly adding it to the page,
+    or making our "vue_template" component have a dependency on it. Since not all templates need this
+    I am going to add it to my page like this
+</p>
+<pre>
+[IsPage("vue_template"), Route("/ui/**"), UsesLayout("vue_template_page"). NeedsComponent("userServiceClient")]
+public class VueTemplatePage { }
+</pre>
+<p>
+    Now that we have the endpoint we need and some JavaScript generated for us that makes it easy
+    to call, we can go ahead and add the new template files as follows:
+</p>
+
+<h4>/templates/UsersView.html</h4>
+<pre>
+&lt;div id="users">
+    &lt;table>
+        &lt;tr>
+            &lt;th>Email&lt;/th>
+            &lt;th>Token&lt;/th>
+        &lt;/tr>
+        &lt;tr v-for="user in users">
+            &lt;td>{{user.Email}}&lt;/td>
+            &lt;td>{{user.LoginToken}}&lt;/td>
+        &lt;/tr>
+    &lt;/table>
+&lt;/div>
+</pre>
+
+<h4>/templates/UsersModel.js</h4>
+<pre>
+new Vue({
+    el: "#users",
+    data: {
+        users:[]
+    },
+    created: function () {
+        var vm = this;
+        userService.users({}, function (users) { vm.users = users; });
+    }
+})
+</pre>
+<p>
+    And we can see this in our browser by navigating to <span class="code">/ui/users</span>. You
+    will have to use the forms we created earlier to register or login or course to see any
+    users in the list.
+</p>
+
+<h3>Dynamically updating the list of logged in users</h3>
+<p>
+    There are lots of ways to do this. If i wanted to get all fancy I could use SignalR, but
+    keeping it relatively simple, we can just do a long poll. The changes needed are actually
+    very small. We just need the service endpoint to not return right away, but wait a bit before
+    returning. In a robust implementation it would wait for a login/logout event then complete
+    all of the outstanding long poll requests, but that would be getting all fancy again. On the
+    JavaScript side we just need to kick off another call to the service endpoint each time the
+    current one completes.
+</p>
+<p>
+    The new service endpoint looks like this:
+</p>
+<pre>
+... to be completed...
+</pre>
+<p>
+    And the updated Vue.js model looks like this:
+</p>
+<pre>
+... to be completed...
+</pre>
+<p>
+    That is is for this tutorial. I hope you learned a lot about how to get started writing
+    microservices with the Pages framework. Please read the 
+    <a href="/content/project/owinframework.pages.restful/landing">documentation for the Owin.Framework.Pages.Restful Nuget package</a> 
+    for further information.
+</p>
