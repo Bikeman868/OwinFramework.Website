@@ -103,6 +103,11 @@
         </ul>
     </li>
 </ol>
+<div class="app_hint">
+    You do not have to use this "Empty Web Site" project template. Any ASP.NET project template
+    will work. However, other templates include a lot of things that you will not need for the 
+    walkthrough which adds clutter to project.
+</div>
 
 <p>
     After installing, the Nuget Package Manager will look something like this
@@ -111,8 +116,8 @@
 <img class="app_diagram" src="/assets/images/walkthrough/microservice1/nuget-packages.png">
 
 <div class="app_hint">
-    There are many other <a href="/content/index/nuget">Owin Framework NuGet packages</a> that
-    are not illustrated by this walkthrough.
+    Note that there are many other <a href="/content/index/nuget">Owin Framework NuGet packages</a>
+    that are not illustrated by this walkthrough.
 </div>
 
 <h2>Configure your project as an OWIN website hosted on IIS</h2>
@@ -123,7 +128,9 @@
 </p>
 <p>
     The steps required here are the same as for the <a href="helloworld">Hello, World</a>
-    walkthrough. Please refer back to it for more details.
+    walkthrough. Please refer back to it for more details. Note that if your project is
+    a "Web APplication" type then you will create the <span class="code">Startup.cs</span>
+    file in the <span class="code">App_Code</span> folder.
 </p>
 
 <h2>Configure an IoC container</h2>
@@ -136,7 +143,8 @@
 
 <p>
     Read the documentation to figure out what code you need to add, or just copy the code
-    below to get going quickly.
+    below into the <span class="code">Configuration</span> method of your <span class="code">Startup</span>
+    class to get going quickly.
 </p>
 
 <pre>
@@ -159,9 +167,10 @@ var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator))
 </p>
 
 <p>
-    An example of the type of code you will need to add to your <span class="code">Startup</span>
-    class is shown below for reference. In a real application there are a number of ways that you
-    can write this code. For this walkthrough you can copy/paste if you like.
+    An example of the type of code you will need to add to the <span class="code">Configuration</span> 
+    method of your <span class="code">Startup</span> class is shown below for reference. In a real 
+    application there are a number of ways that you can write this code. For this walkthrough you 
+    can copy/paste if you like.
 </p>
 
 <pre>
@@ -172,6 +181,37 @@ pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config
 
 app.UseBuilder(pipelineBuilder);
 </pre>
+
+<p>At this point your <span class="code">Startup.cs</span> file might look something like this:</p>
+
+<pre>using Ioc.Modules;
+using Microsoft.Owin;
+using Ninject;
+using Owin;
+using OwinFramework.Builder;
+using OwinFramework.Interfaces.Builder;
+using OwinFramework.Pages.Core;
+using System.Reflection;
+
+[assembly: OwinStartup(typeof(Startup))]
+
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        var packageLocator = new PackageLocator()
+           .ProbeBinFolderAssemblies()
+           .Add(Assembly.GetExecutingAssembly());
+        var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+
+        var config = ninject.Get<IConfiguration>();
+
+        var pipelineBuilder = ninject.Get<IBuilder>();
+        pipelineBuilder.Register(ninject.Get<PagesMiddleware>()).ConfigureWith(config, "/pages");
+
+        app.UseBuilder(pipelineBuilder);
+    }
+}</pre>
 
 <h2>Configure the Pages middleware</h2>
 
@@ -277,21 +317,19 @@ public class Startup
     and decorate it with attributes, so lets do that. Go ahead and create a new class in the solution called
     <span class="code">HelloService.cs</span> containing the following code:
 </p>
-<pre>
-    using OwinFramework.Pages.Core.Attributes;
-    using OwinFramework.Pages.Core.Enums;
-    using OwinFramework.Pages.Restful.Interfaces;
+<pre>using OwinFramework.Pages.Core.Attributes;
+using OwinFramework.Pages.Core.Enums;
+using OwinFramework.Pages.Restful.Interfaces;
     
-    [IsService("hello", Methods = new[] { Method.Get })]
-    public class HelloService
+[IsService("hello", Methods = new[] { Method.Get })]
+public class HelloService
+{
+    [Endpoint(UrlPath = "/")]
+    public void Hello(IEndpointRequest request)
     {
-        [Endpoint(UrlPath = "/")]
-        public void Hello(IEndpointRequest request)
-        {
-            request.Success("{message:'Hello, this is a microservice'}");
-        }
+        request.Success("{message:'Hello, this is a microservice'}");
     }
-</pre>
+}</pre>
 <p>
     Now you can press F5 in Visual Studio and your microservice will handle the request and
     return a hello message.
@@ -319,18 +357,21 @@ public class Startup
         so this is a far from ideal situation. We appologize if you experience Nuget version
         incompatibilities at this point in the walkthrough.
     </p>
+    <p>
+        If your solution does not run at this point, open the Visual Studio "Output" window and look
+        at the debug messages printed here. Pay special attention to the messages from the "Package locator".
+    </p>
 </div>
 
 <h2>Building a dummy data layer</h2>
 
 <p>
     In order to see a few more features and look at an example closer to the real world we are going
-    to need a bit more code. Go ahead and add a data layer interface definition and an implementation
-    of it from the source code below, then add a <span class="code">Package.cs</span> file so that
-    IoC knows that this class is a singleton that implements the interface.
+    to need a bit more code. Go ahead and add a data layer interface definition, an implementation
+    of this interface, and instructions to IoC to register this class as a singleton.
 </p>
 <p>
-    To keep this example simple we can add all of this to one source file, but in your application
+    To keep this walkthrough simple we can add all of this to one source file, but in your application
     you would break this up into one source file per type.
 </p>
 
@@ -595,7 +636,8 @@ public class UserServiceEndpoints
     <li>
         Add the static files middleware to the Owin Framework pipeline builder as described in
         the <a href="https://github.com/Bikeman868/OwinFramework.Middleware/tree/master/OwinFramework.StaticFiles" target="_blank">readme.md</a>
-        file for the Static Files middleware.
+        file for the Static Files middleware.For example:
+        <pre>pipelineBuilder.Register(ninject.Get<StaticFilesMiddleware>()).As("Static files").ConfigureWith(config, "/staticFiles");</pre>
     </li>
     <li>
         <p>
@@ -642,85 +684,85 @@ public class UserServiceEndpoints
 <pre>
 &lt;html>
 &lt;head>
-	&lt;title>User microservice tests&lt;/title>
+  &lt;title>User microservice tests&lt;/title>
   &lt;style>
-      * {
-          box-sizing: border-box;
-      }
+    * {
+        box-sizing: border-box;
+    }
 
-      body {
-          background-color: #eeeeee;
-      }
+    body {
+        background-color: #eeeeee;
+    }
 
-      form {
-          background-color: #ffffff;
-          width: 500px;
-          margin: 50px auto 10px auto;
-          padding: 30px;
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 2px 10px -3px #333;
-          text-align: center;
-      }
+    form {
+        background-color: #ffffff;
+        width: 500px;
+        margin: 50px auto 10px auto;
+        padding: 30px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px -3px #333;
+        text-align: center;
+    }
 
-      input {
-          border-radius: 100px;
-          padding: 10px 15px;
-          width: 50%;
-          border: 1px solid #D9D9D9;
-          outline: none;
-          display: block;
-          margin: 20px auto 20px auto;
-      }
+    input {
+        border-radius: 100px;
+        padding: 10px 15px;
+        width: 50%;
+        border: 1px solid #D9D9D9;
+        outline: none;
+        display: block;
+        margin: 20px auto 20px auto;
+    }
 
-      input[type = "submit"] {
-          border-radius: 100px;
-          border: none;
-          background: #719BE6;
-          width: 50%;
-          padding: 10px;
-          color: #FFFFFF;
-          margin-top: 25px;
-          box-shadow: 0 2px 10px -3px #719BE6;
-          display: block;
-          margin: 55px auto 10px auto;
-      }
+    input[type = "submit"] {
+        border-radius: 100px;
+        border: none;
+        background: #719BE6;
+        width: 50%;
+        padding: 10px;
+        color: #FFFFFF;
+        margin-top: 25px;
+        box-shadow: 0 2px 10px -3px #719BE6;
+        display: block;
+        margin: 55px auto 10px auto;
+    }
 
-      a {
-          text-align: center;
-          margin-top: 30px;
-          color: #719BE6;
-          text-decoration: none;
-          padding: 5px;
-          display: inline-block;
-      }
+    a {
+        text-align: center;
+        margin-top: 30px;
+        color: #719BE6;
+        text-decoration: none;
+        padding: 5px;
+        display: inline-block;
+    }
 
-      a:hover {
-          text-decoration: underline;
-      }
+    a:hover {
+        text-decoration: underline;
+    }
   &lt;/style
 &lt;/head>
 &lt;body>
     
-	&lt;form action="/auth/register" method="post">
-		&lt;h3>Register&lt;/h3>
-		&lt;input type="email" name="email" placeholder="Email">
-		&lt;input type="password" name="password" placeholder="Password">
-		&lt;input type="submit" value="Register">
-	&lt;/form>
+    &lt;form action="/auth/register" method="post">
+        &lt;h3>Register&lt;/h3>
+        &lt;input type="email" name="email" placeholder="Email">
+        &lt;input type="password" name="password" placeholder="Password">
+        &lt;input type="submit" value="Register">
+    &lt;/form>
 	
-	&lt;form action="/auth/login" method="post">
-		&lt;h3>Login&lt;/h3>
-		&lt;input type="email" name="email" placeholder="Email">
-		&lt;input type="password" name="password" placeholder="Password">
-		&lt;input type="submit" value="Login">
-	&lt;/form>
+    &lt;form action="/auth/login" method="post">
+        &lt;h3>Login&lt;/h3>
+        &lt;input type="email" name="email" placeholder="Email">
+        &lt;input type="password" name="password" placeholder="Password">
+        &lt;input type="submit" value="Login">
+    &lt;/form>
 	
-	&lt;form action="/auth/logout" method="post">
-		&lt;h3>Logout&lt;/h3>
-		&lt;input type="text" name="token" placeholder="Login token">
-		&lt;input type="submit" value="Logout">
-	&lt;/form>
+    &lt;form action="/auth/logout" method="post">
+        &lt;h3>Logout&lt;/h3>
+        &lt;input type="text" name="token" placeholder="Login token">
+        &lt;input type="submit" value="Logout">
+    &lt;/form>
     
 &lt;/body>
 &lt;/html>
@@ -747,6 +789,12 @@ public class UserServiceEndpoints
     production implementation. The next section uses a more sophisticated approach that has many
     benefits over html forms, and is a valid way to build a production quality website.
 </div>
+
+<p>
+    Now you can test your microservice. Press F5 then navigate to the page we just added. Register with 
+    an email address and a password, then navigate to <span class="code">/auth/users</span> to see that
+    the microservice now returns a list of users that are logged in.
+</p>
 
 <h2>Adding a management UI</h2>
 
@@ -809,7 +857,7 @@ fileLoader.Load(parser);
 <div class="app_hint">
     The <span class="code">AsIsParser</span> implements the parser interface but does no actual
     parsing, it simply outputs the text into the page exactly as it appeared in the original file.
-    This is fine for this tutorial, and may also work for your user case, but there are other parsers
+    This is fine for this tutorial, and may also work for your use case, but there are other parsers
     that, for example, provide server-side data binding using the Mustache syntax.
 </div>
 <p>
@@ -864,6 +912,11 @@ public class Startup
 }
 </pre>
 
+<p>
+    For this to work you will need to have a <span class="code">/templates</span> folder in your
+    project. Go ahead and add this folder now. We will add template files to it later.
+</p>
+
 <h3>Adding a component</h3>
 
 <p>
@@ -885,72 +938,82 @@ public class Startup
     The code required for this component is shown below:
 </p>
 <pre>
-    [IsComponent("vue_template")]
-    [NeedsComponent("libraries:vue")]
-    [NeedsComponent("ajax:ajax")]
-    internal class VueTemplate : Component
+using Microsoft.Owin;
+using OwinFramework.Pages.Core.Attributes;
+using OwinFramework.Pages.Core.Enums;
+using OwinFramework.Pages.Core.Interfaces.Builder;
+using OwinFramework.Pages.Core.Interfaces.Managers;
+using OwinFramework.Pages.Core.Interfaces.Runtime;
+using OwinFramework.Pages.Html.Elements;
+using OwinFramework.Pages.Html.Runtime;
+
+[IsComponent("vue_template")]
+[NeedsComponent("libraries:vue")]
+[NeedsComponent("ajax:ajax")]
+internal class VueTemplate : Component
+{
+    private readonly INameManager _nameManager;
+    private readonly PathString _basePath = new PathString("/ui");
+
+    public VueTemplate(
+        IComponentDependenciesFactory dependencies,
+        INameManager nameManager)
+        : base(dependencies)
     {
-        private readonly INameManager _nameManager;
-        private readonly PathString _basePath = new PathString("/ui");
-
-        public VueTemplate(
-            IComponentDependenciesFactory dependencies,
-            INameManager nameManager)
-            : base(dependencies)
-        {
-            _nameManager = nameManager;
-            PageAreas = new[] { PageArea.Body, PageArea.Initialization };
-        }
-
-        public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
-        {
-            if (pageArea == PageArea.Initialization)
-            {
-                PathString relativePath;
-                if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out relativePath))
-                {
-                    var templateName = relativePath.Value + "model";
-                    var modelTemplate = _nameManager.ResolveTemplate(templateName);
-
-                    if (modelTemplate == null)
-                    {
-                        context.Html.WriteComment("No model template found in '" + templateName + "'");
-                    }
-                    else
-                    {
-                        context.Html.WriteComment("Model template '" + templateName + "'");
-                        context.Html.WriteScriptOpen();
-                        context.Html.WriteLine();
-
-                        modelTemplate.WritePageArea(context, PageArea.Body);
-
-                        context.Html.WriteScriptClose();
-                    }
-                }
-            }
-
-            if (pageArea == PageArea.Body)
-            {
-                if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out var relativePath))
-                {
-                    var templateName = relativePath.Value + "view";
-                    var viewTemplate = _nameManager.ResolveTemplate(templateName);
-
-                    if (viewTemplate == null)
-                    {
-                        context.Html.WriteComment("No view template found in '" + templateName + "'");
-                    }
-                    else
-                    {
-                        context.Html.WriteComment("View template '" + templateName + "'");
-                        viewTemplate.WritePageArea(context, PageArea.Body);
-                    }
-                }
-            }
-
-            return WriteResult.Continue();
-        }
+        _nameManager = nameManager;
+        PageAreas = new[] { PageArea.Body, PageArea.Initialization };
     }
+
+    public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
+    {
+        if (pageArea == PageArea.Initialization)
+        {
+            PathString relativePath;
+            if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out relativePath))
+            {
+                var templateName = relativePath.Value + "model";
+                var modelTemplate = _nameManager.ResolveTemplate(templateName);
+
+                if (modelTemplate == null)
+                {
+                    context.Html.WriteComment("No model template found in '" + templateName + "'");
+                }
+                else
+                {
+                    context.Html.WriteComment("Model template '" + templateName + "'");
+                    context.Html.WriteScriptOpen();
+                    context.Html.WriteLine();
+
+                    modelTemplate.WritePageArea(context, PageArea.Body);
+
+                    context.Html.WriteScriptClose();
+                }
+            }
+        }
+
+        if (pageArea == PageArea.Body)
+        {
+            PathString relativePath;
+            if (context.OwinContext.Request.Path.StartsWithSegments(_basePath, out relativePath))
+            {
+                var templateName = relativePath.Value + "view";
+                var viewTemplate = _nameManager.ResolveTemplate(templateName);
+
+                if (viewTemplate == null)
+                {
+                    context.Html.WriteComment("No view template found in '" + templateName + "'");
+                }
+                else
+                {
+                    context.Html.WriteComment("View template '" + templateName + "'");
+                    viewTemplate.WritePageArea(context, PageArea.Body);
+                }
+            }
+        }
+
+        return WriteResult.Continue();
+    }
+}
 </pre>
 <p>
     As you can see, a component is just a class with an <span class="code">IsComponent</span> attribute
@@ -961,8 +1024,8 @@ public class Startup
 </p>
 <p>
     Most components inherit from the <span class="code">Component</span> class and override the <span class="code">WritePageArea</span>
-    method. This is also what this component does. There are a number of other virtual methods that you can override
-    and you can also choose to build a fully custom component by directly implementing the <span class="code">Component</span> interface.
+    method as this component does. There are a number of other virtual methods that you can override
+    and you can also choose to build a fully custom component by directly implementing the <span class="code">IComponent</span> interface.
 </p>
 <p>
     The <span class="code">WritePageArea</span> method is passed a <span class="code">PageArea</span> parameter that
@@ -993,14 +1056,16 @@ public class Startup
     The page, layout and region classes look like this:
 </p>
 <pre>
-    [IsPage("vue_template"), Route("/ui/**"), UsesLayout("vue_template_page")]
-    public class VueTemplatePage { }
+using OwinFramework.Pages.Core.Attributes;
 
-    [IsLayout("vue_template_page", "page"), ZoneRegion("page", "vue_template_page")]
-    public class VueTemplatePageLayout { }
+[IsPage("vue_template"), Route("/ui/**"), UsesLayout("vue_template_page")]
+public class VueTemplatePage { }
 
-    [IsRegion("vue_template_page"), UsesComponent("vue_template"), Container(null)]
-    public class VueTemplatePageRegion { }
+[IsLayout("vue_template_page", "page"), ZoneRegion("page", "vue_template_page")]
+public class VueTemplatePageLayout { }
+
+[IsRegion("vue_template_page"), UsesComponent("vue_template"), Container(null)]
+public class VueTemplatePageRegion { }
 </pre>
 
 <h3>Pulling in additional libraries</h3>
@@ -1036,13 +1101,78 @@ public class Startup
     shipped as a package and can be added into any website.
 </p>
 <p>
-    To add the packages we need for this tutorial we need to go back to the <span class="code">Startup.cs</span>
-    file and register these packages with the fluent builder. The code to add to <span class="code">Startup.cs</span>
-    looks like this:
+    To add the packages we need for this tutorial we need to add the <span>Owin.Framework.Pages.Standard</span>
+    NuGet package to the project and the <span>DotlessClientOnly</span> NuGet package that it depends on.
+    Now go back to the <span class="code">Startup.cs</span> file and register these packages with the fluent 
+    builder. The code to add to <span class="code">Startup.cs</span> looks like this:
+</p>
+<pre>ninject.Get&lt;OwinFramework.Pages.Framework.BuildEngine>().Install(fluentBuilder);
+fluentBuilder.RegisterPackage(ninject.Get<LibrariesPackage>(), t => ninject.Get(t));
+fluentBuilder.RegisterPackage(ninject.Get<AjaxPackage>(), t => ninject.Get(t));</pre>
+
+<p>
+    You should add this code after constructing the fluent builder and before calling
+    the <span class="code">Bind</span> method of the name manager.
+</p>
+<p>
+    At this point my <span>Startup.cs</span> file looks like this:
 </p>
 <pre>
-fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;LibrariesPackage>(), t => ninject.Get(t));
-fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;AjaxPackage>(), t => ninject.Get(t));
+using Ioc.Modules;
+using Microsoft.Owin;
+using Ninject;
+using Owin;
+using OwinFramework.Builder;
+using OwinFramework.Interfaces.Builder;
+using OwinFramework.Pages.Core;
+using OwinFramework.Pages.Core.Interfaces.Builder;
+using OwinFramework.Pages.Core.Interfaces.Managers;
+using OwinFramework.Pages.Html.Templates;
+using OwinFramework.Pages.Standard;
+using OwinFramework.StaticFiles;
+using System.Reflection;
+
+[assembly: OwinStartup(typeof(Startup))]
+
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        var packageLocator = new PackageLocator()
+           .ProbeBinFolderAssemblies()
+           .Add(Assembly.GetExecutingAssembly());
+        var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
+
+        var config = ninject.Get&lt;IConfiguration>();
+
+        var pipelineBuilder = ninject.Get&lt;IBuilder>();
+
+        pipelineBuilder.Register(ninject.Get&lt;StaticFilesMiddleware>())
+            .As("Static files")
+            .ConfigureWith(config, "/staticFiles");
+
+        pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config, "/pages");
+
+        app.UseBuilder(pipelineBuilder);
+    
+        var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
+        ninject.Get&lt;OwinFramework.Pages.Restful.BuildEngine>().Install(fluentBuilder);
+        ninject.Get&lt;OwinFramework.Pages.Html.BuildEngine>().Install(fluentBuilder);
+        ninject.Get&lt;OwinFramework.Pages.Framework.BuildEngine>().Install(fluentBuilder);
+
+        fluentBuilder.RegisterPackage(ninject.Get&lt;LibrariesPackage>(), t => ninject.Get(t));
+        fluentBuilder.RegisterPackage(ninject.Get&lt;AjaxPackage>(), t => ninject.Get(t));
+        
+        fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));
+
+        var parser = ninject.Get&lt;AsIsParser>();
+        var fileLoader = ninject.Get&lt;FileSystemLoader>();
+        fileLoader.ReloadInterval = TimeSpan.FromSeconds(2);
+        fileLoader.Load(parser);
+        
+        ninject.Get&lt;INameManager>().Bind();
+    }
+}
 </pre>
 
 <h3>Adding templates</h3>
@@ -1077,7 +1207,7 @@ fluentBuilder.RegisterPackage(dependencyResolver.Construct&lt;AjaxPackage>(), t 
 new Vue({
     el: "#hello",
     data: {
-        message:"Hello, world"
+        message:"Hello with Vue"
     }
 })
 </pre>
@@ -1199,7 +1329,7 @@ new Vue({
 </pre>
 <p>
     That is is for this tutorial. I hope you learned a lot about how to get started writing
-    microservices with the Pages framework. Please read the 
-    <a href="/content/project/owinframework.pages.restful/landing">documentation for the Owin.Framework.Pages.Restful Nuget package</a> 
+    microservices with the Pages framework. Please read the
+    <a href="/content/project/owinframework.pages.restful/landing">documentation for the Owin.Framework.Pages.Restful Nuget package</a>
     for further information.
 </p>
