@@ -200,10 +200,10 @@ public class Startup
            .Add(Assembly.GetExecutingAssembly());
         var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
 
-        var config = ninject.Get<IConfiguration>();
+        var config = ninject.Get&lt;IConfiguration>();
 
         var pipelineBuilder = ninject.Get<IBuilder>();
-        pipelineBuilder.Register(ninject.Get<PagesMiddleware>()).ConfigureWith(config, "/pages");
+        pipelineBuilder.Register(ninject.Get&lt;PagesMiddleware>()).ConfigureWith(config, "/pages");
 
         app.UseBuilder(pipelineBuilder);
     }
