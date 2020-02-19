@@ -74,7 +74,7 @@
 </p>
 <pre>
 {{Address=MyApp.DataModels.IAddress}}
-{{#Address}}&lt;p>{{Street}},{{City}},{{Zip}}&lt;/p>{{/Address}}
+{{#Address}}&lt;p>{{Address:Street}},{{Address:City}},{{Address:Zip}}&lt;/p>{{/Address}}
 </pre>
 <p>
     This example creates a template that has a dependency on 
@@ -85,5 +85,6 @@
 </p>
 <div class="warning">
     Note that your data provider must add an <span code="code">IList&lt;T></span> to the
-    data context, other types of collection will not work!
+    data context, other types of collection will not work! In particular you should not
+    add <span code="code">List&lt;T></span>.
 </div>
