@@ -25,7 +25,7 @@ namespace DeployPackages
 
             if (!Directory.Exists(binFolderPath))
             {
-                Console.WriteLine("Packages path does not exist: " + binFolderPath);
+                Console.WriteLine("Bin folder path does not exist: " + binFolderPath);
                 Environment.Exit(2);
             }
 

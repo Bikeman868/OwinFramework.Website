@@ -47,7 +47,7 @@ namespace Website.PageBase
     // Footer - is the same design on all pages
 
     [IsComponent("footer")]
-    [RenderHtml("footer.standard", "<p class='{ns}_footer'>Copyright 2018</p>")]
+    [RenderHtml("footer.standard", "<p class='{ns}_footer'>Copyright 2014-2020</p>")]
     internal class FooterComponent : NavigationElement { }
 
     [IsRegion("footer")]

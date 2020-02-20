@@ -277,6 +277,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
+        <Reference Include="Ioc.Modules.Contract">
+          <HintPath>..\packages\Ioc.Modules.Contract\lib\net40\Ioc.Modules.Contract.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
         <Reference Include="Ioc.Modules.Ninject">
           <HintPath>..\packages\Ioc.Modules.Ninject\lib\net40\Ioc.Modules.Ninject.dll</HintPath>
           <Private>True</Private>
@@ -442,6 +453,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
+        <Reference Include="OwinFramework.Pages.Restful">
+          <HintPath>..\packages\Owin.Framework.Pages.Restful\lib\net40\OwinFramework.Pages.Restful.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
         <Reference Include="OwinFramework.Pages.Standard">
           <HintPath>..\packages\Owin.Framework.Pages.Standard\lib\net40\OwinFramework.Pages.Standard.dll</HintPath>
           <Private>True</Private>
@@ -464,8 +486,8 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
-        <Reference Include="OwinFramework.Configuration.Urchin">
-          <HintPath>..\packages\Owin.Framework.Urchin\lib\net40\OwinFramework.Configuration.Urchin.dll</HintPath>
+        <Reference Include="OwinFramework.Urchin">
+          <HintPath>..\packages\Owin.Framework.Urchin\lib\net40\OwinFramework.Urchin.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

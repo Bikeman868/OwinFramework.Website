@@ -40,7 +40,7 @@
     and then
 </p>
 <div class="information">
-    Note that the classes and properties in binding expression are resolved using 
+    Note that the classes and properties in binding expression are resolved using
     reflection. This might seem slow, except that this resolution only happens once
     when the template is parsed, and reading the property on each rendering
     operation is just as fast as compiled code.
@@ -77,7 +77,7 @@
 {{#Address}}&lt;p>{{Address:Street}},{{Address:City}},{{Address:Zip}}&lt;/p>{{/Address}}
 </pre>
 <p>
-    This example creates a template that has a dependency on 
+    This example creates a template that has a dependency on
     <span class="code">IList&lt;MyApp.DataModels.IAddress></span>. It will look
     for <span class="code">IList&lt;MyApp.DataModels.IAddress></span> in the rendering
     conttext and repeat the piece between <span class="code">{{#Address}}</span> and
@@ -87,4 +87,33 @@
     Note that your data provider must add an <span class="code">IList&lt;T></span> to the
     data context, other types of collection will not work! In particular you should not
     add <span class="code">List&lt;T></span>.
+</div>
+
+<h3>Conditional Rendering</h3>
+<p>
+    To optionally include content in the page use this syntax:
+</p>
+<pre>
+{{Address=MyApp.DataModels.IAddress}}
+{{Config=MyApp.DataModels.IConfiguration}}
+{{?Config:ShowAddress}}
+  {{#Address}}&lt;p>{{Address:Street}},{{Address:City}},{{Address:Zip}}&lt;/p>{{/Address}}
+{{/Config:ShowAddress}}
+</pre>
+<p>
+    In this syntax, the <span class="code">?</span> indicates that this is a conditional
+    section and is followed by a data type, a colon, and a property name. The example above
+    assumes that you have a data provider that can provide an instance of
+    <span class="code">MyApp.DataModels.IConfiguration</span> and that this interface has
+    a <span class="code">ShowAddress</span> property.
+</p>
+<div class="app_hint">
+    The property that is referenced is evaluated for truthiness in a similar way to how
+    Javascript works, i.e. all non-empty strings are considered true and all non-zero
+    numeric values are true. You can also use boolean values of course.
+</div>
+<div class="app_hint">
+    You can also invert the condition using <span class="code">!</span> instead 
+    of <span class="code">?</span>, for example
+    <pre>{{!Config.ShowAddress}}Address redacted{{/Config.ShowAddress}}</pre>
 </div>
