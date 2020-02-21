@@ -140,11 +140,12 @@
     <Compile Include="Components\Content\DocumentTitle.cs" />
     <Compile Include="Components\Content\DocumentIcon.cs" />
     <Compile Include="Components\Content\DocumentListItem.cs" />
-    <Compile Include="Components\FunctionalArea\ListItem.cs" />
+    <Compile Include="Components\FunctionalArea\FunctionalAreaListItem.cs" />
     <Compile Include="Components\InterfaceDefinition\InterfaceListItem.cs" />
     <Compile Include="Components\ContentTemplate.cs" />
-    <Compile Include="Components\Repository\ListItem.cs" />
-    <Compile Include="Components\Project\ListItem.cs" />
+    <Compile Include="Components\Index.cs" />
+    <Compile Include="Components\Repository\RepositoryListItem.cs" />
+    <Compile Include="Components\Project\ProjectListItem.cs" />
     <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />
     <Compile Include="Content\Layouts\Lists\RepositoryList.cs" />
     <Compile Include="Content\Layouts\PageStructure\DocumentHeadLayout.cs" />

@@ -12,10 +12,12 @@ namespace Website.Navigation
     [IsDataProvider("menu", typeof(IList<MenuPackage.MenuItem>))]
     [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "mobile")]
     [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "desktop")]
+    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "sitemap")]
     public class MenuDataProvider : DataProvider
     {
         private readonly IList<MenuPackage.MenuItem> _desktopMenu;
         private readonly IList<MenuPackage.MenuItem> _mobileMenu;
+        private readonly IList<MenuPackage.MenuItem> _sitemapMenu;
 
         public MenuDataProvider(IDataProviderDependenciesFactory dependencies) 
             : base(dependencies) 
@@ -138,6 +140,28 @@ namespace Website.Navigation
                     .ToArray()
             };
 
+            var referenceMenu = new MenuPackage.MenuItem
+            {
+                Name = "Reference",
+                SubMenu = SiteMap.Instance.Repositories
+                    .OrderBy(r => r.GitHubRepositoryName)
+                    .Select(r => new MenuPackage.MenuItem
+                    {
+                        Name = r.Caption,
+                        Url = "/content/repository/" + r.GitHubRepositoryName + "/landing",
+                        SubMenu = SiteMap.Instance.Projects
+                            .Where(p => p.Repository == r)
+                            .OrderBy(p => p.ProjectName)
+                            .Select(p => new MenuPackage.MenuItem
+                                {
+                                    Name = p.ProjectName,
+                                    Url = "/content/project/" + p.ProjectName + "/landing"
+                                })
+                            .ToArray()
+                            })
+                    .ToArray()
+            };
+
             _desktopMenu = new List<MenuPackage.MenuItem>
             {
                 gettingStartedMenu,
@@ -156,6 +180,14 @@ namespace Website.Navigation
                 documentationMobileMenu,
                 nuGetMobileMenu,
                 gitHubMenu
+            };
+
+            _sitemapMenu = new List<MenuPackage.MenuItem>
+            {
+                gettingStartedMenu,
+                tutorialsMenu,
+                documentationDesktopMenu,
+                referenceMenu
             };
         }
 
@@ -177,6 +209,9 @@ namespace Website.Navigation
                     break;
                 case "desktop":
                     dataContext.Set(_desktopMenu, dependency.ScopeName);
+                    break;
+                case "sitemap":
+                    dataContext.Set(_sitemapMenu, dependency.ScopeName);
                     break;
                 default:
                     dataContext.Set(_desktopMenu);

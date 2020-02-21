@@ -41,10 +41,8 @@
                 "assetRootPath": "/assets",
                 "assetVersion": "1",
                 "defaultLanguage": "en-US",
-                "debugLogging": true
-            },
-            "html": {
-                "includeComments": false,
+                "debugLogging": true,
+                "includeComments": true,
                 "indented": true,
                 "htmlFormat": "Html"
             }

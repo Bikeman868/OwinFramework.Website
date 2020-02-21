@@ -6,14 +6,14 @@ using OwinFramework.Pages.Html.Elements;
 using OwinFramework.Pages.Html.Runtime;
 using Website.Navigation;
 
-namespace Website.Components.Project
+namespace Website.Components.FunctionalArea
 {
-    [IsComponent("project__list_item")]
-    [NeedsData(typeof(SiteMap.Project))]
+    [IsComponent("functional_area__list_item")]
+    [NeedsData(typeof(SiteMap.FunctionalArea))]
     [PartOf("application")]
-    public class ListItem: Component
+    public class FunctionalAreaListItem: Component
     {
-        public ListItem(IComponentDependenciesFactory dependencies) 
+        public FunctionalAreaListItem(IComponentDependenciesFactory dependencies) 
             : base(dependencies)
         {
         }
@@ -22,11 +22,11 @@ namespace Website.Components.Project
         {
            if (pageArea == PageArea.Body)
            {
-               var project  = context.Data.Get<SiteMap.Project>();
-               if (project != null)
+               var functionalArea  = context.Data.Get<SiteMap.FunctionalArea>();
+               if (functionalArea != null)
                {
-                   context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_project-caption");
-                   context.Html.WriteElement("a", project.ProjectCaption, "href", project.Document.LandingPageTemplate);
+                   context.Html.WriteOpenTag("li", "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + "_area-identifier");
+                   context.Html.WriteElement("a", functionalArea.Identifier, "href", functionalArea.Document.LandingPageTemplate);
                    context.Html.WriteCloseTag("li");
                    context.Html.WriteLine();
                }

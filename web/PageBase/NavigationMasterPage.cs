@@ -56,6 +56,14 @@ namespace Website.PageBase
     internal class MainFooterRegion : NavigationElement { }
 
     //------------------------------------------------------------------------------------
+    // Index - the index region contains an index of all pages on the website
+
+    [IsRegion("index")]
+    [Container("div", "{ns}_index-region")]
+    [UsesComponent("index")]
+    internal class IndexRegion: ContentElement { }
+
+    //------------------------------------------------------------------------------------
     // Body - the body region has a different layout on each page
 
     [IsRegion("body")]
@@ -65,9 +73,11 @@ namespace Website.PageBase
     //------------------------------------------------------------------------------------
     // Base page for most regular pages on the website
 
-    [IsLayout("navigationPage", "header,body,footer")]
+    [IsLayout("navigationPage", "header,(index,body),footer")]
     [Container("div", "{ns}_page")]
+    [ChildContainer("div", "{ns}_body")]
     [ZoneRegion("header", "header")]
+    [ZoneRegion("index", "index")]
     [ZoneRegion("body", "body")]
     [ZoneRegion("footer", "footer")]
     [ZoneLayout("header", "header")]

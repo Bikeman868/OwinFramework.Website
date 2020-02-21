@@ -79,8 +79,21 @@ div.app_footer-region {
     }
 }
 
-.app_app_navigation {
-    font-family: sans-serif;
+div.app_body {
+    overflow: hidden;
+
+    div.app_index-region {
+        overflow: hidden;
+        float: left;
+        padding: 5px;
+        width: 250px;
+        background-color: @fixed-panel-background;
+    }
+
+    div.app_bodyRegion {
+        overflow: hidden;
+        float: left;
+    }
 }
 
 div.app_fixed-left-layout {
@@ -106,8 +119,8 @@ div.app_fixed-left-layout {
     }
 
     @media only screen and (min-width: @break3) {
-            div.app_left { display: initial; }
-        }
+        div.app_left { display: initial; }
+    }
 }
 
 div.app_fixed-right-layout {
