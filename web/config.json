@@ -31,7 +31,7 @@
             "rootDirectory": "~\\assets\\styles",
             "enabled": true,
             "analyticsEnabled": false,
-            "minify": false,
+            "minify": true,
             "traceLog": false
         }
     },
@@ -39,11 +39,11 @@
         "pages": {
             "framework": {
                 "assetRootPath": "/assets",
-                "assetVersion": "1",
+                "assetVersion": "2",
                 "defaultLanguage": "en-US",
-                "debugLogging": true,
-                "includeComments": true,
-                "indented": true,
+                "debugLogging": false,
+                "includeComments": false,
+                "indented": false,
                 "htmlFormat": "Html"
             }
         }

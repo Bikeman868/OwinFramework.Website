@@ -6,6 +6,7 @@ using OwinFramework.Pages.Core.Interfaces.DataModel;
 using OwinFramework.Pages.Core.Interfaces.Runtime;
 using OwinFramework.Pages.Framework.DataModel;
 using OwinFramework.Pages.Standard;
+using static Website.Navigation.SiteMap;
 
 namespace Website.Navigation
 {
@@ -88,7 +89,7 @@ namespace Website.Navigation
             var nuGetDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = SiteMap.Instance.Projects
+                SubMenu = Instance.Projects
                     .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem 
@@ -102,7 +103,7 @@ namespace Website.Navigation
             var nuGetMobileMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = SiteMap.Instance.Projects
+                SubMenu = Instance.Projects
                     .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem
@@ -116,7 +117,7 @@ namespace Website.Navigation
             var gitHubMenu = new MenuPackage.MenuItem
             {
                 Name = "Repositories",
-                SubMenu = SiteMap.Instance.Repositories
+                SubMenu = Instance.Repositories
                     .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
@@ -129,7 +130,7 @@ namespace Website.Navigation
             var projectDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "Projects",
-                SubMenu = SiteMap.Instance.Projects
+                SubMenu = Instance.Projects
                     .Where(p => p.DesktopMenu)
                     .OrderBy(p => p.ProjectName)
                     .Select(p => new MenuPackage.MenuItem
@@ -140,24 +141,57 @@ namespace Website.Navigation
                     .ToArray()
             };
 
+            MenuPackage.MenuItem[] TopicMenuItems(Topic[] topics)
+            {
+                if (topics == null || topics.Length == 0) 
+                    return null;
+
+                return topics
+                    .Select(t => 
+                        new MenuPackage.MenuItem
+                        {
+                            Name = t.Name,
+                            Url = t.Document?.LandingPageTemplate,
+                            SubMenu = TopicMenuItems(t.SubTopics)
+                        })
+                    .ToArray();
+            }
+
+            var functionalAreasMenu = new MenuPackage.MenuItem
+            {
+                Name = "Functional Areas",
+                SubMenu = Instance.FunctionalAreas
+                    .Where(a => a.Identifier != "framework")
+                    .OrderBy(a => a.Caption)
+                    .Select(a => new MenuPackage.MenuItem
+                        {
+                            Name = a.Caption,
+                            Url = "/content/area/" + a.Identifier + "/landing",
+                            SubMenu = TopicMenuItems(a.Topics)
+                        })
+                    .ToArray()
+            };
+
             var referenceMenu = new MenuPackage.MenuItem
             {
                 Name = "Reference",
-                SubMenu = SiteMap.Instance.Repositories
+                SubMenu = Instance.Repositories
                     .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
                         Name = r.Caption,
-                        SubMenu = SiteMap.Instance.Projects
+                        SubMenu = Instance.Projects
                             .Where(p => p.Repository == r)
                             .OrderBy(p => p.ProjectName)
-                            .Select(p => new MenuPackage.MenuItem
+                            .Select(p => 
+                                new MenuPackage.MenuItem
                                 {
                                     Name = p.ProjectName,
-                                    Url = "/content/project/" + p.ProjectName + "/landing"
+                                    Url = "/content/project/" + p.ProjectName + "/landing",
+                                    SubMenu = TopicMenuItems(p.Topics)
                                 })
                             .ToArray()
-                            })
+                    })
                     .ToArray()
             };
 
@@ -185,6 +219,7 @@ namespace Website.Navigation
             {
                 gettingStartedMenu,
                 tutorialsMenu,
+                functionalAreasMenu,
                 documentationDesktopMenu,
                 referenceMenu
             };
