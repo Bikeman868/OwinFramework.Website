@@ -29,40 +29,73 @@
     Components have the following features:
 </p>
 <ul>
-	<li>
-		You can set an array of lambda functions into the <span class="code">HtmlWriters</span>
-		property and they will be called during the rendering of the page body. This is
-		how things like template parsers configure components to render the template.
-	</li>
-	<li>
-		You can set an array of lambda functions into the <span class="code">CssRules</span>
-		property and they will be called during the rendering of the CSS. The CSS can
-		be rendered into the page head, or into a separate CSS file depending on the 
-		asset deployment mechanism selected.
-	</li>
-	<li>
-		You can set an array of lambda functions into the <span class="code">JavascriptFunctions</span>
-		property and they will be called during the rendering of the JavaScript. The JavaScript can
-		be rendered into the page head, or into a separate JavaScript file depending on the 
-		asset deployment mechanism selected.
-	</li>
     <li>
-	    You can override the <span class="code">GetPageAreas</span> method to indicate
-		which areas of the page your component will write to. To improve page rendering
-		efficiency the rendering engine will prune areas of the tree that contain no
-		components that render to a specific portion of the page when that part of the
-		page is being rendered.
-	</li>
+        You can set an array of lambda functions into the <span class="code">HeadWriters</span>
+        property and they will be called during the rendering of the page head. This allows
+        your component to write meta tags, links etc into the head of the page.
+    </li>
     <li>
-	    You can override the <span class="code">GetCommentName</span> method to provide a
-		custom comment. These comments are written to the HTML when comments are turned on
-		for debugging purposes.
-	</li>
+        You can set an array of lambda functions into the <span class="code">ScriptWriters</span>
+        property and they will be called during the rendering of the javascript that is
+        embedded into the page.
+    </li>
     <li>
-	    You can override the <span class="code">WritePageArea</span> method to output custom
-		HTML in any area of the page where this component exists. Note that this is only
-		guaranteed to be called for page areas returned by the <span class="code">GetPageAreas</span> method.
-	</li>
+        You can set an array of lambda functions into the <span class="code">StyleWriters</span>
+        property and they will be called during the rendering of the CSS that is
+        embedded directly into the page.
+    </li>
+    <li>
+        You can set an array of lambda functions into the <span class="code">BodyWriters</span>
+        property and they will be called during the rendering of the page body. This is
+        how things like template parsers configure components to render the template.
+    </li>
+    <li>
+        You can set an array of lambda functions into the <span class="code">InitializationWriters</span>
+        property and they will be called during the rendering of the page body after all of
+        the components on the page have rendered their body content. This is a good place to
+        write javascript code to execute initialization functions.
+    </li>
+    <li>
+        You can set an array of lambda functions into the <span class="code">CssRules</span>
+        property and they will be called during the rendering of the CSS assets. CSS assets
+        maybe written into the page, or maybe written into an asset resource that is
+        referenced by the page. This is determined by the asset deployment mechanism that is
+        configured.
+    </li>
+    <li>
+        You can set an array of lambda functions into the <span class="code">JavascriptFunctions</span>
+        property and they will be called during the rendering of the JavaScript. The Javascript can
+        be rendered into the page head, or into a separate Javascript file depending on the
+        asset deployment mechanism selected.
+    </li>
+    <li>
+        You can override the <span class="code">GetPageAreas</span> method to indicate
+        which areas of the page your component will write to. To improve page rendering
+        efficiency the rendering engine will prune areas of the tree that contain no
+        components that render to a specific portion of the page when that part of the
+        page is being rendered.
+    </li>
+    <li>
+        You can override the <span class="code">GetCommentName</span> method to provide a
+        custom comment. These comments are written to the HTML when comments are turned on
+        for debugging purposes.
+    </li>
+    <li>
+        You can override the <span class="code">WritePageArea</span> method to output custom
+        HTML in any area of the page where this component exists. Note that this is only
+        guaranteed to be called for page areas returned by the <span class="code">GetPageAreas</span>
+        method, but it may also be called for areas that are not returned by the
+        <span class="code">GetPageAreas</span> if this component has children that render into
+        those areas.
+    </li>
+    <li>
+        You can override the <span class="code">WriteStaticCss</span> method to define what
+        CSS gets written into asset resources associated with this component.
+    </li>
+    <li>
+        You can override the <span class="code">WriteStaticJavascript</span> method to define what
+        Javascript gets written into asset resources associated with this component.
+    </li>
 </ul>
 
 <h3>Writing Custom HTML</h3>
@@ -72,38 +105,47 @@
 	and <span class="code">GetPageAreas</span> methods. For example:
 </p>
 <pre>
-    [IsComponent("person")]
-    [NeedsData(typeof(Person))]
-    internal class PersonComponent : Component
+[IsComponent("person")]
+[NeedsData(typeof(Person))]
+internal class PersonComponent : Component
+{
+    public PersonComponent(IComponentDependenciesFactory dependencies)
+        : base(dependencies)
     {
-        public PersonComponent(IComponentDependenciesFactory dependencies)
-            : base(dependencies)
-        {
-        }
-
-        public override IEnumerable&lt;PageArea> GetPageAreas()
-        {
-            return new[] { PageArea.Body };
-        }
-
-        public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
-        {
-            if (pageArea == PageArea.Body)
-            {
-                var person = context.Data.Get&lt;Person>();
-                context.Html.WriteElementLine("p", person.Name);
-            }
-            return WriteResult.Continue();
-        }
     }
+
+    public override IEnumerable&lt;PageArea> GetPageAreas()
+    {
+        return new[] { PageArea.Body };
+    }
+
+    public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
+    {
+        if (pageArea == PageArea.Body)
+        {
+            var person = context.Data.Get&lt;Person>();
+            context.Html.WriteElementLine("p", person.Name);
+        }
+        return WriteResult.Continue();
+    }
+}
 </pre>
 
 <p>
 	The <span class="code">WritePageArea</span> method is called once for each component
-	instance on the page when rendering the body of the page, but when there are multiple
-	components of the same type on a page, or the component is inside a repeating region
-	the <span class="code">WritePageArea</span> method is called only once when writing
-	other parts of the page. For example if your component writes to the 
+	instance on the page when rendering the body of the page, but only once when rendering
+    all other parts of the page. For example if I put the same component on my page 3
+    times, the body page area will be written 3 times (in each of the locations where I 
+    placed the component) but anything that this component renders in the page head, 
+    initialization area etc will only be written once.
+</p>
+<p>
+    If the component is inside of a region that repeats its content, this is the same
+    as adding the component multiple times. Each time the region repeats the body
+    area will be written again, but the page head will only be written once.
+</p>
+<p>
+    To be more specific, if your component writes to the 
 	<span class="code">&lt;head>&lt;/head></span> section of the page and the component is 
 	included multiple times on a page, then the <span class="code">WritePageArea</span> method
 	will only be called once for each page with the <span class="code">pageArea</span>
@@ -198,30 +240,30 @@
 	a mecahnism to allow components to contribute asynchronously to the Html output. Here is an example:
 </p>
 <pre>
-        public override IWriteResult WriteBodyArea(IRenderContext context)
+public override IWriteResult WriteBodyArea(IRenderContext context)
+{
+    var html = context.Html;
+
+    // Save this location in the output buffer
+    var begining = html.CreateInsertionPoint();
+
+    // Write a paragraph of text
+    html.WriteElementLine("p", "This is paragraph 2");
+
+    // Write a paragraph of text in a background thread
+    var task = Task.Factory.StartNew(() =>
         {
-            var html = context.Html;
+            // Simulate a call to a service or database here
+            Thread.Sleep(10);
 
-            // Save this location in the output buffer
-            var begining = html.CreateInsertionPoint();
+            begining.WriteElementLine("p", "This is paragraph 1");
+        });
 
-            // Write a paragraph of text
-            html.WriteElementLine("p", "This is paragraph 2");
+    // Write a third paragraph of text
+    html.WriteElementLine("p", "This is paragraph 3");
 
-            // Write a paragraph of text in a background thread
-            var task = Task.Factory.StartNew(() =>
-                {
-                    // Simulate a call to a service or database here
-                    Thread.Sleep(10);
-
-                    begining.WriteElementLine("p", "This is paragraph 1");
-                });
-
-            // Write a third paragraph of text
-            html.WriteElementLine("p", "This is paragraph 3");
-
-            return WriteResult.WaitFor(task);
-        }
+    return WriteResult.WaitFor(task);
+}
 </pre>
 <p>
     In this example the resulting web page will contain the three paragraphs in
@@ -271,28 +313,28 @@
 	from the menu package that is shipped with the Pages Framework:
 </p>
 <pre>
-        // Desktop menu behavior
-        [DeployCss("ul.{ns}_dt_menu", "list-style-type: none; overflow: hidden; white-space: nowrap;", 1)]
-        [DeployCss("li.{ns}_dt_option", "display: inline-block;", 2)]
-        [DeployCss("li.{ns}_dt_option a, a.{ns}_dt_option", "display: inline-block; text-decoration: none;", 3)]
-        [DeployCss("div.{ns}_dt_dropdown", "display: none; position: absolute; overflow: hidden; z-index: 1;", 4)]
-        [DeployCss("div.{ns}_dt_dropdown a", "text-decoration: none; display: block; text-align: left", 5)]
-        [DeployCss("li.{ns}_dt_option:hover div.{ns}_dt_dropdown", "display: block;", 6)]
+// Desktop menu behavior
+[DeployCss("ul.{ns}_dt_menu", "list-style-type: none; overflow: hidden; white-space: nowrap;", 1)]
+[DeployCss("li.{ns}_dt_option", "display: inline-block;", 2)]
+[DeployCss("li.{ns}_dt_option a, a.{ns}_dt_option", "display: inline-block; text-decoration: none;", 3)]
+[DeployCss("div.{ns}_dt_dropdown", "display: none; position: absolute; overflow: hidden; z-index: 1;", 4)]
+[DeployCss("div.{ns}_dt_dropdown a", "text-decoration: none; display: block; text-align: left", 5)]
+[DeployCss("li.{ns}_dt_option:hover div.{ns}_dt_dropdown", "display: block;", 6)]
 
-        // Hamburger button behavior
-        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button", "display: none;", 20)]
-        [DeployCss("label.{ns}_mb_hamburger_button", "transition: all 0.3s; cursor: pointer; ", 21)]
-        [DeployCss("div.{ns}_mb_hamburger_icon", "transition: all 0.3s; position: relative; float: left; width: 100%;", 22)]
-        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_1", "transition: all 0.3s; transform: rotate(135deg);", 23)]
-        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_2", "transition: all 0.3s; opacity: 0;", 23)]
-        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "transition: all 0.3s; transform: rotate(-135deg);", 23)]
+// Hamburger button behavior
+[DeployCss("input[type=checkbox].{ns}_mb_hamburger_button", "display: none;", 20)]
+[DeployCss("label.{ns}_mb_hamburger_button", "transition: all 0.3s; cursor: pointer; ", 21)]
+[DeployCss("div.{ns}_mb_hamburger_icon", "transition: all 0.3s; position: relative; float: left; width: 100%;", 22)]
+[DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_1", "transition: all 0.3s; transform: rotate(135deg);", 23)]
+[DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_2", "transition: all 0.3s; opacity: 0;", 23)]
+[DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked + label > .{ns}_mb_hamburger_icon_3", "transition: all 0.3s; transform: rotate(-135deg);", 23)]
 
-        // Slideout menu behavior
-        [DeployCss("ul.{ns}_mb_slideout", "position: absolute;", 24)]
-        [DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked ~ ul.{ns}_mb_slideout", "transform: translateX(0);", 25)]
-		[IsComponent("menu_styles")]
-        public class MenuStyles
-        { }
+// Slideout menu behavior
+[DeployCss("ul.{ns}_mb_slideout", "position: absolute;", 24)]
+[DeployCss("input[type=checkbox].{ns}_mb_hamburger_button:checked ~ ul.{ns}_mb_slideout", "transform: translateX(0);", 25)]
+[IsComponent("menu_styles")]
+public class MenuStyles
+{ }
 </pre>
 
 <p>
@@ -336,29 +378,29 @@
 	This is an example of using the fluent builder to build a component.
 <p>
 <pre>
-    public class CmsEditorPackage: IPackage
+public class CmsEditorPackage: IPackage
+{
+    public CmsEditorPackage()
     {
-        public CmsEditorPackage()
-        {
-            Name = "cms_editor";
-            NamespaceName = "cmseditor";
-        }
+        Name = "cms_editor";
+        NamespaceName = "cmseditor";
+    }
 
-        IPackage IPackage.Build(IFluentBuilder fluentBuilder)
-        {
-			// ... some code omitted here for brevity
+    IPackage IPackage.Build(IFluentBuilder fluentBuilder)
+    {
+		// ... some code omitted here for brevity
 			
-            var assetsComponent = fluentBuilder.BuildUpComponent(null)
-                .Name("assets")
-                .DeployIn(module)
-                .DeployFunction(null, "initVue", null, script.ToString(), true)
-                .RenderInitialization("cms-editor-init", "<script>ns." + NamespaceName + ".initVue();</script>")
-                .DeployLess(less.ToString())
-				.Build();
+        var assetsComponent = fluentBuilder.BuildUpComponent(null)
+            .Name("assets")
+            .DeployIn(module)
+            .DeployFunction(null, "initVue", null, script.ToString(), true)
+            .RenderInitialization("cms-editor-init", "<script>ns." + NamespaceName + ".initVue();</script>")
+            .DeployLess(less.ToString())
+			.Build();
 
-            return this;
-        }
-	}
+        return this;
+    }
+}
 </pre>
 <p>
 	Note that the Owin Framework NuGet package installs the xml documentation file alongside the dlls
@@ -370,49 +412,49 @@
 	uses the fluent builder syntax. This is illustrated in the example below:
 </p>
 <pre>
-    public class LibrariesPackage : Framework.Runtime.Package
+public class LibrariesPackage : Framework.Runtime.Package
+{
+    public LibrariesPackage(IPackageDependenciesFactory dependencies)
+        : base(dependencies)
     {
-        public LibrariesPackage(IPackageDependenciesFactory dependencies)
+        Name = "libraries";
+        NamespaceName = "libraries";
+    }
+
+	[DeployedAs(AssetDeployment.InPage)]
+    private class LibraryComponent : Component
+    {
+        public string[] Urls { get; set; }
+
+        public LibraryComponent(IComponentDependenciesFactory dependencies, params string[] urls)
             : base(dependencies)
         {
-            Name = "libraries";
-            NamespaceName = "libraries";
+            PageAreas = new[] { PageArea.Head };
+            Urls = urls;
         }
 
-		[DeployedAs(AssetDeployment.InPage)]
-        private class LibraryComponent : Component
+        public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
         {
-            public string[] Urls { get; set; }
-
-            public LibraryComponent(IComponentDependenciesFactory dependencies, params string[] urls)
-                : base(dependencies)
+            if (pageArea == PageArea.Head)
             {
-                PageAreas = new[] { PageArea.Head };
-                Urls = urls;
+                foreach (var url in Urls)
+                    context.Html.WriteElementLine("script", string.Empty, "src", url);
             }
 
-            public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
-            {
-                if (pageArea == PageArea.Head)
-                {
-                    foreach (var url in Urls)
-                        context.Html.WriteElementLine("script", string.Empty, "src", url);
-                }
-
-                return WriteResult.Continue();
-            }
-        }
-
-        public override IPackage Build(IFluentBuilder builder)
-        {
-            builder.BuildUpComponent(
-                new LibraryComponent(
-                    Dependencies.ComponentDependenciesFactory, 
-                    "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"))
-                .Name("jQuery1")
-                .Build();
-
-            return this;
+            return WriteResult.Continue();
         }
     }
+
+    public override IPackage Build(IFluentBuilder builder)
+    {
+        builder.BuildUpComponent(
+            new LibraryComponent(
+                Dependencies.ComponentDependenciesFactory, 
+                "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"))
+            .Name("jQuery1")
+            .Build();
+
+        return this;
+    }
+}
 </pre>

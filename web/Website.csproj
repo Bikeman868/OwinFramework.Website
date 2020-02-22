@@ -68,6 +68,10 @@
     <Content Include="Assets\Images\Drawings\Pages_rendering_model.svg" />
     <Content Include="Templates\Content\Area\Pages\Components.html" />
     <Content Include="Templates\Content\Area\Pages\Elements.html" />
+    <Content Include="Templates\Content\Area\Pages\Layouts.html" />
+    <Content Include="Templates\Content\Area\Pages\Modules.html" />
+    <Content Include="Templates\Content\Area\Pages\Pages.html" />
+    <Content Include="Templates\Content\Area\Pages\Regions.html" />
     <Content Include="Templates\Content\Area\Testing\Landing.html" />
     <Content Include="Templates\Content\Area\Pages\Landing.html" />
     <Content Include="Templates\Content\Area\Content\Landing.html" />

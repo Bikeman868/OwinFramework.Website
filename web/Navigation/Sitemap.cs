@@ -261,7 +261,11 @@ namespace Website.Navigation
                 new FunctionalArea("authorization", "Authorization", "Identifying who or what is making the Http request and restricting them with permissions"),
                 new FunctionalArea("pages", "Pages Framework", "Rapid development of web pages and web services using templates and code annotation")
                     .AddTopic(new Topic("Elements", "Elements", "/content/area/pages/elements")
-                        .AddTopic(new Topic("Components", "Components", "/content/area/pages/components"))),
+                        .AddTopic(new Topic("Pages", "Page Elements", "/content/area/pages/pages"))
+                        .AddTopic(new Topic("Regions", "Region Elements", "/content/area/pages/regions"))
+                        .AddTopic(new Topic("Layouts", "Layout Elements", "/content/area/pages/layouts"))
+                        .AddTopic(new Topic("Modules", "Module Elements", "/content/area/pages/modules"))
+                        .AddTopic(new Topic("Components", "Component Elements", "/content/area/pages/components")) ),
                 new FunctionalArea("testing", "Unit Testing", "Mocks and scafolding for testing code in an isolated sandbox")
             };
 
