@@ -143,7 +143,7 @@
     <Compile Include="Components\FunctionalArea\FunctionalAreaListItem.cs" />
     <Compile Include="Components\InterfaceDefinition\InterfaceListItem.cs" />
     <Compile Include="Components\ContentTemplate.cs" />
-    <Compile Include="Components\Index.cs" />
+    <Compile Include="Components\SitemapIndex.cs" />
     <Compile Include="Components\Repository\RepositoryListItem.cs" />
     <Compile Include="Components\Project\ProjectListItem.cs" />
     <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />

@@ -148,7 +148,6 @@ namespace Website.Navigation
                     .Select(r => new MenuPackage.MenuItem
                     {
                         Name = r.Caption,
-                        Url = "/content/repository/" + r.GitHubRepositoryName + "/landing",
                         SubMenu = SiteMap.Instance.Projects
                             .Where(p => p.Repository == r)
                             .OrderBy(p => p.ProjectName)

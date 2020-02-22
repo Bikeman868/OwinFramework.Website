@@ -56,11 +56,11 @@ namespace Website.PageBase
     internal class MainFooterRegion : NavigationElement { }
 
     //------------------------------------------------------------------------------------
-    // Index - the index region contains an index of all pages on the website
+    // Sitemap index - contains an index of all pages on the website
 
     [IsRegion("index")]
-    [Container("div", "{ns}_index-region")]
-    [UsesComponent("index")]
+    [Container("div", "{ns}_sitemap-region")]
+    [UsesComponent("sitemap_index")]
     internal class IndexRegion: ContentElement { }
 
     //------------------------------------------------------------------------------------
