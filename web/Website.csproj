@@ -140,11 +140,12 @@
     <Compile Include="Components\Content\DocumentTitle.cs" />
     <Compile Include="Components\Content\DocumentIcon.cs" />
     <Compile Include="Components\Content\DocumentListItem.cs" />
-    <Compile Include="Components\FunctionalArea\ListItem.cs" />
+    <Compile Include="Components\FunctionalArea\FunctionalAreaListItem.cs" />
     <Compile Include="Components\InterfaceDefinition\InterfaceListItem.cs" />
     <Compile Include="Components\ContentTemplate.cs" />
-    <Compile Include="Components\Repository\ListItem.cs" />
-    <Compile Include="Components\Project\ListItem.cs" />
+    <Compile Include="Components\SitemapIndex.cs" />
+    <Compile Include="Components\Repository\RepositoryListItem.cs" />
+    <Compile Include="Components\Project\ProjectListItem.cs" />
     <Compile Include="Content\Layouts\Lists\InterfaceList.cs" />
     <Compile Include="Content\Layouts\Lists\RepositoryList.cs" />
     <Compile Include="Content\Layouts\PageStructure\DocumentHeadLayout.cs" />
@@ -268,6 +269,17 @@
       <ItemGroup>
         <Reference Include="Ioc.Modules">
           <HintPath>..\packages\Ioc.Modules\lib\net40\Ioc.Modules.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="Ioc.Modules.Contract">
+          <HintPath>..\packages\Ioc.Modules.Contract\lib\net40\Ioc.Modules.Contract.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -442,6 +454,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
+        <Reference Include="OwinFramework.Pages.Restful">
+          <HintPath>..\packages\Owin.Framework.Pages.Restful\lib\net40\OwinFramework.Pages.Restful.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
         <Reference Include="OwinFramework.Pages.Standard">
           <HintPath>..\packages\Owin.Framework.Pages.Standard\lib\net40\OwinFramework.Pages.Standard.dll</HintPath>
           <Private>True</Private>
@@ -464,8 +487,8 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
-        <Reference Include="OwinFramework.Configuration.Urchin">
-          <HintPath>..\packages\Owin.Framework.Urchin\lib\net40\OwinFramework.Configuration.Urchin.dll</HintPath>
+        <Reference Include="OwinFramework.Urchin">
+          <HintPath>..\packages\Owin.Framework.Urchin\lib\net40\OwinFramework.Urchin.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

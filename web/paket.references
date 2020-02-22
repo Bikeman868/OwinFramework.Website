@@ -4,6 +4,7 @@ Ioc.Modules.Ninject
 Ninject
 Svg
 
+Microsoft.Owin
 Microsoft.Owin.Host.SystemWeb
 
 Owin.Framework.NotFound

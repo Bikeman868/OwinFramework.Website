@@ -75,7 +75,7 @@ namespace Website
             var mustacheParser = ninject.Get<OwinFramework.Pages.Html.Templates.MustacheParser>();
 
             var uriLoader = ninject.Get<OwinFramework.Pages.Html.Templates.UriLoader>();
-            uriLoader.ReloadInterval = TimeSpan.FromHours(12);
+            uriLoader.ReloadEvery(TimeSpan.FromHours(12));
 
             foreach (var project in SiteMap.Instance.Projects)
             {
@@ -107,6 +107,9 @@ namespace Website
             }
 
             var fileLoader = ninject.Get<OwinFramework.Pages.Html.Templates.FileSystemLoader>();
+#if DEBUG
+            fileLoader.ReloadEvery(TimeSpan.FromSeconds(5));
+#endif
 
             fileLoader.Load(markdownParser, p => p.Value.EndsWith(".md"));
             fileLoader.Load(asIsParser, p => p.Value.EndsWith(".html"));

@@ -6,16 +6,19 @@ using OwinFramework.Pages.Core.Interfaces.DataModel;
 using OwinFramework.Pages.Core.Interfaces.Runtime;
 using OwinFramework.Pages.Framework.DataModel;
 using OwinFramework.Pages.Standard;
+using static Website.Navigation.SiteMap;
 
 namespace Website.Navigation
 {
     [IsDataProvider("menu", typeof(IList<MenuPackage.MenuItem>))]
     [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "mobile")]
     [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "desktop")]
+    [SuppliesData(typeof(IList<MenuPackage.MenuItem>), "sitemap")]
     public class MenuDataProvider : DataProvider
     {
         private readonly IList<MenuPackage.MenuItem> _desktopMenu;
         private readonly IList<MenuPackage.MenuItem> _mobileMenu;
+        private readonly IList<MenuPackage.MenuItem> _sitemapMenu;
 
         public MenuDataProvider(IDataProviderDependenciesFactory dependencies) 
             : base(dependencies) 
@@ -86,7 +89,7 @@ namespace Website.Navigation
             var nuGetDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = SiteMap.Instance.Projects
+                SubMenu = Instance.Projects
                     .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.DesktopMenu)
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem 
@@ -100,7 +103,7 @@ namespace Website.Navigation
             var nuGetMobileMenu = new MenuPackage.MenuItem
             {
                 Name = "NuGet",
-                SubMenu = SiteMap.Instance.Projects
+                SubMenu = Instance.Projects
                     .Where(p => !string.IsNullOrEmpty(p.NugetPackage) && p.MobileMenu)
                     .OrderBy(p => p.NugetPackage)
                     .Select(r => new MenuPackage.MenuItem
@@ -114,7 +117,7 @@ namespace Website.Navigation
             var gitHubMenu = new MenuPackage.MenuItem
             {
                 Name = "Repositories",
-                SubMenu = SiteMap.Instance.Repositories
+                SubMenu = Instance.Repositories
                     .OrderBy(r => r.GitHubRepositoryName)
                     .Select(r => new MenuPackage.MenuItem
                     {
@@ -127,7 +130,7 @@ namespace Website.Navigation
             var projectDesktopMenu = new MenuPackage.MenuItem
             {
                 Name = "Projects",
-                SubMenu = SiteMap.Instance.Projects
+                SubMenu = Instance.Projects
                     .Where(p => p.DesktopMenu)
                     .OrderBy(p => p.ProjectName)
                     .Select(p => new MenuPackage.MenuItem
@@ -135,6 +138,60 @@ namespace Website.Navigation
                             Name = p.ProjectCaption,
                             Url = "/content/project/" + p.ProjectName + "/landing"
                         })
+                    .ToArray()
+            };
+
+            MenuPackage.MenuItem[] TopicMenuItems(Topic[] topics)
+            {
+                if (topics == null || topics.Length == 0) 
+                    return null;
+
+                return topics
+                    .Select(t => 
+                        new MenuPackage.MenuItem
+                        {
+                            Name = t.Name,
+                            Url = t.Document?.LandingPageTemplate,
+                            SubMenu = TopicMenuItems(t.SubTopics)
+                        })
+                    .ToArray();
+            }
+
+            var functionalAreasMenu = new MenuPackage.MenuItem
+            {
+                Name = "Functional Areas",
+                SubMenu = Instance.FunctionalAreas
+                    .Where(a => a.Identifier != "framework")
+                    .OrderBy(a => a.Caption)
+                    .Select(a => new MenuPackage.MenuItem
+                        {
+                            Name = a.Caption,
+                            Url = "/content/area/" + a.Identifier + "/landing",
+                            SubMenu = TopicMenuItems(a.Topics)
+                        })
+                    .ToArray()
+            };
+
+            var referenceMenu = new MenuPackage.MenuItem
+            {
+                Name = "Reference",
+                SubMenu = Instance.Repositories
+                    .OrderBy(r => r.GitHubRepositoryName)
+                    .Select(r => new MenuPackage.MenuItem
+                    {
+                        Name = r.Caption,
+                        SubMenu = Instance.Projects
+                            .Where(p => p.Repository == r)
+                            .OrderBy(p => p.ProjectName)
+                            .Select(p => 
+                                new MenuPackage.MenuItem
+                                {
+                                    Name = p.ProjectName,
+                                    Url = "/content/project/" + p.ProjectName + "/landing",
+                                    SubMenu = TopicMenuItems(p.Topics)
+                                })
+                            .ToArray()
+                    })
                     .ToArray()
             };
 
@@ -157,6 +214,15 @@ namespace Website.Navigation
                 nuGetMobileMenu,
                 gitHubMenu
             };
+
+            _sitemapMenu = new List<MenuPackage.MenuItem>
+            {
+                gettingStartedMenu,
+                tutorialsMenu,
+                functionalAreasMenu,
+                documentationDesktopMenu,
+                referenceMenu
+            };
         }
 
         protected override void Supply(
@@ -177,6 +243,9 @@ namespace Website.Navigation
                     break;
                 case "desktop":
                     dataContext.Set(_desktopMenu, dependency.ScopeName);
+                    break;
+                case "sitemap":
+                    dataContext.Set(_sitemapMenu, dependency.ScopeName);
                     break;
                 default:
                     dataContext.Set(_desktopMenu);
