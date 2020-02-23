@@ -1,0 +1,20 @@
+﻿<h2><span class="code">[Endpoint]</span> Attribute</h2>
+<p>
+    Attach this attribute to a method to identify it as a web service endpoint.
+    The class containing this method must be decorated with the <span class="code">[IsService]</span> 
+    attribute for this to work.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsService("order", "/order/", new[] { Method.Post, Method.Get, Method.Put, Method.Delete })]
+public class OrderService
+{
+    [Endpoint(UrlPath = "{id}", Methods = new[] { Method.Get })]
+    public void Get(IEndpointRequest request)
+    {
+        throw new NotImplementedException();
+    }
+}
+</pre>

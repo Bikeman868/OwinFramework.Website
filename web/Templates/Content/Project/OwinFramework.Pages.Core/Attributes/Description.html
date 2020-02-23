@@ -1,0 +1,20 @@
+﻿<h2><span class="code">[Description]</span> Attribute</h2>
+<p>
+    You can attach this attribute to pages, services and service endpoints to
+    include the desciption into self-documentation for the website API.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsService("my-service")]
+[Description("&lt;h1>My Service&lt;/h1>&lt;p>Is awesome&lt;/p>")]
+internal class MyService
+{
+    [Endpoint]
+    [Description("&lt;h1>My Endpoint&lt;/h1>&lt;p>Does amazing things&lt;/p>")]
+    public void MyEndpoint(IEndpointRequest request)
+    {
+    }
+}
+</pre>

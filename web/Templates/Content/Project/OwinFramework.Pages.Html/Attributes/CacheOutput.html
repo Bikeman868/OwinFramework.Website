@@ -1,0 +1,16 @@
+﻿<h2><span class="code">[CacheOutput]</span> Attribute</h2>
+<p>
+    Optionally attach this attribute to a page to instruct the output
+    cache middleware how to cache the response. This is only effective if you
+    have installed and configured some output caching middleware.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsPage("home", "/")]
+[CacheOutput("Page", CachePriority.Medium)]
+public class HomePage
+{
+}
+</pre>

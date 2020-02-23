@@ -1,0 +1,42 @@
+﻿<h2><span class="code">[DataScope]</span> Attribute</h2>
+<p>
+    You can attach this attribute to a Page element or a Region
+    element to define the scope used to retrieve a specific type
+    of data.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("billing-address-region")]
+[DataScope(typeof(IAddress), "billing")]
+public class BillingAddressRegion
+{
+}
+
+[IsRegion("delivery-address-region")]
+[DataScope(typeof(IAddress), "delivery")]
+public class DeliveryAddressRegion
+{
+}
+
+[IsLayout("address-layout", "billing,delivery")]
+[ZoneRegion("billing", "billing-address-region")]
+[ZoneRegion("delivery", "delivery-address-region")]
+[ZoneTemplate("billing", "/cart/invoice/address")]
+[ZoneTemplate("delivery", "/cart/invoice/address")]
+public class AddressLayout
+{
+}
+</pre>
+<p>
+    Note that in this example the same address template is used in both
+    zones of the address layout, and this template is data bound to the
+    <span class="code">IAddress</span> interface, but the zones will 
+    contain different addresses because of the <span class="code">[DataScope]</span> 
+    attributes attached to the regions.
+</p>
+<p>
+    This is an important mechanism because it allows you to reuse the address
+    template with different addresses even within the same layout.
+</p>

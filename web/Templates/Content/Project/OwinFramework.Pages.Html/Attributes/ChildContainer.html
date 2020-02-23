@@ -1,0 +1,17 @@
+﻿<h2><span class="code">[ChildContainer]</span> Attribute</h2>
+<p>
+    You can attach this attribute to any page element that is a
+    container of other page elements and it will define the html
+    element to use as a container for each of the children.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("menu_region")]
+[Container("ul", "{ns}_menu")]
+[ChildContainer("li", "{ns}_menu-item")]
+public class MenuRegion
+{
+}
+</pre>

@@ -1,0 +1,29 @@
+﻿<h2><span class="code">[DeployCss]</span> Attribute</h2>
+<p>
+    You can attach this attribute to any visual element and it will
+    cause CSS to be included in any page containing that element.
+    Where the CSS will be rendered is defined by the <a href="deployedas">[DeployedAs]</a>
+    attribute.
+</p>
+<p>
+    This attribute is useful for very small amounts of CSS that is very specific to
+    this element. It is recommended that larger amounts of CSS should be contained
+    in a .less file instead.
+</p>
+<p>
+    Note that even if this element is rendered many times on the pages, the CSS
+    rules will only be rendered once.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("menu_region")]
+[Container("ul", "{ns}_menu")]
+[ChildContainer("li", "{ns}_menu-item")]
+[DeployCss("ul.{ns}_menu", "font-size: 14px;")]
+[DeployCss("li.{ns}_menu-tem", "font-size: 12px;")]
+public class MenuRegion
+{
+}
+</pre>

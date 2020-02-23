@@ -1,0 +1,60 @@
+﻿<h2><span class="code">[DeployedAs]</span> Attribute</h2>
+<p>
+    You can attach this attribute to elements that produce CSS and Javascript to
+    control how the CSS and Javascript is incorporated into the website.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("menu_region")]
+[Container("ul", "{ns}_menu")]
+[ChildContainer("li", "{ns}_menu-item")]
+[DeployCss("ul.{ns}_menu", "font-size: 14px;")]
+[DeployCss("li.{ns}_menu-tem", "font-size: 12px;")]
+[DeployedAs(AssetDeployment.InPage)]
+public class MenuRegion
+{
+}
+</pre>
+
+<p>
+    The possible values for the <span class="code">AssetDeployment</span> parameter are:
+</p>
+<ul>
+    <li>
+        <span class="code">Inherit</span> means that page element will interit
+        the <span class="code">AssetDeployment</span> property of the containing page 
+        element. If all elements on a page are set to <span class="code">Inherit</span> 
+        (which is the default) then they all follow the asset deployment mechanism set 
+        in the page. Pages default to <span class="code">PerWebsite</span>, so by default 
+        all Javascript and all CSS for the entire website will be combined into a single 
+        asset.
+    </li>
+    <li>
+        <span class="code">InPage</span> means that page element will write its
+        CSS and Javascript directly into the <span class="code">&lt;head></span> section
+        of the page. This option is mainly useful for debugging and generating html for
+        emails.
+    </li>
+    <li>
+        <span class="code">PerPage</span> means that each page will have a Javascript and
+        CSS asset that is specific to that page and contains everything that that page
+        needs to render. If the same page element is used on multiple pages then its
+        CSS and Javascript will be duplicated in all the page specific assets for the
+        pages where it is referenced. This option means that the page will only reference
+        exactly what it needs, but the browser will have to fetch the assets associated
+        with every page that the user visits.
+    </li>
+    <li>
+        <span class="code">PerModule</span> means that the element should use the
+        <span class="code">AssetDeployment</span> property of the module it is in.
+        You can also specify this module by name with the <span class="code">[DeployedAs]</span> 
+        attribute.
+    </li>
+    <li>
+        <span class="code">PerWebsite</span> means that there is a single Javascript
+        and CSS asset for the entire website and this element will write its CSS and
+        Javascript into this global asset.
+    </li>
+</ul>

@@ -1,0 +1,26 @@
+﻿<h2><span class="code">[DeployFunction]</span> Attribute</h2>
+<p>
+    You can attach one or more of these attributes to any visual element and it will
+    cause a Javascript function to be included in any page containing that element.
+    Where the Javascript will be rendered is defined by the <a href="deployedas">[DeployedAs]</a>
+    attribute.
+</p>
+<p>
+    This attribute is useful for very small amounts of Javascript that is very specific to
+    this element. It is recommended that larger amounts of Javascript should be contained
+    in a Javascript file instead.
+</p>
+<p>
+    Note that even if this element is rendered many times on the pages, the Javascript
+    function will only be rendered once.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsComponent("my-component")]
+[PartOf("application")]
+[DeployedAs("content")]
+[DeployFunction(null, "sayHello", null, "alert('Hello');")]
+internal class MyComponent { }
+</pre>

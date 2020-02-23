@@ -1,0 +1,16 @@
+﻿<h2><span class="code">[Container]</span> Attribute</h2>
+<p>
+    You can attach this attribute to any visual page element to define
+    which html element it will render to contain its content.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("menu_region")]
+[Container("ul", "{ns}_menu")]
+[ChildContainer("li", "{ns}_menu-item")]
+public class MenuRegion
+{
+}
+</pre>

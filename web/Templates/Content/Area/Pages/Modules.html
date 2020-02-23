@@ -79,3 +79,26 @@
 	Note that you can mix up the asset deployment properties as much as you want, even
 	within a single page.
 </p>
+
+<h3>Modules and Packages</h3>
+
+<p>
+	Packages are a way of isolating a chunck of reusable functionallity that can include
+	html, css, Javascript, services and back-end logic. Packages are typically added
+	to a website to add some functionallity to that website.
+</p>
+<p>
+	Modules are a way for the application developer to group elements together by
+	the method used to deploy their assets. Becasue these are very different use
+	cases, it does not make sense to build a package that contains modules, and
+	this is not supported by the framework.
+</p>
+
+<h3>Writing custom modules</h3>
+
+<p>
+	Although in theory you could write a custom module that inherits from the built-in
+	<span class="code">Module</span> class or implements the <span class="code">IModule</span>
+	interface, there is very little point in doing so because the module provides no
+	functionallity.
+</p>

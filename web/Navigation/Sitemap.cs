@@ -387,7 +387,10 @@ namespace Website.Navigation
 
                 new Project("OwinFramework.Pages.Core", "OwinFramework.Pages", "pages", 
                     "Contract definitions for the packages that render Html. Required dependency for other packages in the Pages framework")
-                    .Menus(false, false),
+                    .Menus(false, false)
+                    .AddTopic(new Topic("Attributes", "Core pages framework attributes", null)
+                        .AddTopic(new Topic("Description", "The [Description] attribute", "/content/project/owinframework.pages.core/attributes/description"))
+                        .AddTopic(new Topic("Example", "The [Example] attribute", "/content/project/owinframework.pages.core/attributes/example")) ),
 
                 new Project("OwinFramework.Pages.DebugMiddleware", "OwinFramework.Pages", "diagnostics", 
                     "Allows you to add ?debug=xxx to your website page URLs to see diagnostic information about page construction and data binding")
@@ -400,8 +403,16 @@ namespace Website.Navigation
                 new Project("OwinFramework.Pages.Html", "OwinFramework.Pages", "pages", 
                     "Allows you to build a website with pages of Html content using templates, regions, layouts and 3rd party packages")
                     .Menus(true, true)
-                    .AddTopic(new Topic("Attributes", "Pages framework attributes", null)
-                        .AddTopic(new Topic("IsPage", "The [IsPage] attribute", "/content/project/owinframework.pages.html/attributes/ispage")))
+                    .AddTopic(new Topic("Attributes", "Html framework attributes", null)
+                        .AddTopic(new Topic("CacheOutput", "The [CacheOutput] attribute", "/content/project/owinframework.pages.html/attributes/cacheoutput"))
+                        .AddTopic(new Topic("ChildContainer", "The [ChildContainer] attribute", "/content/project/owinframework.pages.html/attributes/childcontainer"))
+                        .AddTopic(new Topic("ChildStyle", "The [ChildStyle] attribute", "/content/project/owinframework.pages.html/attributes/childstyle"))
+                        .AddTopic(new Topic("Container", "The [Container] attribute", "/content/project/owinframework.pages.html/attributes/container"))
+                        .AddTopic(new Topic("DataScope", "The [DataScope] attribute", "/content/project/owinframework.pages.html/attributes/datascope"))
+                        .AddTopic(new Topic("DeployCss", "The [DeployCss] attribute", "/content/project/owinframework.pages.html/attributes/deploycss"))
+                        .AddTopic(new Topic("DeployedAs", "The [DeployedAs] attribute", "/content/project/owinframework.pages.html/attributes/deployedas"))
+                        .AddTopic(new Topic("DeployFunction", "The [DeployFunction] attribute", "/content/project/owinframework.pages.html/attributes/deployfunction"))
+                        .AddTopic(new Topic("IsPage", "The [IsPage] attribute", "/content/project/owinframework.pages.html/attributes/ispage")) )
                     .AddTopic(new Topic("Templates", "Overview of the pages framework templating system", "/content/project/owinframework.pages.html/templateoverview")
                         .AddTopic(new Topic("Markdown parser", "The markdown template parser", "/content/project/owinframework.pages.html/templates/markdownparser"))
                         .AddTopic(new Topic("Multi-part parser", "The multi-part template parser", "/content/project/owinframework.pages.html/templates/multipartparser"))
@@ -414,6 +425,11 @@ namespace Website.Navigation
                 new Project("OwinFramework.Pages.Restful", "OwinFramework.Pages", "pages", 
                     "Allows you to add REST endpoints to a website using classes and methods decorated with attributes")   
                     .Menus(true, true)
+                    .AddTopic(new Topic("Attributes", "Restful framework attributes", null)
+                        .AddTopic(new Topic("IsService", "The [IsService] attribute", "/content/project/owinframework.pages.restful/attributes/isservice"))
+                        .AddTopic(new Topic("CacheOutput", "The [CacheOutput] attribute", "/content/project/owinframework.pages.restful/attributes/cacheoutput"))
+                        .AddTopic(new Topic("Endpoint", "The [Endpoint] attribute", "/content/project/owinframework.pages.restful/attributes/endpoint"))
+                        .AddTopic(new Topic("EndpointParameter", "The [EndpointParameter] attribute", "/content/project/owinframework.pages.restful/attributes/endpointparameter")) )
                     .AddTopic(new Topic("Serialization", "Custom response serialization from service endpoints", "/content/project/owinframework.pages.restful/customserialization"))
                     .AddTopic(new Topic("Deserialization", "Custom request deserialization into service endpoints", "/content/project/owinframework.pages.restful/customdeserialization"))
                     .AddTopic(new Topic("Endpoint parameters", "Passing parameters to service endpoints", "/content/project/owinframework.pages.restful/parameters"))

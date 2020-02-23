@@ -1,0 +1,21 @@
+﻿<h2><span class="code">[Example]</span> Attribute</h2>
+<p>
+    You can attach this attribute to pages, services and service endpoints to
+    include an example usage into self-documentation for the website API.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsService("math", "/math/", new[] { Method.Post })]
+[Description("&lt;h1>My Service&lt;/h1>&lt;p>Is awesome&lt;/p>")]
+internal class MyService
+{
+    [Endpoint]
+    [Description("&lt;h1>My Endpoint&lt;/h1>&lt;p>Does amazing things&lt;/p>")]
+    [Example("&lt;p>POST /math/add?a=5&amp;b=6&lt;/p>")]
+    public void Add(IEndpointRequest request)
+    {
+    }
+}
+</pre>

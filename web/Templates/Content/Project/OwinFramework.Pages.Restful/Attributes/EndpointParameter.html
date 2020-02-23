@@ -1,0 +1,54 @@
+﻿<h2><span class="code">[EndpointParameter]</span> Attribute</h2>
+<p>
+    Attach these attributes to a service endpoint method to define the parameters
+    that can be passed to the endpoint. You can also add C# parameters to your method
+    to define the parameters that can be passed to the endpoint, but this only
+    defines the name and the data type of the parameters.
+</p>
+<p>
+    If you prefer to define C# parameters, you can also decorate those parameters
+    with the <span class="code">[EndpointParameter]</span> attribute to define
+    the way in which parameters can be passed and provide documentation, parsing
+    and validation of the parameters.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsComponent("math_form")]
+[IsService("math", "/math/", new[] { Method.Post })]
+public class MathFormComponent: Component
+{
+    public MathFormComponent(IComponentDependenciesFactory dependencies)
+        : base(dependencies)
+    {
+    }
+
+    [Endpoint(Analytics = AnalyticsLevel.Full)]
+    [Description("Adds two numbers and returns the sum")]
+    public void Add(
+        IEndpointRequest request,
+
+        [EndpointParameter(
+            EndpointParameterType.FormField,
+            Description = "The first number to add")]
+        double a,
+
+        [EndpointParameter(
+            EndpointParameterType.FormField,
+            Description = "The second number to add")]
+        double b,
+
+        [EndpointParameter(
+            EndpointParameterType.FormField,
+            ParserType = typeof(AnyValue<string>),
+            Description = "The path of the page to return the results on")]
+        string r)
+    {
+        request.OwinContext.Set(
+            typeof(ArithmeticResult).FullName,
+            new ArithmeticResult { Result = a + " + " + b + " = " + (a + b) });
+        request.Rewrite(r);
+    }
+}
+</pre>
