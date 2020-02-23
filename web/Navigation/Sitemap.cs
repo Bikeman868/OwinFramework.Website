@@ -322,7 +322,7 @@ namespace Website.Navigation
                     .Menus(false, false),
 
                 new Project("OwinFramework.Dart", "OwinFramework.Middleware", "content", 
-                    "Detects if the user agent has native support for the Dart programming language and serves either Dart code or compiled JavaScript as needed")
+                    "Detects if the user agent has native support for the Dart programming language and serves either Dart code or compiled Javascript as needed")
                     .Menus(false, false),
         
                 new Project("OwinFramework.DefaultDocument", "OwinFramework.Middleware", "content", 

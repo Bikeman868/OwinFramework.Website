@@ -70,7 +70,7 @@
 <p>
     Each region of the layout can contain one <a href="regions">Region Element</a>
 	that defines how this region of the layout behaves (alignment, wrapping, resizing etc).
-	The CSS and JavaScript of the layout and the regions within it define how the layout
+	The CSS and Javascript of the layout and the regions within it define how the layout
 	is rendered and how it interacts with content and with the user.
 </p>
 <div>
@@ -119,7 +119,7 @@
 <h3><a href="packages">Package Elements</a></h3>
 <p>
     Packages define a namespace for browser assets, especially CSS classes and
-    JavaScript functions. You might want to break your own assets into namespaces
+    Javascript functions. You might want to break your own assets into namespaces
     if you have a very large and complex application, but this is not the reason
     why packages exist in this design.
 </p>
@@ -128,11 +128,11 @@
     functionallity and have these all integrate without stepping on each other's
     toes. The packaging system allows third party contributors to build a package
     that includes layouts, regions, components etc where these things have custom
-    CSS and JavaScript associated with them.
+    CSS and Javascript associated with them.
 </p>
 <p>
     Each package has a default namespace that is prepended to CSS class names and
-    is used to encapsulate JavaScript functions. The application developer can
+    is used to encapsulate Javascript functions. The application developer can
     override the namespace when integrating the package into their solution
     to ensure that package namespaces do not clash.
 </p>
@@ -152,7 +152,7 @@
 <p>
     Modules are a way of grouping browser assets that have the same deployment
     rules. Essentially the Pages Framework dynamically constructs one CSS and
-    one JavaScript resource for each page, for each module, and for the website
+    one Javascript resource for each page, for each module, and for the website
     as a whole. These are generated in memory and served to the browser by the
     <span class="code">AssetManager</span> class. The HTML pages produced by
     the framework contain references to any of these assets that are not empty.

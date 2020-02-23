@@ -5,12 +5,12 @@
     and decorating them with attributes to define pages, layouts, regions etc is very powerful and flexible, 
     especially when those classes inherit from the standard implementation and override some of the virtual 
     methods, but this technique has two important drawbacks: All of the website content is compiled into the 
-    asemblies which means you need to recompile and redepoly to change anything; Writing html and JavaScript 
+    asemblies which means you need to recompile and redepoly to change anything; Writing html and Javascript 
     as strings that are passed to attribute constructors is ugly, and you don't get any help from the 
     development tool (syntax highlighting and intellisense).
 </p>
 <p>
-    The templating system addresses these two issues by allowing you to place snippets of html, css and JavaScript
+    The templating system addresses these two issues by allowing you to place snippets of html, css and Javascript
     into separate resources then referencing them from region and layout elements.
 </p>
 
@@ -157,7 +157,7 @@ foreach (var project in SiteMap.Instance.Projects)
 <p>
     This template parser allows you to combine content from various parts of
     the page into a single template resource using a special separator between
-    sections. For example you can combine CSS, html and JavaScript templates
+    sections. For example you can combine CSS, html and Javascript templates
     into a single file and the <span class="code">MultiPartParser</span> will
     separate out the different areas and render them into different parts of
     the page.
@@ -209,7 +209,7 @@ var template = templateBuilder.BuildUpTemplate()
 </div>
 <p>
     Lets say for example I want to create a login form. The login form consists of
-    some html, some CSS and some JavaScript. It is convenient to create three separate
+    some html, some CSS and some Javascript. It is convenient to create three separate
     templates because your development tool will provide syntax highlighting and
     intellisense within each file according to the type of content. These three
     templates need to be written to different parts of the page. You might

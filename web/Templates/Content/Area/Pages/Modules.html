@@ -1,33 +1,81 @@
 <h2>Module Elements</h2>
 
 <p>
-    Module elements define how JavaScript and css assets are deployed on the
+    Module elements define how Javascript and css assets are deployed on the
 	website you are building. You can choose which module to associate with
 	each region, page, component etc and the assets produced by that element
-	will be deployed according to that module's definition.
+	will be deployed according to that module's configuration.
 </p>
 <p>
 	For example you might have some cross-cutting assets that are used on virtually
 	every page on your website and should be deployed site wide whereas other elements
 	might be specific to a small number of pages and can be collected up into one
-	JavaScript asset and deployed only to pages that need them. To do this you would
+	Javascript asset and deployed only to pages that need them. To do this you would
 	define two modules and and choose the appropriate module for each element of
 	your website.
 </p>
 <div class="app_hint">
     <p>
-        Note that elements inherit the module from their parent element by defaultso 
+        Note that elements inherit the module from their parent element by default so 
 		you only need to override this at strategic points. The only exception to this
 		are pages (which have no parent element) and default to deploying assets
 		site wide without using modules.
 	</p>
 </div>
 <p>
-    Modules have the following features:
+    Modules have an <span class="code">AssetDeployment</span> property that defines how the assets
+	associated with this module are deployed. The general idea is that every page element 
+	(region, layout, component etc) is configured to be part of a module and that module's
+	configuration determines how the Javascript and CSS for that page element will be
+	incorporated into the website
+</p>
+<p>
+	The possible values for the <span class="code">AssetDeployment</span> property are:
 </p>
 <ul>
 	<li>
-		To be completed
+		<span class="code">Inherit</span> means that page elements in this module interit
+		the asset deployment mechanism of their containing page element. If all elements
+		are set to <span class="code">Inherit</span> (which is the default) then they all
+		follow the asset deployment mechanism set in the page. Pages default to
+		<span class="code">PerWebsite</span>, so by default all Javascript and all CSS
+		for the entire website will be combined into a single asset.
+	</li>
+	<li>
+		<span class="code">InPage</span> means that page elements in this module write
+		CSS and Javascript directly into the <span class="code">&lt;head></span> section
+		of the page. This option is mainly useful for debugging and generating html for
+		emails.
+	</li>
+	<li>
+		<span class="code">PerPage</span> means that each page will have a Javascript and
+		CSS asset that is specific to that page and contains everything that that page
+		needs to render. If the same page element is used on multiple pages then its
+		CSS and Javascript will be duplicated in all the page specific assets for the
+		pages where it is referenced. This option means that the page will only reference
+		exactly what it needs, but the broswer will have to fetch the assets associated
+		with every page that the user visits.
+	</li>
+	<li>
+		<span class="code">PerModule</span> means that there will be a Javascript and a
+		CSS asset associated with the module. The Javascript and CSS for a particular
+		page element will only appear in the module specific asset. Module assets will
+		be referenced by any page that contains any of the page elements contained in
+		that module. This option is useful for areas of the website that need a lot
+		if CSS or Javascript but are not frequented by every visitor to the website, for
+		example a shopping cart, or the administration tools for a content management system.
+	</li>
+	<li>
+		<span class="code">PerWebsite</span> means that there is a single Javascript
+		and CSS asset for the entire website. The page elements in this module will
+		write their CSS and Javascript into these global assets which will be referenced
+		by every page on the website. This means that the first page visited will incur
+		the penalty of downloading all of the CSS and Javascript assets, but after that
+		it is cached by the browser and no further assets are required to visit other
+		pages.
 	</li>
 </ul>
-
+<p>
+	Note that you can mix up the asset deployment properties as much as you want, even
+	within a single page.
+</p>

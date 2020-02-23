@@ -647,7 +647,7 @@ public class UserServiceEndpoints
         </p>
         <p>
             This step is optional, if you do not configure the Static Files middleware it will default
-            to serving common image formats, html, css and JavaScript from an <span class="code">/assets</span>
+            to serving common image formats, html, css and Javascript from an <span class="code">/assets</span>
             folder within your website where the URL path matches the file path. This default configuration
             will work for this walk through.
         </p>
@@ -812,16 +812,16 @@ public class UserServiceEndpoints
 <p>
     For the purpose of this walkthrough I have decided to show you how to build website pages where each
     page is defined by a <span class="code">Vue.js</span> view model. I will define each page of the website
-    with a JavaScript file and an html file. This is simple and efficient way of doing things for a
+    with a Javascript file and an html file. This is simple and efficient way of doing things for a
     microservice that has only a few pages. It does provide all the features that we need to build a UI
     that displays all of the logged in users and dynamically updates as users log in and out without
     refreshing the page, and it demonstrates a few more features of the Owin Framework.
 </p>
 <p>The steps for this part of the walkthrough are:</p>
 <ol>
-    <li>Create a folder containing html and JavaScript files that will be loaded and parsed as templates</li>
+    <li>Create a folder containing html and Javascript files that will be loaded and parsed as templates</li>
     <li>Configure the template loader to load and parse these templates at startup and reload them if they change</li>
-    <li>Add a component that takes the path of the URL and uses this to form a template path, then renders the contents of the html and JavaScript templates into the page</li>
+    <li>Add a component that takes the path of the URL and uses this to form a template path, then renders the contents of the html and Javascript templates into the page</li>
     <li>Add a web page that matches a wildcard path and renders the component.</li>
 </ol>
 <p>
@@ -838,7 +838,7 @@ public class UserServiceEndpoints
 </p>
 <p>
     For this tutorial we are going to add a <span class="code">/templates</span> folder to our project and
-    put some html and JavaScript files into it, then we are going to load and parse these files so that
+    put some html and Javascript files into it, then we are going to load and parse these files so that
     they will render extremely quickly even if they contain data binding expressions etc.
 </p>
 <p>
@@ -1027,7 +1027,7 @@ internal class VueTemplate : Component
     The <span class="code">WritePageArea</span> method is passed a <span class="code">PageArea</span> parameter that
     defines which part of the page is currently being written. Components should check this parameter and write
     appropriate content to each area of the page. In the case of this component it writes the html template into the
-    body of the page and the JavaScript at the very bottom of the page where page initialization takes place.
+    body of the page and the Javascript at the very bottom of the page where page initialization takes place.
 </p>
 <p>
     Note how this class uses the name manager to find templates that are registered with a specific path. The
@@ -1237,7 +1237,7 @@ new Vue({
 <ol>
     <li>Add a new endpoint to our service that returns a list of logged in users</li>
     <li>Add a new pair of template files for the view and the model just like we did for the hello example</li>
-    <li>Add JavaScript to call the new service endpoint when the template is loaded in the browser</li>
+    <li>Add Javascript to call the new service endpoint when the template is loaded in the browser</li>
 </ol>
 <p>The new service endpoint can be added to the existing service like this:</p>
 <pre>
@@ -1249,7 +1249,7 @@ public class UserServiceEndpoints
 </pre>
 <p>
     Note that we added an extra attribute here because we will be calling this from javaScript, and we can take
-    advantage of a cool feature of the Pages framework where it will generate a component that will render JavaScript
+    advantage of a cool feature of the Pages framework where it will generate a component that will render Javascript
     for us that makes it easy to make Ajax calls to this endpoint.
 </p>
 <p>
@@ -1262,7 +1262,7 @@ public class UserServiceEndpoints
 public class VueTemplatePage { }
 </pre>
 <p>
-    Now that we have the endpoint we need and some JavaScript generated for us that makes it easy
+    Now that we have the endpoint we need and some Javascript generated for us that makes it easy
     to call, we can go ahead and add the new template files as follows:
 </p>
 
@@ -1308,7 +1308,7 @@ new Vue({
     very small. We just need the service endpoint to not return right away, but wait a bit before
     returning. In a robust implementation it would wait for a login/logout event then complete
     all of the outstanding long poll requests, but that would be getting all fancy again. On the
-    JavaScript side we just need to kick off another call to the service endpoint each time the
+    Javascript side we just need to kick off another call to the service endpoint each time the
     current one completes.
 </p>
 <p>
