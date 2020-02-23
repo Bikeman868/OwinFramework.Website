@@ -7,11 +7,15 @@ Svg
 Microsoft.Owin
 Microsoft.Owin.Host.SystemWeb
 
+Owin.Framework.Facilities.Cache.Local
+
 Owin.Framework.NotFound
 Owin.Framework.Urchin
 Owin.Framework.ExceptionReporter
 Owin.Framework.StaticFiles
 Owin.Framework.Less
+Owin.Framework.OutputCache
+Owin.Framework.Versioning
 
 Owin.Framework.Pages.Core
 Owin.Framework.Pages.Framework

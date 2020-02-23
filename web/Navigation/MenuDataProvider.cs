@@ -147,6 +147,7 @@ namespace Website.Navigation
                     return null;
 
                 return topics
+                    .OrderBy(t => t.Name)
                     .Select(t => 
                         new MenuPackage.MenuItem
                         {

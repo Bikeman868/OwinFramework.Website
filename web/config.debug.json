@@ -41,9 +41,9 @@
             "mimeType": "image/svg+xml"
           }
         ],
-        "maximumFileSizeToCache": 10000,
-        "totalCacheSize": 1000000,
-        "maximumCacheTime": "02:00:00",
+        "maximumFileSizeToCache": 0,
+        "totalCacheSize": 0,
+        "maximumCacheTime": "0",
         "requiredPermission": ""
       }
     },
@@ -61,32 +61,32 @@
           "category": "",
           "priority": "",
           "cacheCategory": "OutputCache",
-          "serverCacheTime": "06:00:00",
-          "browserCacheTime": "01:00:00"
+          "serverCacheTime": "0",
+          "browserCacheTime": "0"
         }
       ]
     },
     "versioning": {
-      "version": 3,
+      "version": 1,
       "mimeTypes": [ "text/html", "text/css" ],
       "fileExtensions": [".css", ".js", ".ico", ".svg", ".png"],
-      "browserCacheTime": "1",
+      "browserCacheTime": "0",
       "exactVersion": false,
-      "analyticsEnabled": false
+      "analyticsEnabled": true
     }
   },
   "owinFramework": {
     "pages": {
       "framework": {
         "assetRootPath": "/assets",
-        "assetVersion": "3",
+        "assetVersion": "1",
         "defaultLanguage": "en-US",
-        "debugLogging": false,
-        "includeComments": false,
+        "debugLogging": true,
+        "includeComments": true,
         "indented": false,
         "htmlFormat": "Html",
-        "minifyCss": true,
-        "minifyJavascript": true
+        "minifyCss": false,
+        "minifyJavascript": false
       }
     }
   }

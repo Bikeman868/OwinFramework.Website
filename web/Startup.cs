@@ -13,10 +13,14 @@ using OwinFramework.Less;
 using OwinFramework.Pages.DebugMiddleware;
 using OwinFramework.Pages.Standard;
 using OwinFramework.StaticFiles;
+using OwinFramework.NotFound;
+using OwinFramework.ExceptionReporter;
+using OwinFramework.OutputCache;
 using OwinFramework.Pages.Core;
 using OwinFramework.Pages.Core.Interfaces.Builder;
 using OwinFramework.Pages.Core.Interfaces.Managers;
 using Website.Navigation;
+using OwinFramework.Versioning;
 
 [assembly: OwinStartup(typeof(Website.Startup))]
 
@@ -35,19 +39,25 @@ namespace Website
             var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator));
 
             var hostingEnvironment = ninject.Get<IHostingEnvironment>();
+#if DEBUG
+            var configFile = new FileInfo(hostingEnvironment.MapPath("config.debug.json"));
+#else
             var configFile = new FileInfo(hostingEnvironment.MapPath("config.json"));
+#endif
             _configurationFileSource = ninject.Get<FileSource>().Initialize(configFile, TimeSpan.FromSeconds(5));
 
             var config = ninject.Get<IConfiguration>();
 
             var pipelineBuilder = ninject.Get<IBuilder>().EnableTracing();
 
-            pipelineBuilder.Register(ninject.Get<PagesMiddleware>()).ConfigureWith(config, "/middleware/pages").RunAfter("StaticFiles").RunAfter("DebugInfo");
-            pipelineBuilder.Register(ninject.Get<DebugInfoMiddleware>()).ConfigureWith(config, "/middleware/debugInfo").As("DebugInfo");
-            pipelineBuilder.Register(ninject.Get<LessMiddleware>()).ConfigureWith(config, "/middleware/less").As("Less");
+            pipelineBuilder.Register(ninject.Get<ExceptionReporterMiddleware>()).ConfigureWith(config, "/middleware/exceptionReporter").RunFirst();
+            pipelineBuilder.Register(ninject.Get<OutputCacheMiddleware>()).ConfigureWith(config, "/middleware/outputCache").As("OutputCache");
+            pipelineBuilder.Register(ninject.Get<VersioningMiddleware>()).ConfigureWith(config, "/middleware/versioning").As("Versioning").RunAfter("OutputCache");
+            pipelineBuilder.Register(ninject.Get<LessMiddleware>()).ConfigureWith(config, "/middleware/less").As("Less").RunAfter("Versioning");
             pipelineBuilder.Register(ninject.Get<StaticFilesMiddleware>()).ConfigureWith(config, "/middleware/staticFiles/assets").As("StaticFiles").RunAfter("Less");
-            pipelineBuilder.Register(ninject.Get<OwinFramework.NotFound.NotFoundMiddleware>()).ConfigureWith(config, "/middleware/notFound").RunLast();
-            pipelineBuilder.Register(ninject.Get<OwinFramework.ExceptionReporter.ExceptionReporterMiddleware>()).ConfigureWith(config, "/middleware/exceptionReporter").RunFirst();
+            pipelineBuilder.Register(ninject.Get<DebugInfoMiddleware>()).ConfigureWith(config, "/middleware/debugInfo").As("DebugInfo");
+            pipelineBuilder.Register(ninject.Get<PagesMiddleware>()).ConfigureWith(config, "/middleware/pages").RunAfter("StaticFiles").RunAfter("DebugInfo");
+            pipelineBuilder.Register(ninject.Get<NotFoundMiddleware>()).ConfigureWith(config, "/middleware/notFound").RunLast();
 
             app.UseBuilder(pipelineBuilder);
 

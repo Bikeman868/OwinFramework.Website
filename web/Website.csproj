@@ -79,6 +79,7 @@
     <Content Include="Templates\Content\Area\Diagnostics\Landing.html" />
     <Content Include="Templates\Content\Area\Framework\Landing.html" />
     <Content Include="Templates\Content\Documentation\Concepts\Overview.html" />
+    <Content Include="config.debug.json" />
     <None Include="Templates\Content\Documentation\Configuration\Overview.md" />
     <Content Include="Templates\Content\General\Bestpractice\Landing.html" />
     <Content Include="Templates\Content\General\SampleWebsites.html" />
@@ -406,6 +407,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
+        <Reference Include="OwinFramework.Facilities.Cache.Local">
+          <HintPath>..\packages\Owin.Framework.Facilities.Cache.Local\lib\net40\OwinFramework.Facilities.Cache.Local.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
         <Reference Include="OwinFramework.Less">
           <HintPath>..\packages\Owin.Framework.Less\lib\net40\OwinFramework.Less.dll</HintPath>
           <Private>True</Private>
@@ -419,6 +431,17 @@
       <ItemGroup>
         <Reference Include="OwinFramework.NotFound">
           <HintPath>..\packages\Owin.Framework.NotFound\lib\net40\OwinFramework.NotFound.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="OwinFramework.OutputCache">
+          <HintPath>..\packages\Owin.Framework.OutputCache\lib\net40\OwinFramework.OutputCache.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -507,6 +530,17 @@
       <ItemGroup>
         <Reference Include="OwinFramework.Urchin">
           <HintPath>..\packages\Owin.Framework.Urchin\lib\net40\OwinFramework.Urchin.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="OwinFramework.Versioning">
+          <HintPath>..\packages\Owin.Framework.Versioning\lib\net40\OwinFramework.Versioning.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

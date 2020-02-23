@@ -12,11 +12,15 @@ nuget Svg = 2.3.0
 nuget Microsoft.Owin = 2.1.0
 nuget Microsoft.Owin.Host.SystemWeb = 2.1.0
 
+nuget Owin.Framework.Facilities.Cache.Local
+
 nuget Owin.Framework.NotFound
 nuget Owin.Framework.Urchin
 nuget Owin.Framework.ExceptionReporter
 nuget Owin.Framework.StaticFiles
 nuget Owin.Framework.Less
+nuget Owin.Framework.OutputCache
+nuget Owin.Framework.Versioning
 
 nuget Owin.Framework.Pages.Core >= 1.3.6
 nuget Owin.Framework.Pages.Framework >= 1.3.6
