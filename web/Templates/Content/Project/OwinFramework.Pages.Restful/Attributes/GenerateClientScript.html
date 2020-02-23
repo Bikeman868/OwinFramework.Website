@@ -1,0 +1,97 @@
+﻿<h2>The <span class="code">[GenerateClientScript]</span> Attribute</h2>
+<p>
+    Optionally attach this attribute to a web service to create a component
+    that will render Javascript that makes it very easy to call the
+    endpoints of the service.
+</p>
+<p>
+    Other page elements that will call this service can have the 
+    <span class="code">[NeedsComponent]</span> attribute attached to them to
+    indicate that they have a dependency on this Javascript and ensure that
+    it is included on all pages where it is needed.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsService("order", "/order/", new[] { Method.Get })]
+[GenerateClientScript("order-service-client")]
+public class OrderService
+{
+    [Endpoint(UrlPath = "id/{id}")]
+    [EndpointParameter("id", typeof(AnyValue<long>), EndpointParameterType.PathSegment)]
+    public void GetOrderById(IEndpointRequest request)
+    {
+        var id = request.Parameter&lt;long>("id");
+
+        // Use data access layer to retrieve the order details
+    }
+}
+
+[IsRegion("order-region")]
+[NeedsComponent("order-service-client")]
+[NeedsComponent("libraries:ajax")]
+public class OrderRegion { }
+</pre>
+
+<p>
+    In this example:
+</p>
+<ul>
+    <li>
+        Any page that includes the <span class="code">order-region</span> region knows 
+        that it must render the <span class="code">order-service-client</span> component
+        because of the <span class="code">[NeedsComponent]</span> attribute on the region.
+    </li>
+    <li>
+        The <span class="code">order-service-client</span> component will write Javascript
+        where it is accesible to the page. Where exactly it gets written depends on the 
+        asset deployment mechanism that you configured.
+    </li>
+    <li>
+        The Javascript that is produced depends on the ajax library, so this region also
+        specifies that the ajax library is required wherever this region is used.
+    </li>
+    <li>
+        The <span class="code">GetOrderById</span> method of the order service can now be
+        called using one line of Javascript similar to
+        <span class="code">ns.myApp.orderService.getOrderById({id: 123},function(order){})</span>
+    </li>
+</ul>
+<p>
+    Note that:
+</p>
+<ul>
+    <li>
+        I called the service <span class="code">order</span> but the Javascript function is
+        called <span class="code">orderService</span>. This is by convention. The
+        <span class="code">[GenerateClientScript]</span> attribute appends "Service" to the
+        service name to avoid naming conflicts in the generated Javascript.
+    </li>
+    <li>
+        The generated Javascript is in a namespace. The Pages Framework uses a convention where
+        all namespaces are contained in the <span class="code">ns</span> property of the
+        <span class="code">window</span> object, so the fully qualified name of the function
+        call begins with <span class="code">ns.</span>
+    </li>
+    <li>
+        In this example I used <span class="code">myApp</span> as the namespace name. The actual 
+        namespace that is required here is defined by your Package. You can have multiple application
+        packages, but many websites will have only one. You should substitute <span class="code">myApp</span>
+        in the example above with the namespace name of your application package.
+    </li>
+    <li>
+        In the C# code the method is called <span class="code">GetOrderById</span> but the Javascript
+        calls <span class="code">getOrderById</span>. This is another convention. When generating
+        the Javascript the first letter is converted to lower case to make the Javascript more
+        conventional.
+    </li>
+    <li>
+        The Javascript <span class="code">getOrderById</span> takes up to 4 parameters. In this example
+        I only passed the first two. The first parameter is the parameters that are expected by the
+        service endpoint (in this example just the "id"). The second parameter is a function that
+        will be called if the request succeeds. The function will be passed a Javascript object
+        that will be a Javascript representation of whatever C# object you serialized as the response
+        from your service endpoint.
+    </li>
+</ul>

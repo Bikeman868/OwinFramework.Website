@@ -121,6 +121,7 @@
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\Container.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ChildContainer.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\CacheOutput.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\GenerateClientScript.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\CacheOutput.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\EndpointParameter.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\Endpoint.html" />

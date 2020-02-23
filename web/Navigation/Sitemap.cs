@@ -427,6 +427,7 @@ namespace Website.Navigation
                     .Menus(true, true)
                     .AddTopic(new Topic("Attributes", "Restful framework attributes", null)
                         .AddTopic(new Topic("IsService", "The [IsService] attribute", "/content/project/owinframework.pages.restful/attributes/isservice"))
+                        .AddTopic(new Topic("GenerateClientScript", "The [GenerateClientScript] attribute", "/content/project/owinframework.pages.restful/attributes/generateclientscript"))
                         .AddTopic(new Topic("CacheOutput", "The [CacheOutput] attribute", "/content/project/owinframework.pages.restful/attributes/cacheoutput"))
                         .AddTopic(new Topic("Endpoint", "The [Endpoint] attribute", "/content/project/owinframework.pages.restful/attributes/endpoint"))
                         .AddTopic(new Topic("EndpointParameter", "The [EndpointParameter] attribute", "/content/project/owinframework.pages.restful/attributes/endpointparameter")) )
