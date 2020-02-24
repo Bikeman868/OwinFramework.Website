@@ -108,6 +108,7 @@
     <Content Include="Templates\Content\Project\OwinFramework.Mocks\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.NotFound\Landing.html" />
     <Content Include="Templates\Content\Project\OwinFramework.OutputCache\Landing.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Core\Attributes\Option.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Core\Attributes\Example.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Core\Attributes\Description.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Core\Landing.html" />
@@ -121,6 +122,16 @@
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\Container.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ChildContainer.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\CacheOutput.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\NeedsData.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\NeedsComponent.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsRegion.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsPackage.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsModule.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsLayout.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsDataProvider.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsComponent.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\RequiresPermission.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\RequiresIdentification.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\GenerateClientScript.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\CacheOutput.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\EndpointParameter.html" />

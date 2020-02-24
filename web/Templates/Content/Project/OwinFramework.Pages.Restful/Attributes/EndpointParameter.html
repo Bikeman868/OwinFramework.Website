@@ -52,3 +52,160 @@ public class MathFormComponent: Component
     }
 }
 </pre>
+<p>
+    The <span class="code">[EndpointParameter()]</span> attribute has the
+    following properties that you can set:
+</p>
+
+<h3><span class="code">ParameterName</span></h3>
+
+<p>
+    This is the name of parameter that should be used by the caller when
+    calling this service. If the parameter is passed in the query string
+    then this is the name of the query string parameter. If the parameter
+    is passed as a form input then this is the name of the input etc.
+</p>
+<p>
+    The parameter name is not case sensitive. You should choose names that
+    work for query strings, Http headers, form input controls etc. In
+    particular you should avoid using spaces and punctuation in the parameter
+    names.
+</p>
+
+<h3><span class="code">ParameterType</span></h3>
+
+<p>
+    This is a <span class="code">[flags] enum</span> that defines all of the
+    ways that the caller can pass this parameter to the service. If you do not
+    set this property then it defaults to query string only. The other options
+    are form input, Http header and path element. You can specify as many of
+    these options as you like to provide multiple ways to call the endpoint.
+</p>
+<p>
+    When the <span class="code">ParameterType</span> property includes path
+    element as an option then the <span class="code">UrlPath</span> property
+    of the endpoint must include the name of the parameter in <span class="code">{}</span>
+    to indicate where the parameter appears in the path.
+</p>
+
+<p>
+    For example:
+</p>
+
+<pre>[Endpoint(UrlPath="invoice/{invoiceNumber}")]
+[EndpointParameter("invoiceNumber", typeof(InvoiceNumberParser), EndpointParameterType.PathSegment)]
+public void Add(IEndpointRequest request)
+{
+}</pre>
+
+<h3><span class="code">ParserType</span></h3>
+
+<p>
+    The <span class="code">ParserType</span> property of the <span class="code">[EndpointParameter()]</span>
+    attribute specifies how the input parameter should be parsed and validated.
+    The parser can abort the processing of the request returning a custom validation
+    message back to the caller if the parameter is not valid.
+</p>
+<p>
+    For the value of this property you can simply provide a .Net CLR value type such as
+    <span class="code">string</span>, <span class="code">int</span>  etc and the
+    framework will simply try to parse the parameter as this type and apply no futher
+    validation. In this situation the parameter will be required by the caller. This
+    technique will also generate minimal documentation for your service endpoint.
+</p>
+<p>
+    To make the parameter optional you can use a nullable type instead, for example
+    <span class="code">int?</span>, <span class="code">double?</span> etc.
+</p>
+
+<p>
+    The REST framework package includes a few standard parsers based on value
+    types, for example <span class="code">NonZeroValue&lt;T></span> that can be used
+    like this:
+</p>
+
+<pre>[Endpoint(UrlPath="invoice/{invoiceNumber}")]
+[EndpointParameter("invoiceNumber", typeof(NonZeroValue&lt;int>), EndpointParameterType.PathSegment)]
+public void Add(IEndpointRequest request)
+{
+}</pre>
+
+<p>
+    For custom types that are application specific you should write custom parsers that
+    can be reused across all of your services, for example you invoice numbers might have
+    a well known format with check digits. You should write this parsing/validation code
+    once only and apply it to all the relevant endpoint parameters.
+</p>
+<p>
+    The <span class="code">IParameterParser</span> interface is easy to implement, but it
+    becomes very simple if you inherit from <span class="code">OwinFramework.Pages.Restful.Parameters.ParameterParser</span>.
+    Below is an example of a parameter parser that validates that invoice numbers
+    are 12 characters long and start with capital 'I'.
+</p>
+
+<pre>using OwinFramework.Pages.Core.Interfaces.Capability;
+using OwinFramework.Pages.Restful.Parameters;
+
+public class InvoiceNumberParser : ParameterParser
+{
+    private const string _wrongLengthError = "The invoice number must be 12 characters long";
+    private const string _invalidError = "The invoice number must start with the letter I";
+
+    public override string Description 
+    { 
+        get 
+        { 
+            return "A valid 12-character invoice number beginning with the letter I"; 
+        } 
+    }
+
+    public override string Examples
+    {
+        get
+        {
+            return "I00000000001";
+        }
+    }
+
+    public InvoiceNumberParser(): base(typeof(string))
+    {
+    }
+
+    public override IParameterValidationResult Check(string parameter)
+    {
+        var result = new Result { Type = typeof(string) };
+
+        if (parameter == null || parameter.Length != 12)
+        {
+            result.ErrorMessage = _wrongLengthError;
+            return result;
+        }
+
+        if (parameter[0] != 'I')
+        {
+            result.ErrorMessage = _invalidError;
+            return result;
+        }
+
+        result.Success = true;
+        return result;
+    }
+}
+</pre>
+
+<p>
+    Parameter parsers can optionally implement <span class="code">IDocumented</span>. When this
+    interface is implemented it will be used to provide more detailed documentation on
+    how to call this service endpoint.
+</p>
+
+<h3><span class="code">Description</span></h3>
+
+<p>
+    If you provide a description here in Html format that it will be included
+    in the auto-generated endpoint documentation for the servie.
+</p>
+<p>
+    If you do not provide a description then a simple description will be
+    provided based on the available information.
+</p>

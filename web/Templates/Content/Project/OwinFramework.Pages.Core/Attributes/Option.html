@@ -1,0 +1,17 @@
+﻿<h2>The <span class="code">[Option]</span> Attribute</h2>
+<p>
+    You can attach this attribute to pages, services and service endpoints to
+    include information about http methods, headers, query string parameters
+    etc that are supported. This information will be incorporated into the
+    self-documentation for the website.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsPage("page2")]
+[Option(OptionType.Method, "GET", "<p>Returns the html for page 2</p>")]
+[Route("/page2", Method.Get)]
+internal class Page2
+{ }
+</pre>

@@ -1,0 +1,18 @@
+﻿<h2>The <span class="code">[IsComponent]</span> Attribute</h2>
+<p>
+    Attach this attribute to a class to identify it as a component.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsComponent("defaultStyles")]
+[PartOf("application")]
+[DeployedAs("content")]
+[DeployCss("p", "font-size:11pt;")]
+[DeployCss("h1", "font-size:16pt;")]
+[DeployCss("h2", "font-size:14pt;")]
+[DeployCss("h3", "font-size:12pt;")]
+internal class DefaultStylesComponent { }
+</pre>
+

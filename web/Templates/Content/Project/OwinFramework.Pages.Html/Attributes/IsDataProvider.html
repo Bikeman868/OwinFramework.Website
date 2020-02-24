@@ -1,0 +1,26 @@
+﻿<h2>The <span class="code">[IsDataProvider]</span> Attribute</h2>
+<p>
+    Attach this attribute to a class to identify it as a data provider.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsDataProvider("customer", typeof(Customer))]
+internal class CustomerDataProvider : DataProvider
+{
+    public CustomerDataProvider(IDataProviderDependenciesFactory dependencies) 
+        : base(dependencies)
+    {
+    }
+
+    protected override void Supply(
+        IRenderContext renderContext,
+        IDataContext dataContext,
+        IDataDependency dependency)
+    {
+        dataContext.Set(new Customer());
+    }
+}
+</pre>
+

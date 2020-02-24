@@ -1,0 +1,18 @@
+﻿<h2>The <span class="code">[IsModule]</span> Attribute</h2>
+<p>
+    Attach this attribute to a class to identify it as a module.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsModule("content", AssetDeployment.InPage)]
+internal class ContentModule 
+{ }
+
+[IsComponent("defaultStyles")]
+[DeployedAs("content")]
+internal class DefaultStylesComponent 
+{ }
+</pre>
+

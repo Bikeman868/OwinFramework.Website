@@ -1,7 +1,7 @@
 ﻿<h2>The <span class="code">[Endpoint]</span> Attribute</h2>
 <p>
     Attach this attribute to a method to identify it as a web service endpoint.
-    The class containing this method must be decorated with the <span class="code">[IsService]</span> 
+    The class containing this method must be decorated with the <span class="code">[IsService]</span>
     attribute for this to work.
 </p>
 
@@ -18,3 +18,129 @@ public class OrderService
     }
 }
 </pre>
+
+<p>
+    The <span class="code">[Endpoint()]</span> attribute has properties
+    that specify how Http requests are routed to the service as folllows.
+</p>
+
+<h3><span class="code">UrlPath</span></h3>
+
+<p>
+    Specifies the Http path of this endpoint relative to the service <span class="code">BaseUrl</span>
+    property. The endpoint can also specify an absolute path by starting this
+    property value with a forward slash.
+</p>
+
+<p>
+    If you do not set this property value then the name of the C# method
+    will be used as the relative path.
+</p>
+
+<h3><span class="code">Methods</span></h3>
+
+<p>
+    For endpoints with an absolute <span class="code">UrlPath</span> this property
+    defines the Http methods that will be routed to this endpoint.
+</p>
+<p>
+    For endpoints with a relative <span class="code">UrlPath</span> this property is
+    a further restriction that is applied after the request is successfully routed
+    to the service. In this case there is no point in adding methods here that are
+    not also in the <span class="code">Methods</span> property of the service.
+</p>
+
+<h3><span class="code">Analytics</span></h3>
+
+<p>
+    Set this property to define how detailed are the analytics that are
+    measured for this endpoint. You can use intellisense to
+    see the possible values for this property.
+</p>
+
+<h3><span class="code">RequestDeserializer</span></h3>
+
+<p>
+    Defines the type of deserializer to use when the body of the request
+    is accessed for the first time by the application code.
+</p>
+<p>
+    The deserializer is specified as a class type to use. This class type
+    must implement the <span class="code">IRequestDeserializer</span> interface.
+</p>
+<p>
+    The standard libraries already contain some implementations of
+    <span class="code">IRequestDeserializer</span>  that you can take
+    advantage of in your application, but this interface is also
+    straightforward to implement. These classes are in the
+    <span class="code">OwinFramework.Pages.Restful.Serializers</span>
+    namespace.
+</p>
+
+<h3><span class="code">ResponseSerializer</span></h3>
+
+<p>
+    Set this property to define how objects returned from this
+    endpoint are written to the http response. The default serializer
+    serializes the returned object to Json using the NewtonSoft serializer.
+</p>
+
+<p>
+    The serializer is specified as a class type to use. This class type
+    must implement the <span class="code">IResponseSerializer</span>
+    interface. There are implementations of this interface in the
+    <span class="code">OwinFramework.Pages.Restful.Serializers</span>
+    namespace.
+</p>
+
+<h3><span class="code">RequiredPermission</span></h3>
+
+<p>
+    Setting this property means that identities that call this endpoint
+    will have to have this permission assigned to them in the authorization
+    middleware.
+</p>
+<p>
+    Note that this property only has effect if your application includes
+    authorization middleware in the Owin pipeline.
+</p>
+
+<h3><span class="code">EndpointSpecificPermission</span></h3>
+
+<p>
+    When this property is <span class="code">true</span> the name of the service
+    and method name are passed as the asset name to the authentication
+    check separated by a forward slash. This allows you to define
+    permissions that allow access to service methods using wildcards,
+    for example you can give one group of users permission to call any
+    endpoint in the service whilst other groups of users can only call
+    certain specific endpoints.
+</p>
+
+<h3><span class="code">ParameterSpecificPermission</span></h3>
+
+<p>
+    This property defines the name of a parameter to the endpoint that
+    will be passed to the authorization check at the asset value. For
+    example you can have an endpoint that updates a users avatar that
+    takes <span class="code">userId</span> as a parameter, then you
+    can set "userId" as the value of the
+    <span class="code">ParameterSpecificPermission</span>, in which case the
+    value of the <span class="code">userId</span> parameter will be passed
+    to the authorization middleware as the asset name, and you can configure
+    the authorization middleware to only grant this permission if the
+    user id is your own user id. You can also define a group of users
+    in the authorization middleware who can call this endpoint for any
+    user id.
+</p>
+
+<h3><span class="code">ScenarioName</span></h3>
+
+<p>
+    This parameters allows you to define different versions of your service
+    endpoint for different segments of users in A/B testing scenarios. For example
+    one group of users might see data sorted differently or have additional data
+    included in the response so that you can measure the preferences of your usres.
+</p>
+
+

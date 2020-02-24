@@ -1,0 +1,31 @@
+﻿<h2>The <span class="code">[NeedsData]</span> Attribute</h2>
+<p>
+    Attach this attribute to a page element to specify that it has a dependency
+    on some data. The framework will locate a suitable data provided and bind
+    it to any page containing this page element.
+</p>
+<p>
+    Note that if many elements on the page depend on the same data, then
+    the data provider will only be called once on the page and all of the 
+    page elements can bind to the same data.
+</p>
+<p>
+    Note that you can use regions to resolve data needs at the region level
+    instead of at the page level allowing the same type of data to resolve to
+    different records in different parts of the page.
+</p>
+<p>
+    You can also attach this <span class="code">[NeedsData]</span> attribute
+    to a data provider to create a heirachy of data providers that depend on
+    each other. For example the data provider that provides a list of invoices
+    can have a dependency on the data provider that provides customer data.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("address")]
+[NeedsData(typeof(Address))]
+internal class AddressRegion { }
+</pre>
+

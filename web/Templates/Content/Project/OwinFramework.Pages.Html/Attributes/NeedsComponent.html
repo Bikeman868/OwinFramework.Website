@@ -1,0 +1,24 @@
+﻿<h2>The <span class="code">[NeedsComponent]</span> Attribute</h2>
+<p>
+    Attach this attribute to a page element to specify that it has a dependency
+    on a non-visual component. The framework will ensure that any page
+    containing the page element will render this non-visual component onto
+    the page.
+</p>
+<p>
+    This attribute is most often used to ensure that the Javascript and CSS
+    assets needed by the page element are rendered into the page.
+</p>
+<p>
+    Note that if many elements on the page depend on the same component, then
+    that component will only be included on the page once.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("address")]
+[NeedsComponent("libraries:ajax")]
+internal class AddressRegion { }
+</pre>
+

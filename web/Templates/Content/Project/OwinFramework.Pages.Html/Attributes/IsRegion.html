@@ -1,0 +1,15 @@
+﻿<h2>The <span class="code">[IsRegion]</span> Attribute</h2>
+<p>
+    Attach this attribute to a class to identify it as a region.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsRegion("addres_list")]
+[Repeat(typeof(Person))]
+[NeedsData("person_address")]
+internal class AddressListRegion
+{ }
+</pre>
+

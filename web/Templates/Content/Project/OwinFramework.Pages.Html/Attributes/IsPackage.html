@@ -1,0 +1,17 @@
+﻿<h2>The <span class="code">[IsPackage]</span> Attribute</h2>
+<p>
+    Attach this attribute to a class to identify it as a package.
+</p>
+
+<h2>Example Usage</h2>
+
+<pre>
+[IsPackage("application", "app")]
+internal class ApplicationPackage { }
+
+[IsComponent("defaultStyles")]
+[PartOf("application")]
+internal class DefaultStylesComponent 
+{ }
+</pre>
+

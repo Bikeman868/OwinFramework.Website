@@ -12,11 +12,18 @@
     mechanism can be used.
 </p>
 
+<p>
+    You can decorate your service and service endpoints with the
+    <a href="attributes/requiresidentification"><span class="code">[RequiresIdentification]</span> attribute</a> and/or the
+    <a href="attributes/requirespermission"><span class="code">[RequiresPermission]</span> attribute</a> to control
+    who has access to your service and its endpoints.
+</p>
+
 <h3><span class="code">EndpointSpecificPermission</span></h3>
 
 <p>
-    This property of the <span class="code">[Endpoint]</span> attribute
-    and the <span class="code">[IsService]</span> attribute. When this
+    This is a property of the <a href="attributes/endpoint"><span class="code">[Endpoint]</span> attribute</a>
+    and the <a href="attributes/isservice"><span class="code">[IsService]</span> attribute</a>. When this
     property is <span class="code">true</span> the name of the service
     and method name are passed as the asset name to the authentication
     check separated by a forward slash. This allows you to define
@@ -25,3 +32,4 @@
     endpoint in the service whilst other groups of users can only call
     certain specific endpoints.
 </p>
+
