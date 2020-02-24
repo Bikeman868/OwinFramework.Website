@@ -61,7 +61,7 @@
           "category": "",
           "priority": "",
           "cacheCategory": "OutputCache",
-          "serverCacheTime": "06:00:00",
+          "serverCacheTime": "0",
           "browserCacheTime": "01:00:00"
         }
       ]
@@ -87,6 +87,11 @@
         "htmlFormat": "Html",
         "minifyCss": true,
         "minifyJavascript": true
+      }
+    },
+    "middleware": {
+      "traceFilter": {
+        "level": "None"
       }
     }
   }

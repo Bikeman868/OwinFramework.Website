@@ -88,6 +88,11 @@
         "minifyCss": false,
         "minifyJavascript": false
       }
+    },
+    "middleware": {
+      "traceFilter": {
+        "Level": "All"
+      }
     }
   }
 }
