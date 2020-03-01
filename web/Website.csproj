@@ -130,12 +130,35 @@
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsLayout.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsDataProvider.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsComponent.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ZoneTemplate.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ZoneRegion.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ZoneHtml.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ZoneLayout.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\ZoneComponent.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\UsesLayout.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\UsesComponent.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\SuppliesData.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\Style.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\Route.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\Repeat.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\RenderTemplate.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\RenderHtml.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\PartOf.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\PageTitle.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\RequiresPermission.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\RequiresIdentification.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Elements\Component.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Elements\DataProvider.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Elements\Package.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Elements\Module.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Elements\Region.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Elements\Layout.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Elements\Page.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\GenerateClientScript.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\CacheOutput.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\EndpointParameter.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\Endpoint.html" />
+    <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Elements\Service.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Restful\Attributes\IsService.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\Attributes\IsPage.html" />
     <Content Include="Templates\Content\Project\OwinFramework.Pages.Html\TemplateOverview.html" />
@@ -233,6 +256,7 @@
     <Folder Include="Assets\Images\Repository\" />
     <Folder Include="Assets\Scripts\" />
     <Folder Include="Templates\Content\Interface\" />
+    <Folder Include="Templates\Content\Project\OwinFramework.Pages.Core\Elements\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Styles\app.less" />

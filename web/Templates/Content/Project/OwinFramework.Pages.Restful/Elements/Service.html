@@ -1,0 +1,35 @@
+﻿<h2>Service Page Elements</h2>
+<p>
+    Service elements handle requests matching the path and methods configured
+    then return responses that are calculated in application code. Services are
+    typically used to provide endpoints that Javascrpipt can call using AJAX.
+    When these calls are made, the service endpoint validates and parses its
+    input parameters, performs some processing and returns a response.
+</p>
+
+<h2>Attribute Example</h2>
+<p>
+    This is an example of defining a service element using a class decorated with
+    attributes.
+</p>
+<pre>
+[IsService("order", "/order/", new[] { Method.Post, Method.Get, Method.Put, Method.Delete })]
+public class OrderService
+{
+    [Endpoint(UrlPath = "{id}", Methods = new[] { Method.Get })]
+    public void Get(IEndpointRequest request)
+    {
+        throw new NotImplementedException();
+    }
+}
+</pre>
+<p>
+    In this use case the <a href="../../attributes/isservice"><span class="code">[IsService()]</span> attribute</a>
+    has properties that specify how Http requests are routed to the service.
+</p>
+
+<h2>Service Class Example</h2>
+<p>TBD</p>
+
+<h2>Example of a Package Containing a Servcie</h2>
+<p>TBD</p>

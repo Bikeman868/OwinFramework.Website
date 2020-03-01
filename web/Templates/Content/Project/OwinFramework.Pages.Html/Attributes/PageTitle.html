@@ -1,0 +1,24 @@
+﻿<h2>The <span class="code">[PageTitle]</span> Attribute</h2>
+<p>
+    The <span class="code">[PageTitle]</span> attribute can only be attached
+    to a class that defines a page to specify the page title. When your page
+    is displayed in a browser, the title will be displayed on the browser tab.
+</p>
+<p>
+    If you want your page title to be dynamic, because your page handles multiple
+    Urls, then you should inherit from the built-in <span class="code">Page</span>
+    class and set the <span class="code">[PageTitle]</span> property in the constructor
+    as illustrated below:
+</p>
+<pre>
+[IsPage()]
+[Description("<p>This is an example of how to add page with a dynamic page title</p>")]
+internal class DynamicTitlePage : Page
+{
+    public DynamicTitlePage(IPageDependenciesFactory dependencies)
+        : base(dependencies)
+    {
+        TitleFunc = context => "Page at " + DateTime.Now;
+    }
+}
+</pre>
