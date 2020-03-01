@@ -404,6 +404,14 @@ namespace Website.Navigation
                 new Project("OwinFramework.Pages.Html", "OwinFramework.Pages", "pages", 
                     "Allows you to build a website with pages of Html content using templates, regions, layouts and 3rd party packages")
                     .Menus(true, true)
+                    .AddTopic(new Topic("Elements", "Html framework page elements", null)
+                        .AddTopic(new Topic("Component", "The component element", "/content/project/owinframework.pages.html/elements/component"))
+                        .AddTopic(new Topic("Data provider", "The data provider element", "/content/project/owinframework.pages.html/elements/dataprovider"))
+                        .AddTopic(new Topic("Layout", "The layout element", "/content/project/owinframework.pages.html/elements/layout"))
+                        .AddTopic(new Topic("Module", "The module element", "/content/project/owinframework.pages.html/elements/module"))
+                        .AddTopic(new Topic("Package", "The package element", "/content/project/owinframework.pages.html/elements/package"))
+                        .AddTopic(new Topic("Page", "The page element", "/content/project/owinframework.pages.html/elements/page"))
+                        .AddTopic(new Topic("Region", "The region element", "/content/project/owinframework.pages.html/elements/region")) )
                     .AddTopic(new Topic("Element type attributes", "Html framework attributes", null)
                         .AddTopic(new Topic("IsComponent", "The [IsComponent] attribute", "/content/project/owinframework.pages.html/attributes/iscomponent"))
                         .AddTopic(new Topic("IsDataProvider", "The [IsDataProvider] attribute", "/content/project/owinframework.pages.html/attributes/isdataprovider"))
@@ -454,6 +462,8 @@ namespace Website.Navigation
                 new Project("OwinFramework.Pages.Restful", "OwinFramework.Pages", "pages", 
                     "Allows you to add REST endpoints to a website using classes and methods decorated with attributes")   
                     .Menus(true, true)
+                    .AddTopic(new Topic("Elements", "Html framework page elements", null)
+                        .AddTopic(new Topic("Service", "The service element", "/content/project/owinframework.pages.restful/elements/service")) )
                     .AddTopic(new Topic("Attributes", "Restful framework attributes", null)
                         .AddTopic(new Topic("IsService", "The [IsService] attribute", "/content/project/owinframework.pages.restful/attributes/isservice"))
                         .AddTopic(new Topic("GenerateClientScript", "The [GenerateClientScript] attribute", "/content/project/owinframework.pages.restful/attributes/generateclientscript"))
