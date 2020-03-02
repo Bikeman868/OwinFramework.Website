@@ -50,9 +50,18 @@ namespace Website.Components.Project
                 var hasSubmenu = menuItem.SubMenu != null && menuItem.SubMenu.Length > 0;
                 var isThisPage = string.Equals(context.OwinContext.Request.Path.Value, menuItem.Url, StringComparison.OrdinalIgnoreCase);
 
-                context.Html.WriteOpenTag(
-                    "li", 
-                    "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + (hasSubmenu ? "_sitemap-item" : "_sitemap-leaf") + (isThisPage ? " " + Package.NamespaceName + "_this-page" : ""));
+                var listItemClasses = Package.NamespaceName + "_list-item " + Package.NamespaceName + (hasSubmenu ? "_sitemap-item" : "_sitemap-leaf");
+                var anchorClasses = Package.NamespaceName + "_sitemap-link";
+
+                if (isThisPage)
+                {
+                    if (hasSubmenu)
+                        anchorClasses += " " + Package.NamespaceName + "_this-page";
+                    else
+                        listItemClasses += " " + Package.NamespaceName + "_this-page";
+                }
+
+                context.Html.WriteOpenTag("li", "class", listItemClasses);
 
                 if (string.IsNullOrEmpty(menuItem.Url))
                 {
@@ -60,7 +69,7 @@ namespace Website.Components.Project
                 }
                 else
                 {
-                    context.Html.WriteElement("a", menuItem.Name, "href", menuItem.Url);
+                    context.Html.WriteElement("a", menuItem.Name, "href", menuItem.Url, "class", anchorClasses);
                 }
 
                 WriteMenu(context, menuItem.SubMenu, depth + 1);
