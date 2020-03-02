@@ -5,6 +5,7 @@ using OwinFramework.Pages.Core.Interfaces.Runtime;
 using OwinFramework.Pages.Html.Elements;
 using OwinFramework.Pages.Html.Runtime;
 using OwinFramework.Pages.Standard;
+using System;
 using System.Collections.Generic;
 
 namespace Website.Components.Project
@@ -17,15 +18,23 @@ namespace Website.Components.Project
         public Index(IComponentDependenciesFactory dependencies) 
             : base(dependencies)
         {
+            PageAreas = new PageArea[] { PageArea.Body, PageArea.Initialization };
         }
 
         public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
         {
-           if (pageArea == PageArea.Body)
-           {
-               var menuItems  = context.Data.Get<IList<MenuPackage.MenuItem>>("sitemap");
-               WriteMenu(context, menuItems, 0);
-           }
+            if (pageArea == PageArea.Body)
+            {
+                var menuItems = context.Data.Get<IList<MenuPackage.MenuItem>>("sitemap");
+                WriteMenu(context, menuItems, 0);
+            }
+            else if (pageArea == PageArea.Initialization)
+            {
+                var className = Package.NamespaceName + "_this-page";
+                context.Html.WriteScriptOpen();
+                context.Html.WriteLine("[].forEach.call(document.getElementsByClassName('" + className + "'), function(e){ e.scrollIntoView({block: 'center'}); });");
+                context.Html.WriteScriptClose();
+            }
            return WriteResult.Continue();
         }
 
@@ -39,10 +48,11 @@ namespace Website.Components.Project
             foreach (var menuItem in menuItems)
             {
                 var hasSubmenu = menuItem.SubMenu != null && menuItem.SubMenu.Length > 0;
+                var isThisPage = string.Equals(context.OwinContext.Request.Path.Value, menuItem.Url, StringComparison.OrdinalIgnoreCase);
 
                 context.Html.WriteOpenTag(
                     "li", 
-                    "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + (hasSubmenu ? "_sitemap-item" : "_sitemap-leaf"));
+                    "class", Package.NamespaceName + "_list-item " + Package.NamespaceName + (hasSubmenu ? "_sitemap-item" : "_sitemap-leaf") + (isThisPage ? " " + Package.NamespaceName + "_this-page" : ""));
 
                 if (string.IsNullOrEmpty(menuItem.Url))
                 {
