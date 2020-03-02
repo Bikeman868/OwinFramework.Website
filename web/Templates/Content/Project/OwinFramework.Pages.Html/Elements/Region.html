@@ -9,18 +9,140 @@
 
 <h2>Attribute Example</h2>
 <p>
-    TBD
+    In many situations you can define the regions you need by decorating an empty class
+    with attributes. This is illustrated below:
 </p>
 <pre>
+[IsRegion("header")]
+[Style("height: 90px; width:100%; padding:10px; background: gray; color: whitesmoke; clear: both;")]
+[UsesLayout("header")]
+internal class HeaderRegion { }
 </pre>
+<div class="app_hint">
+    Note that regions render a <span class="code">&lt;div></span> element around the contents of the region by default, so
+    you don't need to add a <a href="../attributes/container"><span class="code">[Container]</span></a> 
+    attribute. You can add the <a href="../attributes/container"><span class="code">[Container]</span></a> 
+    attribute to remove the <span class="code">&lt;div></span> element or change it to some other type of Html element.
+</div>
 <p>
-    In this use case the <a href="../attributes/isregion"><span class="code">[IsRegion()]</span> attribute</a>
-    only defines the name of the region. The following attributes can also be attached to futher define the
-    region's behavior.
+    In this example the <a href="../attributes/isregion"><span class="code">[IsRegion()]</span> attribute</a>
+    defines the name of the region. This name can be used to refer to the region in other page
+    elements. The <a href="../attributes/style"><span class="code">[Style()]</span> attribute</a>
+    defines some custom styling for the <span class="code">&lt;div></span> element that is rendered by the region, and the
+    <a href="../attributes/useslayout"><span class="code">[UsesLayout()]</span> attribute</a> specifies
+    a layout to render inside the <span class="code">&lt;div></span>.
+</p> 
+<p>
+    The following attributes can be attached to a region define the region's behavior.
 </p>
+<ul>
+    <li><a href="../attributes/isregion"><span class="code">[IsRegion]</span></a> identifies this class as a region</li>
+    <li><a href="../attributes/childcontainer"><span class="code">[ChildContainer]</span></a> configures the html element to use when repeating the contents of the region</li>
+    <li><a href="../attributes/childstyle"><span class="code">[ChildStyle]</span></a> a css style to apply to the elements that repeat within the region</li>
+    <li><a href="../attributes/container"><span class="code">[Container]</span></a> configures the html element to use as a container for this region</li>
+    <li><a href="../attributes/datascope"><span class="code">[DataScope]</span></a> defines a scope name used in resolving data providers</li>
+    <li><a href="../attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on any page that includes this region</li>
+    <li><a href="../attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a Javascript function to include on any page that has this region on it</li>
+    <li><a href="../attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how Javascript and CSS should be deployed for this region</li>
+    <li><a href="../attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a dependent component</li>
+    <li><a href="../attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this region</li>
+    <li><a href="../attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and Javascript in this region</li>
+    <li><a href="../attributes/rendertemplate"><span class="code">[RenderTemplate]</span></a> renderes a template into specific part of the page</li>
+    <li><a href="../attributes/repeat"><span class="code">[Repeat]</span></a> makes the contents of this region repeat for each object in a list</li>
+    <li><a href="../attributes/rendertemplate"><span class="code">[RenderTemplate]</span></a> specifies a template to render into an area of the page</li>
+    <li><a href="../attributes/style"><span class="code">[Style]</span></a> adds CSS style to region container</li>
+    <li><a href="../attributes/usescomponent"><span class="code">[UsesComponent]</span></a> specifies that this region contains a component</li>
+    <li><a href="../attributes/useslayout"><span class="code">[UsesLayout]</span></a> specifies that this region contains a layout</li>
+    <li><a href="../attributes/zoneregion"><span class="code">[ZoneRegion]</span></a> fills a zone of the region's layout with another region if this region contains a layout</li>
+    <li><a href="../attributes/zonecomponent"><span class="code">[ZoneComponent]</span></a> fills a zone of the region's layout with a component if this region contains a layout</li>
+    <li><a href="../attributes/zonelayout"><span class="code">[ZoneLayout]</span></a> fills a zone of the region's layout with a layout if this region contains a layout</li>
+    <li><a href="../attributes/zonetemplate"><span class="code">[ZoneTemplate]</span></a> fills a zone of the region's layout with a template if this region contains a layout</li>
+</ul>
 
 <h2>Region Class Example</h2>
-<p>TBD</p>
+<p>
+    If you are unable to achieve the effect you are looking for by decorating empty
+    classes with attributes, then you can also make your region class inherit from the
+    built-in <span class="code">Region</span> class and override the virtual methods
+    to fully customize the behavior as illustrated in the example below:
+</p>
+<pre>
+private class RegionExample : Region
+{
+    public RegionExample(IRegionDependenciesFactory dependencies) 
+        : base(dependencies)
+    {
+        WriteOpen = w =>
+            {
+                w.WriteOpenTag("ul");
+                w.WriteLine();
+            };
+
+        WriteClose = w => 
+            {
+                w.WriteCloseTag("ul");
+                w.WriteLine();
+            };
+
+        WriteChildOpen = w => 
+            {
+                w.WriteOpenTag("li");
+                w.WriteLine();
+            };
+
+        WriteChildClose = w =>
+            {
+                w.WriteCloseTag("li");
+                w.WriteLine();
+            };
+
+        RepeatType = typeof(NewsItem);
+    }
+}
+</pre>
 
 <h2>Example of a Package Containing a Region</h2>
-<p>TBD</p>
+<p>
+    If you are creating a distributable package, or creating reusable packages
+    within your application, these packages can build regions using the fluent
+    syntax provided by the Fluent Builder. This is illustarted by the example
+    below:
+</p>
+<pre>
+    [IsPackage("regions")]
+    public class RegionsPackage : OwinFramework.Pages.Framework.Runtime.Package
+    {
+        public RegionsPackage(IPackageDependenciesFactory dependencies) 
+            : base(dependencies)
+        {
+        }
+
+        [Container("ul")]
+        [Repeat(typeof(NewsItem), null, "li")]
+        private class Region1 : Region
+        {
+            public Region1(IRegionDependenciesFactory dependencies)
+                : base(dependencies)
+            {
+            }
+        }
+
+        public override IPackage Build(IFluentBuilder fluentBuilder)
+        {
+            fluentBuilder.BuildUpRegion(new Region1(Dependencies.RegionDependenciesFactory))
+                .Name("region1")
+                .BindTo<NewsItem>("breaking-news")
+                .ClassNames("news", "breaking")
+                .Build();
+
+            return this;
+        }
+    }
+</pre>
+<div class="app_hint">
+    This example uses a combination of attributes attached to the region and configuration via
+    the fluent syntax. In practice you can use either of these techniques. You can also skip
+    creating a region class altogether and just use the fluent syntax is this is your preference.
+    The main advantage of the fluent syntax is that you can use C# expressions and generics to
+    define the region, and Intellisense will show you what's possible.
+</div>
