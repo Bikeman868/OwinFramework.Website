@@ -6,19 +6,191 @@
 
 <h2>Attribute Example</h2>
 <p>
-    TBD
+    In most cases you do not need to add any C# implementation to layout classes,
+    decorating empty classes with attributes is usually sufficient to support most
+    use cases. Below is an example of a layout that defines two col
 </p>
 <pre>
+    /// &lt;summary>
+    /// Defines a region called 'leftColumn' that defines the left hand column of a 2 column layout
+    /// &lt;/summary>
+    [IsRegion("leftColumn")]
+    [Style("width:175px; background: alliceblue; display: inline-block; vertical-align: top; white-space: normal;")]
+    internal class LeftColumnRegion { }
+
+    /// &lt;summary>
+    /// Defines a region called 'rightColumn' that provides the right hand column of a 2 column layout
+    /// &lt;/summary>
+    [IsRegion("rightColumn")]
+    [Style("display: inline-block; overflow: visible; white-space: normal; vertical-align: top;")]
+    internal class RightColumnRegion { }
+
+    /// &lt;summary>
+    /// Defines a generic 2-column layout that can be reused. The behavior of the
+    /// columns is defined by this layout but not the content.
+    /// &lt;/summary>
+    [IsLayout("twoColumn", "left,main")]
+    [Container("div")]
+    [ZoneRegion("left", "leftColumn")]
+    [ZoneRegion("main", "rightColumn")]
+    internal class TwoColumnLayout { }
 </pre>
 <p>
-    In this use case the <a href="../attributes/islayout"><span class="code">[IsLayout()]</span> attribute</a>
+    In this case the <a href="../attributes/islayout"><span class="code">[IsLayout()]</span> attribute</a>
     has properties that specify the zones within the layout, the <a href="../attributes/zoneregion"><span class="code">[ZoneRegion()]</span> attributes</a>
-    define the custom handling of each zone, and the the <a href="../attributes/zonetemplate"><span class="code">[ZoneTemplate()]</span> attributes</a>
-    specify the template that should be written into each zone.
+    define the custom handling of each zone, and the <a href="../attributes/container"><span class="code">[Container()]</span> attribute</a>
+    wraps the whole layout in a &lt;div> element.
+</p>
+<p>
+    To use this layout in a region for example, we can create a region like this:
+</p>
+<pre>
+    [IsRegion("page1Body")]
+    [UsesLayout("twoColumn")]
+    [ZoneComponent("left", "sidebar1")]
+    [ZoneComponent("main", "page1Body")]
+    internal class Page1BodyRegion { }
+</pre>
+<p>
+    In this case the <a href="../attributes/useslayout"><span class="code">[UsesLayout()]</span> attribute</a> places
+    our two column layout within the region, and the <a href="../attributes/zonecomponent"><span class="code">[ZoneComponent()]</span> attributes</a>
+    specify the component that should be written into each zone of the layout.
 </p>
 
 <h2>Layout Class Example</h2>
-<p>TBD</p>
+<p>
+    For most use cases you can define your layouts using attributes only as shown above.
+    If you want to create very custom or highly specialized layouts then you can create
+    a layout class that inherits from the built-in <span class="code">Layout</span> class
+    as demonstrated below:
+</p>
+<pre>
+[IsLayout("layout2", "zone1,zone2")]
+[Container("div")]
+private class LayoutExample2 : Layout
+{
+    public LayoutExample2(
+        ILayoutDependenciesFactory layoutDependencies,
+        IRegionDependenciesFactory regionDependencies)
+        : base(layoutDependencies)
+    {
+        var region1 = new Region1(regionDependencies);
+        var region2 = new Region2(regionDependencies);
+
+        AddZone("zone1", region1);
+        AddZone("zone2", region2);
+
+        AddVisualElement(w => w.WriteOpenTag("div"), "Start of layout 2");
+        AddZoneVisualElement("zone1");
+        AddVisualElement(w => w.WriteOpenTag("pre"), "Start of zone 2 in layout 2");
+        AddZoneVisualElement("zone2");
+        AddVisualElement(w => w.WriteCloseTag("pre"), "End of zone 2 in layout 2");
+        AddVisualElement(w => w.WriteCloseTag("div"), "End of layout 2");
+    }
+
+    private class Region1 : Region
+    {
+        public Region1(IRegionDependenciesFactory dependencies)
+            : base(dependencies)
+        {
+        }
+    }
+
+    private class Region2 : Region
+    {
+        public Region2(IRegionDependenciesFactory dependencies)
+            : base(dependencies)
+        {
+        }
+    }
+}
+</pre>
 
 <h2>Example of a Package Containing a Layout</h2>
-<p>TBD</p>
+<p>
+    If you are writing a package, then you can include layouts in your package that
+    are built using the fluent syntax provided by the fluent builder. There is an example
+    of this below:
+</p>
+<pre>
+    public class LayoutsPackage : Framework.Runtime.Package
+    {
+        public LayoutsPackage(IPackageDependenciesFactory dependencies)
+            : base(dependencies)
+        {
+            Name = "layouts";
+            NamespaceName = "layouts";
+        }
+
+        public override IPackage Build(IFluentBuilder builder)
+        {
+            // This "div" region outputs a &lt;div> container
+            var divRegion = builder.BuildUpRegion()
+                .Name("div")
+                .Tag("div")
+                .Build();
+
+            // This "null" region outputs no markup
+            var nullRegion = builder.BuildUpRegion()
+                .Name("null")
+                .Tag("")
+                .Build();
+
+            // The "full_page" layout has a single region
+            var fullPageLayout = builder.BuildUpLayout()
+                .Name("full_page")
+                .Tag("div")
+                .ClassNames("{ns}_ly_full_page")
+                .DeployCss("div.{ns}_ly_full_page", "height:auto; width:auto; overflow-x: hidden; overflow-y: auto;")
+                .ZoneNesting("main")
+                .Region("main", nullRegion)
+                .Build();
+
+            // The "col_2_left_fixed" layout has two columns where the left column
+            // has a fixed with. Specify the width using your application CSS
+            var twoColumnFixedLeftLayout = builder.BuildUpLayout()
+                .Name("col_2_left_fixed")
+                .Tag("div")
+                .ClassNames("{ns}_ly_col_2_left_fixed")
+                .DeployCss("div.{ns}_ly_col_2_left_fixed", "overflow: hidden;")
+                .DeployCss("div.{ns}_ly_col_2_left_fixed > div.{ns}_rg_col_left", "overflow: hidden; float: left; width: 250px;")
+                .DeployCss("div.{ns}_ly_col_2_left_fixed > div.{ns}_rg_col_right", "margin-left: 250px;")
+                .ZoneNesting("left,right")
+                .Region("left", 
+                    builder.BuildUpRegion()
+                    .Tag("div")
+                    .ClassNames("{ns}_rg_col_left")
+                    .Build())
+                .Region("right",
+                    builder.BuildUpRegion()
+                    .Tag("div")
+                    .ClassNames("{ns}_rg_col_right")
+                    .Build())
+                .Build();
+
+            // The "col_2_right_fixed" layout has two columns where the right column
+            // has a fixed with. Specify the width using your application CSS
+            var twoColumnFixedRightLayout = builder.BuildUpLayout()
+                .Name("col_2_right_fixed")
+                .Tag("div")
+                .ClassNames("{ns}_ly_col_2_right_fixed")
+                .DeployCss("div.{ns}_ly_col_2_right_fixed", "overflow: hidden;")
+                .DeployCss("div.{ns}_ly_col_2_right_fixed > div.{ns}_rg_col_left", "overflow: hidden; width: auto;")
+                .DeployCss("div.{ns}_ly_col_2_right_fixed > div.{ns}_rg_col_right", "width: 250px; float: right;")
+                .ZoneNesting("right,left")
+                .Region("left",
+                    builder.BuildUpRegion()
+                    .Tag("div")
+                    .ClassNames("{ns}_rg_col_left")
+                    .Build())
+                .Region("right",
+                    builder.BuildUpRegion()
+                    .Tag("div")
+                    .ClassNames("{ns}_rg_col_right")
+                    .Build())
+                .Build();
+
+            return this;
+        }
+    }
+</pre>
