@@ -7,17 +7,164 @@
 
 <h2>Attribute Example</h2>
 <p>
-    TBD
+    For simple pages it is often possible to define the page using a bare
+    C# class with no implementation that is decorated with attributes. This
+    is illustrated by the following example:
 </p>
 <pre>
+[IsPage("home")]
+[PartOf("usecase5")]
+[DeployedAs("usecase5")]
+[Route("/", Method.Get)]
+[UsesLayout("home")]
+internal class HomePage { }
+
+[IsLayout("home", "test1,test2")]
+[PartOf("usecase5")]
+[DeployedAs("usecase5")]
+[ZoneTemplate("test1", "/test1")]
+[ZoneTemplate("test2", "/test2")]
+internal class HomeLayout { }
 </pre>
 <p>
     In this use case the <a href="../attributes/ispage"><span class="code">[IsPage()]</span> attribute</a>
     has properties that specify how Http requests are routed to the page.
 </p>
+<p>
+    The other attributes that you can attach to the page class are:
+</p>
+<ul>
+    <li><a href="../attributes/ispage"><span class="code">[IsPage]</span></a> identifies this class as a web page</li>
+    <li><a href="../attributes/cacheoutput"><span class="code">[CacheOutput]</span></a> configures output caching for the page</li>
+    <li><a href="../attributes/datascope"><span class="code">[DataScope]</span></a> defines a scope name used in resolving data providers</li>
+    <li><a href="../attributes/deploycss"><span class="code">[DeployCss]</span></a> css rules to include on this page</li>
+    <li><a href="../attributes/deployfunction"><span class="code">[DeployFunction]</span></a> a Javascript function to include on this page</li>
+    <li><a href="../attributes/deployedas"><span class="code">[DeployedAs]</span></a> specifies how Javascript and CSS should be deployed for this page</li>
+    <li><a href="../attributes/description"><span class="code">[Description]</span></a> a description to output into the page documentation</li>
+    <li><a href="../attributes/example"><span class="code">[Example]</span></a> an example usage to output into the page documentation</li>
+    <li><a href="../attributes/needscomponent"><span class="code">[NeedsComponent]</span></a> identifies a component that this page depends on</li>
+    <li><a href="../attributes/needsdata"><span class="code">[NeedsData]</span></a> identifies data that is required for this page</li>
+    <li><a href="../attributes/option"><span class="code">[Option]</span></a> documents an optional part of the request for this page</li>
+    <li><a href="../attributes/pagetitle"><span class="code">[PageTitle]</span></a> specifies the title to output into the page head</li>
+    <li><a href="../attributes/partof"><span class="code">[PartOf]</span></a> defines the package (namespace) for CSS and Javascript on this page</li>
+    <li><a href="../attributes/requiresidentification"><span class="code">[RequiresIdentification]</span></a> specifies that users can not view this page anonymously</li>
+    <li><a href="../attributes/requirespermission"><span class="code">[RequiresPermission]</span></a> specifies a permission that users must have to see this page</li>
+    <li><a href="../attributes/route"><span class="code">[Route]</span></a> defines which requests will be routed to this page</li>
+    <li><a href="../attributes/style"><span class="code">[Style]</span></a> adds CSS style to the body element of the page</li>
+    <li><a href="../attributes/useslayout"><span class="code">[UsesLayout]</span></a> specifies the layout for the page</li>
+    <li><a href="../attributes/zoneregion"><span class="code">[ZoneRegion]</span></a> fills a zone of the page's layout with a region</li>
+    <li><a href="../attributes/zonecomponent"><span class="code">[ZoneComponent]</span></a> fills a zone of the page's layout with a component</li>
+    <li><a href="../attributes/zonelayout"><span class="code">[ZoneLayout]</span></a> fills a zone of the page's layout with a layout</li>
+    <li><a href="../attributes/zonetemplate"><span class="code">[ZoneTemplate]</span></a> fills a zone of the page's layout with a template</li>
+</ul>
 
 <h2>Page Class Example</h2>
-<p>TBD</p>
+
+<p>
+    For simple pages the attribute based approach works just fine, but for real-wprld
+    websites with dynamic pages and SEO needs, it is very likely that you will want to
+    make your page classes inherit from the build in <span class="code">Page</span>.
+    The example below sets some properties in the constructor and overrides the writing
+    of the page head to include some meta tags.
+</p>
+<div class="app_hint">
+    Note that you need to use this technique to change the body tag of the page, but
+    the meta tags could eaqually well be added with a component on the page that writes
+    to the <span class="code">&lt;head></span> area of the page.
+</div>
+<pre>
+[UsesLayout("order_page_layout")]
+internal class OrderPage : Page
+{
+    public MasterPage(IPageDependenciesFactory dependencies) 
+        : base(dependencies)
+    {
+        TitleFunc = rc => "Order number ABC123";
+        BodyClassNames = "my-app_order-page";
+        BodyId = Guid.NewGuid().ToShortString();
+    }
+
+    public override IWriteResult WriteHeadArea(IRenderContext context)
+    {
+        context.Html.WriteUnclosedElement(
+            "meta", 
+            "name", "description", 
+            "content", "This is the order page");
+        context.Html.WriteLine();
+
+        context.Html.WriteUnclosedElement(
+            "meta", 
+            "name", "keywords", 
+            "content", "sample,demo");
+        context.Html.WriteLine();
+
+        context.Html.WriteUnclosedElement(
+            "meta", 
+            "name", "author", 
+            "content", "Martin Halliday");
+        context.Html.WriteLine();
+
+        context.Html.WriteUnclosedElement(
+            "meta", 
+            "name", "viewport", 
+            "content", "width=device-width, initial-scale=1.0");
+        context.Html.WriteLine();
+
+        return base.WriteHeadArea(context);
+    }
+}
+</pre>
 
 <h2>Example of a Package Containing a Page</h2>
-<p>TBD</p>
+
+<p>
+    The following example defines a package that builds a page using the
+    fluent builder.
+</p>
+<pre>
+    public class CmsManagerPackage: IPackage
+    {
+        private readonly ITemplateBuilder _templateBuilder;
+        private readonly INameManager _nameManager;
+
+        public string NamespaceName { get; set; }
+        public IModule Module { get; set; }
+        public ElementType ElementType { get { return ElementType.Package; } }
+        public string Name { get; set; }
+
+        public CmsManagerPackage(
+            IHostingEnvironment hostingEnvironment,
+            ITemplateBuilder templateBuilder,
+            INameManager nameManager)
+        {
+            _templateBuilder = templateBuilder;
+            _nameManager = nameManager;
+
+            Name = "cms_manager";
+            NamespaceName = "cmsmanager";
+        }
+
+        IPackage IPackage.Build(IFluentBuilder fluentBuilder)
+        {
+            // -- snip--
+            // Code deleted from here to reduce complexity and focus on the page building aspect.
+            // This example will not compile because of the missing piece.
+            // -- snip--
+
+            var managerLayout = fluentBuilder.BuildUpLayout()
+                .Name("manager")
+                .ZoneNesting("editor,tools")
+                .Region("editor", editorRegion)
+                .Region("tools", toolsRegion)
+                .Build();
+
+            fluentBuilder.BuildUpPage()
+                .Name("cmsManager")
+                .Route("/cms/manager", 0, Method.Get)
+                .Layout(managerLayout)
+                .Build();
+
+            return this;
+        }
+    }
+</pre>
