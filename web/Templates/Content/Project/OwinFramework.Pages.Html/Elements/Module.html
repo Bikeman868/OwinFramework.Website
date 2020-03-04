@@ -6,7 +6,8 @@
 
 <h2>Attribute Example</h2>
 <p>
-    TBD
+    Since modules have no real functionallity, you will almost always create them
+    by decorating an empty class with attributes as illustrated below:
 </p>
 <pre>
 </pre>
@@ -14,6 +15,17 @@
     In this use case the <a href="../attributes/ismodule"><span class="code">[IsModule()]</span> attribute</a>
     has properties that specify how the assets for elements in this module are deployed.
 </p>
+<p>
+    It is possible to create a class that inherits from the built-in <span class="code">Module</span> class,
+    but there is very little point in doing this.
+</p>
 
-<h2>Example of a Package Containing a Module</h2>
-<p>TBD</p>
+<h2>Adding a Module to a Package</h2>
+
+<p>
+    If you want to define a module within your package (which is generally a
+    good idea if your package contains any Css or Javascript assets), you can
+    use the <span class="code">BuildUpPackage</span> method of the fluent builder.
+    This technique is very similar to all of the other <span class="code">BuildUpXxxx</span> 
+    methods that you use to build your package.
+</p>

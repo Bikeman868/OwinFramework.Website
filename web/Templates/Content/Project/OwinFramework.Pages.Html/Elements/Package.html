@@ -8,14 +8,145 @@
 
 <h2>Attribute Example</h2>
 <p>
-    TBD
+    You can define a package by decorating a class with the <a href="../attributes/ispackage"><span class="code">[IsPackage()]</span> attribute</a>.
+    This defines a namespace for your Css and Javascript assets. You should do this within your website to seperate your
+    application assets from any imported packages.
+</p>
+<p>
+    Below is an example of defining a package namespace and telling a Region to
+    put its assets into this namespace. In this case I decided to create a base
+    class with the <a href="../attributes/partof"><span class="code">[PartOf()]</span> attribute</a>
+    and have my region inherit that, so that I don't need to remember to add the
+    <a href="../attributes/partof"><span class="code">[PartOf()]</span> attribute</a> 
+    to each element that I define.
 </p>
 <pre>
+[IsPackage("my_website", "app")]
+internal class ApplicationPackage { }
+
+[PartOf("my_website")]
+internal class ApplicationElement { }
+
+[IsRegion("div")]
+internal class DivRegion : ApplicationElement { }
 </pre>
 <p>
     In this use case the <a href="../attributes/ispackage"><span class="code">[IsPackage()]</span> attribute</a>
     has properties that specify the default namespace to use for all Css and Javascript assets built by this package.
 </p>
 
-<h2>Package Class Example</h2>
-<p>TBD</p>
+<h2>Package Classes</h2>
+<p>
+    The other main user case for packages is to make a reusable package of elements that
+    can be imported into a website to add features. For example the CMS piece of the Owin
+    Framework has an editor for managing the pages of the website, and this editor is
+    contained within a package. By adding the package to a website this editor UI can be
+    dropped into any page within the website.
+</p>
+<p>
+    The most likely reasons for creating packages are either: a) providing some reusable
+    functionallity as a NuGet package that website authors can install into their solution;
+    or b) you have many web properties and want to share funtionallity accross them by
+    compiling a shared assembly.
+</p>
+<p>
+    Below is the source code for the data package from the 
+    <span class="code">OwinFramework.Pages.Standard</span> project. This is a fairly simple 
+    package that creates a single component, which deploys a Javascript library. The Javascript
+    is compiled into the DLL in this case, so you only need to copy a single file to include the
+    functionallity into a website.
+</p>
+<pre>
+using System.Reflection;
+using System.Text;
+using OwinFramework.Interfaces.Utility;
+using OwinFramework.MiddlewareHelpers.EmbeddedResources;
+using OwinFramework.Pages.Core.Enums;
+using OwinFramework.Pages.Core.Interfaces;
+using OwinFramework.Pages.Core.Interfaces.Builder;
+using OwinFramework.Pages.Core.Interfaces.Runtime;
+
+namespace OwinFramework.Pages.Standard
+{
+    public class DataPackage: IPackage
+    {
+        private readonly ResourceManager _resourceManager;
+
+        string IPackage.NamespaceName { get; set; }
+        IModule IPackage.Module { get; set; }
+        ElementType INamed.ElementType { get { return ElementType.Package; } }
+        string INamed.Name { get; set; }
+
+        public DataPackage(IHostingEnvironment hostingEnvironment)
+        {
+            var my = this as IPackage;
+            my.Name = "data";
+            my.NamespaceName = "data";
+
+            _resourceManager = new ResourceManager(hostingEnvironment, new MimeTypeEvaluator());
+        }
+
+        IPackage IPackage.Build(IFluentBuilder fluentBuilder)
+        {
+            var resource = _resourceManager.GetResource(Assembly.GetExecutingAssembly(), "dataModule.js");
+            if (resource.Content == null) return this;
+
+            var javaScript = Encoding.UTF8.GetString(resource.Content);
+
+           fluentBuilder.BuildUpComponent(null)
+                .Name("data")
+                .AssetDeployment(AssetDeployment.PerWebsite)
+                .DeployScript(javaScript)
+                .Build();
+
+            return this;
+        }
+    }
+}
+</pre>
+<p>
+    In this example you can see that:
+</p>
+<ul>
+    <li>
+        To implement the a<span class="code">IPackage</span> interface from scratch is quite easy. You
+        can also inherit from the built-in <span class="code">Package</span> class to make the implementation even smaller.
+    </li>
+    <li>
+        The package can use construstor injection of dependencies provided the website developer uses IoC to construct the package.
+    </li>
+    <li>
+        The important part of the package implementation is the <span class="code">Build()</span> method.
+        This method is responsible for constructing all of the components, regions, layouts, data providers, pages etc
+        within the package. This can be done using the instance of <span class="code">IFluentBuilder</span> that is
+        passed to the <span class="code">Build()</span> method as a parameter.
+    </li>
+    <li>
+        The <span class="code">IFluentBuilder</span> interface defines a number of <span class="code">BuildUpXxxx()</span>
+        methods that you can use to build all of the different kinds of page elements. These methods can be passed
+        an instance to build up, or they can be passed <span class="code">null</span> to use the default implementation.
+    </li>
+    <li>
+        The return value from the various <span class="code">BuildUpXxxx()</span> methods is an interface that defines
+        fluent methods that will configure everything that can be configured for that type of page element. You can
+        use the Visual Studio intellisense information to see what all of these things are.
+    </li>
+    <li>
+        When you are done configuring your element, there is a <span class="code">Build()</span> method that you need to call to
+        actually construct an intance and register its name so that it can be resplved by other elements.
+    </li>
+</ul>
+<p>
+    Some other things to note are
+</p>
+<ul>
+    <li>
+        The <span class="code">IFluentBuilder</span> instance that is passed in is already in the context of this package,
+        so you not need to explicitly add all of your elements to the package.
+    </li>
+    <li>
+        The package constructor usually sets a namespace, but this can be overriden at run-time by the application developer
+        to avoid naming conflicts between packages. This means that it is very important to ensure that your code does
+        not make any assumptions about what the namespace is.
+    </li>
+</ul>
