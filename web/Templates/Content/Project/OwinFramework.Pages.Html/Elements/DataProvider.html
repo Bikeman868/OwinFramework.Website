@@ -9,10 +9,170 @@
 <p>
     All data providers must have a C# implementation to be useful. It is not
     possible to retrieve data from somewhere and add it to the rendering
-    context by decorating with attributes only.
+    context by decorating classes with attributes only.
 </p>
+<p>
+    Below is a very simple data provider that illsutrates the basic principal.
+</p>
+<pre>
+    internal class ApplicationInfo
+    {
+        public string Name => "My Application";
+    }
 
+    [IsDataProvider("application", typeof(ApplicationInfo))]
+    internal class ApplicationInfoDataProvider : DataProvider
+    {
+        private readonly ApplicationInfo _applicationInfo;
 
+        public ApplicationInfoDataProvider(IDataProviderDependenciesFactory dependencies)
+            : base(dependencies)
+        {
+            _applicationInfo = new ApplicationInfo();
+        }
 
-<h2>Example of a Package Containing a Data Provider</h2>
-<p>TBD</p>
+        protected override void Supply(
+            IRenderContext renderContext,
+            IDataContext dataContext,
+            IDataDependency dependency)
+        {
+            dataContext.Set(_applicationInfo);
+        }
+    }
+</pre>
+<p>
+    You can see from this example:
+</p>
+<ul>
+    <li>
+        A Data Provider is a class that inherits from <span class="code">DataProvider</span> or
+        implements the <span class="code">IDataProvider</span> interface.
+    </li>
+    <li>
+        The Data Provider class should be decorated with the <a href="../attributes/isdataprovider"><span class="code">IsDataProvider</span> attribute</a>
+        unless you plan to manually register the Data Provider with the Name Manager, or you are including
+        the Data Provider in a package.
+    </li>
+    <li>
+        The <a href="../attributes/isdataprovider"><span class="code">IsDataProvider</span> attribute</a>
+        defines the name of the Data Provider, the type of data that it provides, and the context in which
+        it can provide that data.
+    </li>
+    <li>
+        If the Data Provider inherits from the <span class="code">DataProvider</span> class, then it must
+        override the <span class="code">Supply()</span> method and call the <span class="code">Set()</span> 
+        method of the Data Context.
+    </li>
+</ul>
+<div class="app_warning">
+    It is very important that the Data Provider actually provides the data that it claims to provide through its
+    <span class="code">IsDataProvider</span> attribute. It is OK for the Data Provider to set a 
+    <span class="code">null</span> value in the Data Context, but it must not return from the <span class="code">Supply()</span>
+    method without setting any value, because this will result in an infinite loop in the code.
+</div>
+<p>
+    Some other things about Data Providers:
+</p>
+<ul>
+    <li>
+        A Data Provider can supply multiple kinds of data. In this case you can advertise those other
+        data types by adding <a href="../attributes/suppliesdata"><span class="code">SuppliesData</span> attributes</a>
+        to the Data Provider class.
+    </li>
+    <li>
+        <p>
+            When page elements need data they can specify a data context name. This can be used to differentiate
+            between multiple providers of the same kind of data, or these contexts can all be handled by the
+            same data provider. 
+        </p>
+        <p>
+            The <a href="../attributes/isdataprovider"><span class="code">IsDataProvider</span> attribute</a>
+            and the <a href="../attributes/suppliesdata"><span class="code">SuppliesData</span> attribute</a> have an
+            optional data context name that makes the Data Provider specific to that context for that type of data. If the
+            optional data context name is not set then the Data Provider is advertising that it can fulfil this type
+            of data for any context, in which case it needs to examine the <span class="code">IDataDependency</span>
+            parameter passed to the <span class="code">Supply()</span> method, and supply data in the requested context.
+        </p>
+        <p>
+            As an example of using different data context names, consider a website where you can view the profile pages
+            of other users. On this page you want to data bind to a user view model, but there are two possible users, the
+            user whose profile page you are viewing or the user who is logged into the website. In this situation you
+            can create separate Data Providers for these use cases, or have one Data Provider that handles both.
+        </p>
+        <p>
+            A Data Provider can have a dependency on another named data provider, or a specific type of data.
+            For example I might have a Data Provider for customer data and a Data Provider for a list of
+            customer orders that depends on the customer Data Provider. You can define these dependencies by
+            decorating your Data Provider class with the <a href="../attributes/needsdata"><span class="code">NeedsData</span> attribute</a>.
+        </p>
+    </li>
+</ul>
+<p>
+    Below is an example of a Data Provider that depend on other data. This
+    is a more complex example where <span class="code">PersonListProvider</span> supplies
+    a list of people and <span class="code">PersonAddressProvider</span> does not
+    directly depend on the data provided by <span class="code">PersonListProvider</span>, but 
+    depends on a single person. These Data Providers assume that there will be a repeating
+    Region on the page that enumerates the people and places each person in context to
+    fulfill the needs of the <span class="code">PersonAddressProvider</span>. These more
+    complex scenarios are fully supported by the framework.
+</p>
+<p>
+    In general, you should write Data Providers for all of the kinds of data you want to
+    be able to data bind on the server-side, and declare the data needs of each page element,
+    and the framework will figure out how to supply all of the required data as efficiently
+    as possible by calling the Data Provider the least number of times.
+</p>
+<p>
+    I would highly recommend making your Data Providers granular, ie each Data Provider
+    provides only one type of data, and depends on 0 or more other types of data. This
+    approach will avoid your application becomming overly complex and inneficient as
+    your applications grows.
+</p>
+<pre>
+    internal class Person
+    {
+        public string Name { get; set; }
+        public Address Address { get; set; }
+    }
+
+    internal class Address
+    {
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
+    }
+
+    [IsDataProvider("people", typeof(IList<Person>))]
+    internal class PersonListProvider : DataProvider
+    {
+        public PersonListProvider(IDataProviderDependenciesFactory dependencies)
+            : base(dependencies) { }
+
+        protected override void Supply(IRenderContext renderContext, IDataContext dataContext, IDataDependency dependency)
+        {
+            var people = new[]
+            {
+                new Person { Name = "Person 1", Address = new Address { Street = "1 Main St", City = "City", ZipCode = "12345" }},
+                new Person { Name = "Person 2", Address = new Address { Street = "2 Main St", City = "City", ZipCode = "54321" }},
+                new Person { Name = "Person 3", Address = new Address { Street = "3 Main St", City = "City", ZipCode = "99999" }},
+            };
+            dataContext.Set<IList<Person>>(people);
+        }
+    }
+
+    [IsDataProvider("person_address")]
+    [SuppliesData(typeof(Address))]
+    [NeedsData(typeof(Person))]
+    internal class PersonAddressProvider : DataProvider
+    {
+        public PersonAddressProvider(IDataProviderDependenciesFactory dependencies)
+            : base(dependencies) { }
+
+        protected override void Supply(IRenderContext renderContext, IDataContext dataContext, IDataDependency dependency)
+        {
+            var person = dataContext.Get<Person>();
+            dataContext.Set(person.Address);
+        }
+    }
+</pre>
