@@ -3,3 +3,26 @@
     Attach the <span class="code">[UsesLayout]</span> attribute on elements that contain
     exactly one child element to define that child is a layout.
 </p>
+<p>
+    The <span class="code">[UsesLayout()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<p>
+    This is an example of how use this attribute
+</p>
+<pre>
+    [IsRegion("header_bar")]
+    [Container("div", "{ns}_header_bar_region")]
+    [UsesLayout("header_bar")]
+    internal class HeaderBarRegion : NavigationElement { }
+</pre>
+
+<h3><span class="code">LayoutName</span></h3>
+<p>
+    Specifies the name of the layout to place within this page element.
+    If the layout is part of the same package then you can just use the
+    layout name on its own. If the layout is in a different package
+    from the element you are attaching this attribute to, then you need
+    to prefix the layout name with the package namespace and a colon.
+</p>

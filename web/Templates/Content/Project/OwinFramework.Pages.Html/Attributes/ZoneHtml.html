@@ -9,3 +9,35 @@
     contains a layout to overide the layout and change the content of the zone for this
     instance of the layout.
 </p>
+<p>
+    Example usage:
+</p>
+<pre>
+    [IsLayout("functional_area__list", "title,list")]
+    [ZoneRegion("title", "layouts:null")]
+    [ZoneRegion("list", "functional_area__list")]
+    [ZoneHtml("title", "functional_area__list_heading", "&lt;h3>Functional areas&lt;/h3>")]
+    internal class FunctionalAreaList: ContentElement { }
+</pre>
+<p>
+    The <span class="code">[ZoneHtml()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">ZoneName</span></h3>
+<p>
+    This is the name of the zone within a layout where the Html should be rendered.
+</p>
+
+<h3><span class="code">LocalizationId</span></h3>
+<p>
+    This must be set to a unique key that identifies this piece of text. The key
+    will be used to find the locale specific version of the Html based on the 
+    browser's language settings.
+</p>
+
+<h3><span class="code">Html</span></h3>
+<p>
+    This is the Html to use for all locales where there is no localization defined
+    for this <span class="code">LocalizationId</span>.
+</p>

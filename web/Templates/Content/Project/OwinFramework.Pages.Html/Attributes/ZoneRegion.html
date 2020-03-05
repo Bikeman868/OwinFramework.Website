@@ -5,7 +5,47 @@
 </p>
 <p>
     The <span class="code">[ZoneRegion]</span> attribute can be used on a layout to define
-    the region that defines the behavior of that zone regardless of its content. It can 
+    the region that defines the behavior of that zone regardless of its content. It can
     also be used on a region or page that contains a layout to place a region inside the
     specified zone for this instance of the layout.
+</p>
+<p>
+    The <span class="code">[ZoneRegion()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<p>
+    Example usage:
+</p>
+<pre>
+    [IsLayout("interfaceLandingPage_Header", "title,detail")]
+    [ZoneTemplate("detail", "/data/interfacedefinition")]
+    internal class LandingPageHeaderLayout : DocumentHeadLayout { }
+
+    [IsLayout("areaLandingPage_Header", "title,detail")]
+    [ZoneTemplate("detail", "/data/area")]
+    internal class LandingPageHeaderLayout : DocumentHeadLayout { }
+
+    [ZoneRegion("title", "documentHead_Title")]
+    [ZoneRegion("detail", "documentHead_Detail")]
+    [ZoneComponent("title", "text:verticalText")]
+    [Container("div", "{ns}_document_head_layout")]
+    internal class DocumentHeadLayout : ContentElement { }
+</pre>
+<p>
+    The <span class="code">[ZoneRegion()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">ZoneName</span></h3>
+<p>
+    This is the name of the zone within a layout where the region should
+    be rendered.
+</p>
+
+<h3><span class="code">RegionName</span></h3>
+<p>
+    This is the name of the region to render into this zone of the layout.
+    If the region is in a different package then the region name must be
+    qualified with the package namespace as a prefix separated by a colon.
 </p>

@@ -3,3 +3,32 @@
     The <span class="code">[SuppliesData]</span> attribute can be attached to data providers
     that provide multiple kinds of data, or the same data in multiple data scopes.
 </p>
+<p>
+    The <span class="code">[SuppliesData()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">DataType</span></h3>
+<p>
+    Defines ab additional type of data that this data provider can provide. This must be
+    either a C# class type, or an <span class="code">IList&lt;T></span> type.
+</p>
+
+<h3><span class="code">Scope</span></h3>
+
+<p>
+    Specifies a scope name. When this is set, this data provider will only be
+    considered as the supplier of data when the page element specifies that
+    it needs data in this specific scope.
+</p>
+<p>
+    When the scope name is not set, this means that this data provider can
+    provide this kind of data for all scopes. In this case this data provider
+    will only be used if there are no scope specific data providers that match
+    the request.
+</p>
+<p>
+    In the case where there are multiple data providers that can provide the
+    data, the one that will be selected depends on what other data is required
+    on the page, and the other types of data that each provider can provide.
+</p>

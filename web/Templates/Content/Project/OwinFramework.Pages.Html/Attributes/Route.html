@@ -5,3 +5,89 @@
     as it likes, in which case you should consider specifying the canonical Url for the page to avoid penalties
     from search engines.
 </p>
+
+<h2>Example usage</h2>
+<pre>
+[IsPage("home", "/")]
+[Route("/", Method.Get)]
+[Route("/home", Method.Get)]
+[UsesLayout("home")]
+internal class HomePage { }
+</pre>
+
+<h2><span class="code">[Route()]</span> attribute properties</h2>
+<p>
+    The <span class="code">[Route()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">Path</span></h3>
+<p>
+    When users navigate to a Url with this path, then this page will be
+    rendered in response. The path should always be absolute, i.e. start with
+    a forward slash.
+</p>
+<p>
+    For dynamic pages the <span class="code">[Route()]</span> attribute can
+    contain wildcards. Wildcards make the page render for a whole set of Urls.
+    In this case the components on the page should contain code to render
+    different content for the various paths that match the wildcard, or
+    the Data Providers referenced by the page elements should put different
+    data into the rendering context based on the path of the Url.
+</p>
+<p>
+    The wildcard character is <span class="code">*</span>. It can be used
+    in place of an element in the path to indicate that anything can appear
+    in this part of the path. For example I can set the <span class="code">Path</span>
+    property to <span class="code">/customer/*/orders</span> to indicate that
+    this page is only rendered if the first element of the path is
+    <span class="code">customer</span> and the third element of the path is
+    <span class="code">orders</span>, but the second element of the path can
+    contain anything. In this case the components and/or data providers for
+    the page should examine the second path element to determine which
+    customer to display orders for.
+</p>
+<p>
+    You can also tell the router to ignore the rest of the path by appending
+    <span class="code">**</span> to the end of the path. For example if I
+    set the <span class="code">Path</span> property to <span class="code">/customer/order/**</span>
+    then this page will be rendered for any Url that starts with <span class="code">/customer/order/</span>
+    irrespective of the rest of the path.
+</p>
+<div class="app_warning">
+    Note that you cannot use the <span class="code">*</span> wildcard to match part
+    of a string. This limitation exists for efficiency. Remember that every request
+    is compared to all of the routes until a match is found. Performing complex
+    wildcard matches would make the webisite not scalable.
+</div>
+
+<h3><span class="code">Methods</span></h3>
+<p>
+    This property of the <span class="code">[Route()]</span>
+    attribute defines the Http methods that will be routed to the
+    page. If you do not specify the <span class="code">Methods</span>
+    it will default to <span class="code">new []{ Method.Get }</span>. In this
+    case the page will only be rendered in response to Http GET requests.
+</p>
+<p>
+    You can route all Http methods to the page by setting
+    <span class="code">Methods</span> to an empty
+    array like this: <span class="code">new Method[]{ }</span>
+</p>
+
+<h3><span class="code">Priority</span></h3>
+<p>
+    This property of the <span class="code">[Route()]</span>
+    attribute defines the order in which routing will be evaluated.
+    The highest priority routes are considered before the lower priority ones.
+    Since the default priority is zero, the recommentation is to make very
+    specific routes have positive priorities and wildcard routes have negative
+    priority so that the wildcard routes do not mask the more specific routes
+    by matching the request first.
+</p>
+<p>
+    Priorities also affect performance because the router will try to match
+    routes in order or highest to lowest priority until it finds a match.
+    You can make routing more efficient by giving higher priority to routes
+    that are matched more frequently.
+</p>

@@ -9,3 +9,38 @@
     contains a layout to overide the layout and change the content of the zone for this
     instance of the layout.
 </p>
+<p>
+    Example usage:
+</p>
+<pre>
+    [IsLayout("interfaceLandingPage_Header", "title,detail")]
+    [ZoneTemplate("detail", "/data/interfacedefinition")]
+    internal class LandingPageHeaderLayout : DocumentHeadLayout { }
+
+    [IsLayout("areaLandingPage_Header", "title,detail")]
+    [ZoneTemplate("detail", "/data/area")]
+    internal class LandingPageHeaderLayout : DocumentHeadLayout { }
+
+    [ZoneRegion("title", "documentHead_Title")]
+    [ZoneRegion("detail", "documentHead_Detail")]
+    [ZoneComponent("title", "text:verticalText")]
+    [Container("div", "{ns}_document_head_layout")]
+    internal class DocumentHeadLayout : ContentElement { }
+</pre>
+<p>
+    The <span class="code">[ZoneComponent()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">ZoneName</span></h3>
+<p>
+    This is the name of the zone within a layout where the component should
+    be rendered.
+</p>
+
+<h3><span class="code">ComponentName</span></h3>
+<p>
+    This is the name of the component to render into this zone of the layout.
+    If the component is in a different package then the component name must be
+    qualified with the package namespace as a prefix separated by a colon.
+</p>

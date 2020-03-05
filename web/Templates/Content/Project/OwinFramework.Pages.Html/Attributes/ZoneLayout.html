@@ -9,3 +9,35 @@
     contains a layout to overide the layout and change the content of the zone for this
     instance of the layout.
 </p>
+<p>
+    Example usage:
+</p>
+<pre>
+    [IsLayout("repositoryLanding", "right,left")]
+    [ZoneLayout("left", "repositoryLandingPage_LeftColumn")]
+    [ZoneLayout("right", "repositoryLandingPage_RightColumn")]
+    internal class LandingPageLayout : FixedRightColumnLayout { }
+
+    [IsPage("repositoryLanding")]
+    [Route("/content/repository/**", Method.Get, Priority = -80)]
+    [PageTitle("GitHub Repository")]
+    [ZoneLayout("body", "repositoryLanding")]
+    public class LandingPage: NavigationMasterPage{ }
+</pre>
+<p>
+    The <span class="code">[ZoneLayout()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">ZoneName</span></h3>
+<p>
+    This is the name of the zone within a layout where the layout should
+    be rendered.
+</p>
+
+<h3><span class="code">LayoutName</span></h3>
+<p>
+    This is the name of the layout to render into this zone of the layout.
+    If the layout is in a different package then the component name must be
+    qualified with the package namespace as a prefix separated by a colon.
+</p>

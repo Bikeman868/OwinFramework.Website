@@ -3,3 +3,25 @@
     Attach the <span class="code">[UsesComponent]</span> attribute on elements that contain
     exactly one child element to define that child is a component.
 </p>
+<p>
+    Example usage
+</p>
+<pre>
+    [IsRegion("footer")]
+    [Container("div", "{ns}_footer-region")]
+    [UsesComponent("footer")]
+    internal class MainFooterRegion : NavigationElement { }
+</pre>
+<p>
+    The <span class="code">[UsesComponent()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">ComponentName</span></h3>
+<p>
+    Specifies the name of the component to place within this page element.
+    If the component is part of the same package then you can just use the
+    component name on its own. If the component is in a different package
+    from the element you are attaching this attribute to, then you need
+    to prefix the component name with the package namespace and a colon.
+</p>
