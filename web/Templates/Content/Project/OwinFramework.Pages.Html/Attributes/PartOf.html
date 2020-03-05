@@ -1,7 +1,7 @@
 ﻿<h2>The <span class="code">[PartOf]</span> Attribute</h2>
 <p>
     The <span class="code">[PartOf]</span> attribute can be attached to any
-    page element that can produce Css and Javascript assets. The 
+    page element that can produce Css and Javascript assets. The
     <span class="code">[PartOf]</span> attribute defines the namespace to use
     for these assets to ensure that names of Css classes and Javascript functions
     do not conflict.
@@ -15,4 +15,22 @@
     developers then you must put all of your elements into packages so that
     the application developer can choose a namespace for each package and avoid
     naming conflicts between imported packages.
+</p>
+
+<p>
+    The <span class="code">[PartOf()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">PackageName</span></h3>
+<p>
+    The name of the <a href="../elements/package">Package</a> that defines the namespace for
+    assets belonging to this page element.
+</p>
+<p>
+    This is also used in name resolution for any attributes attached to this element.
+    For example if this element refers to layouts, regions, components etc by name
+    then these names will be resolved within the scope of the package. To refer to
+    elements from other packages, prefix the element name with the namespace of the
+    package and a colon.
 </p>

@@ -16,3 +16,63 @@ internal class HomePage { }
 internal class HomePageLayout { }
 </pre>
 
+<p>
+    The <span class="code">[IsLayout()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">Name</span></h3>
+
+<p>
+    If you want to refer to your layout by name in other page elements, then
+    you need to provide a unique name here. The name will be scoped by the
+    package it is in, so the name only has to be unique within the package.
+</p>
+<p>
+    If you want to refer to this layout by name from a page element that is in
+    a different package, then you need to prefix the layout name with the
+    package prefix and a colon, for example <span class="code">"layouts:two_column"</span>
+</p>
+
+<h3><span class="code">ZoneNesting</span></h3>
+
+<p>
+    This property defines the names of the zones within the layout and also
+    how these are nested in child containers.
+</p>
+<p>
+    For example if I set my <span class="code">ZoneNesting</span> property to
+    <span class="code">zone1,zone2</span> and I chose <span class="code">ul</span> 
+    as my container tag, then I will get Html like this:
+</p>
+<pre>
+&lt;ul>
+    // Contents of zone1
+    // Contents of zone2
+&lt;/ul>
+</pre>
+
+<p>
+    If I introduce a third zone, group it with zone 2 like this
+    <span class="code">zone1(zone2,zone3)</span> and choose <span class="code">li</span> 
+    as my child container tag, then I will get Html like this:
+</p>
+<pre>
+&lt;ul>
+    // Contents of zone1
+    &lt;li>
+        // Contents of zone2
+        // Contents of zone3
+    &lt;/li>
+&lt;/ul>
+</pre>
+<p>
+    You can nest zones as deeply as you want.
+</p>
+<p>
+    If you want the layout to render some different nesting of containers,
+    or render some zones multiple times or any other specific behavior, 
+    then you need to make your Layout class class inherit
+    from the built-in <span class="code">Layout</span> class as described
+    in the <a href="../elements/layout">Layout element documentation</a>
+</p>

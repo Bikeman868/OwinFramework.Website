@@ -20,3 +20,27 @@
     var fluentBuilder = ninject.Get&lt;IFluentBuilder>();
     fluentBuilder.Register(Assembly.GetExecutingAssembly(), t => ninject.Get(t));
 </pre>
+
+<p>
+    The <span class="code">[IsPage()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">Name</span></h3>
+
+<p>
+    You do not have to choose a name for your page, but it makes sense to do so for debugging purposes.
+</p>
+
+<h3><span class="code">CanonicalUrl</span></h3>
+
+<p>
+    If there is more than one URL that returns this page's content, then you are
+    strongly advised to set the <span class="code">CanonicalUrl</span> property. This
+    tells search engines that you deliberately made more than one URL for the page
+    and tells the search engine which one to direct trafic to.
+</p>
+<p>
+    If you have multiple URLs for a page and do not set the <span class="code">CanonicalUrl</span>
+    property then the page rank will be significantly reduced by the search engines.
+</p>

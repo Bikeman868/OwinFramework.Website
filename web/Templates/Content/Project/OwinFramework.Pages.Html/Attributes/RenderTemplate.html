@@ -2,7 +2,25 @@
 <p>
     One or more <span class="code">[RenderTemplate]</span> attributes can be attached
     to a region to render templates into various parts of the page. For example you can
-    create a template for some part of the page head and use a <span class="code">[RenderTemplate]</span> 
-    attribute on a region to specify that this template should be rendered into the 
+    create a template for some part of the page head and use a <span class="code">[RenderTemplate]</span>
+    attribute on a region to specify that this template should be rendered into the
     <span class="code">&lt;head></span> area of the page.
+</p>
+<p>
+    The <span class="code">[RenderTemplate()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">TemplatePath</span></h3>
+<p>
+    Defines the path of the template to render.
+</p>
+
+<h3><span class="code">PageArea</span></h3>
+<p>
+    Defines the area of the page where the template should be rendered. This makes
+    the most sense for templates that only have one part. It is also possible to
+    create multi-part templates that already render content into multiple places
+    on the page. How these will interact with this setting depends on the behavior 
+    of the template parser, and is generally not recommended.
 </p>

@@ -22,8 +22,37 @@
 [Container("ul", "{ns}_menu")]
 [ChildContainer("li", "{ns}_menu-item")]
 [DeployCss("ul.{ns}_menu", "font-size: 14px;")]
-[DeployCss("li.{ns}_menu-tem", "font-size: 12px;")]
+[DeployCss("li.{ns}_menu-item", "font-size: 12px;")]
 public class MenuRegion
 {
 }
 </pre>
+
+<p>
+    The <span class="code">[DeployCss()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">CssSelector</span></h3>
+
+<p>
+    This property can contain any valid CSS selector for the style. If you are
+    using package namespaces (recommended) then you can have the appropriate
+    namespace prefix added to class names by putting the spacial
+    <span class="code">{ns}_</span> marker directly in front of CSS class names.
+</p>
+
+<h3><span class="code">CssStyle</span></h3>
+
+<p>
+    Defines the style to apply to elements that match the selector.
+</p>
+
+<h3><span class="code">Order</span></h3>
+
+<p>
+    CSS rules are rendered in order of lowest to highest value for the
+    <span class="code">Order</span> property. This property defaults
+    to zero for <span class="code">[DeployCss()]</span> attributes that
+    do not specify the value to use.
+</p>

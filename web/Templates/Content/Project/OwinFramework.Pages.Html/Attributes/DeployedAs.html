@@ -19,16 +19,45 @@ public class MenuRegion
 </pre>
 
 <p>
-    The possible values for the <span class="code">AssetDeployment</span> parameter are:
+    The <span class="code">[DeployedAs()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">ModuleName</span></h3>
+
+<p>
+    This defines the name of the <a href="../elements/module">Module element</a>
+    that defines the asset deployment method for this element's assets. By default
+    elements inherit asset deployment from their parent element. This propagates
+    up the tree to the Page level where the default is to deploy all assets to
+    one resource.
+</p>
+<p>
+    By specifying a module name in this attribute, you are saying that the asset
+    deployment mechanism for this element is going to be determined by the module
+    instead of being explicitly set on this element. This is a good strategy because
+    it allows you to change your mind later about how you want assets deployed
+    without having to revisit all the code.
+</p>
+
+<h3><span class="code">Deployment</span></h3>
+<p>
+    This allows you to explicitly define the asset deployment mechanism for
+    the element. Generally speaking you probably don't want to explicitly set
+    this for every element, because using modules is a much better way of
+    organizing your assets.
+</p>
+<p>
+    The possible values for the <span class="code">Deployment</span> property are:
 </p>
 <ul>
     <li>
         <span class="code">Inherit</span> means that page element will interit
-        the <span class="code">AssetDeployment</span> property of the containing page 
-        element. If all elements on a page are set to <span class="code">Inherit</span> 
-        (which is the default) then they all follow the asset deployment mechanism set 
-        in the page. Pages default to <span class="code">PerWebsite</span>, so by default 
-        all Javascript and all CSS for the entire website will be combined into a single 
+        the <span class="code">AssetDeployment</span> property of the containing page
+        element. If all elements on a page are set to <span class="code">Inherit</span>
+        (which is the default) then they all follow the asset deployment mechanism set
+        in the page. Pages default to <span class="code">PerWebsite</span>, so by default
+        all Javascript and all CSS for the entire website will be combined into a single
         asset.
     </li>
     <li>
@@ -49,7 +78,7 @@ public class MenuRegion
     <li>
         <span class="code">PerModule</span> means that the element should use the
         <span class="code">AssetDeployment</span> property of the module it is in.
-        You can also specify this module by name with the <span class="code">[DeployedAs]</span> 
+        You can also specify this module by name with the <span class="code">[DeployedAs]</span>
         attribute.
     </li>
     <li>

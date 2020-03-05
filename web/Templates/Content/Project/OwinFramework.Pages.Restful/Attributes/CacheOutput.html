@@ -14,3 +14,26 @@ public class OrderService
 {
 }
 </pre>
+
+<p>
+    The <span class="code">[CacheOutput()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">CacheCategory</span></h3>
+
+<p>
+    The value of this property is passed directly to the Output Cache middleware
+    when this service handles the request. The Output Cache middleware
+    can use whatever logic it wants to decide how long to cache data based on
+    this category name.
+</p>
+
+<h3><span class="code">CachePriority</span></h3>
+
+<p>
+    The value of this property is passed directly to the Output Cache middleware
+    when this service handles the request. The Output Cache middleware
+    can use whatever logic it wants to decide how long to cache data based on
+    this priority level.
+</p>

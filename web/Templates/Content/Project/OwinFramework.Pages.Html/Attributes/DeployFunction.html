@@ -24,3 +24,52 @@
 [DeployFunction(null, "sayHello", null, "alert('Hello');")]
 internal class MyComponent { }
 </pre>
+
+<p>
+    The <span class="code">[DeployFunction()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">FunctionName</span></h3>
+
+<p>
+    Must be a syntactically valid Javascript function name that is unique within the 
+    package namespace. The namespace is defined by the <a href="../attributes/partof"><span class="code">[PartOf()]</span> attribute</a>
+    attached to the element.
+</p>
+<p>
+    This function can be called directly from any other function in the same
+    package namespace. To call this function from another namespace the
+    function name must be qualified with the <span class="code">ns.{namespace}.</span> 
+    prefix, where <span class="code">{namespace}</span> is the namespace of the
+    package containing the function you want to call.
+</p>
+
+<h3><span class="code">ReturnType</span></h3>
+
+<p>
+    The type of data returned by the function is provided here for documentation only.
+    Javascript does not have strong typing, so this property has no impact on the execution
+    of the function.
+</p>
+
+<h3><span class="code">Parameters</span></h3>
+
+<p>
+    This is a comma separated list of parameters that can be passed to the function.
+    Note that all parameter values are optional in Javascript.
+</p>
+
+<h3><span class="code">Body</span></h3>
+
+<p>
+    This is the body of the Javascript function. You do not need to enclose this in
+    curly braces, these will be added automatically.
+</p>
+
+<h3><span class="code">IsPublic</span></h3>
+
+<p>
+    Setting this value to <span class="code">false</span> will make this function only
+    visible within the namespace where it is defined.
+</p>

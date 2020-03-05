@@ -15,3 +15,28 @@ internal class DefaultStylesComponent
 { }
 </pre>
 
+<p>
+    The <span class="code">[IsPackage()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">Name</span></h3>
+
+<p>
+    You will want to choose a unique name for your package if you intend to assign
+    other page elements to it using attributes. If you are creating a package for
+    distribution to third parties then you don't have to set a package name, but
+    it makes sense to do so for debugging purposes.
+</p>
+
+<h3><span class="code">NamespaceName</span></h3>
+
+<p>
+    This defines the prefix to use on all CSS class names and the namespace
+    used to enclose all Javascript functions. You must choose a name that is
+    valid syntax when applied to a CSS class name as a prefix and is also
+    a valid Javascript identifier. I recommend choosing a short all lower case
+    name with no puncuation or special characters. If you need to concatenate
+    multiple words then you should separate them with underscore because hyphens
+    look like subtraction to the Javascript parser.
+</p>

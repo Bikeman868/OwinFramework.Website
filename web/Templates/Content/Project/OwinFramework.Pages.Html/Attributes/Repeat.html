@@ -6,3 +6,72 @@
     region binds to the object type that is repeated, then it will bind to the properties
     of a different object in the list on each iteration.
 </p>
+<p>
+    The <span class="code">[Repeat()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">RepeatType</span></h3>
+<p>
+    Specifies the type of data that should be repeated within the Region. Setting
+    this property implies that the region needs <span class="code">IList&lt;T></span> data,
+    and this does not have to be explicitly defined using the
+    <a href="needsdata"><span class="code">[NeedsData()]</span> attribute</a>
+</p>
+<p>
+    You will need to write a <a href="../elements/dataprovider">Data Provider</a> that can provide
+    <span class="code">IList&lt;T></span> data for this to work.
+</p>
+
+<h3><span class="code">RepeatScope</span></h3>
+<p>
+    Provides additional constraints on the <span class="code">RepeatType</span> property
+    by specifying that the <a href="../elements/dataprovider">Data Provider</a> will be
+    asked to provide <span class="code">IList&lt;T></span> data in this scope.
+</p>
+
+<h3><span class="code">ListScope</span></h3>
+<p>
+    As the Region repeats its content for each <span class="code">T</span> in the
+    <span class="code">IList&lt;T></span> that it depends on, it will insert the object
+    of type <span class="code">T</span> into the rendering context so that each time the
+    region is repeated it binds to a different instance of <span class="code">T</span>
+    and renders different content just as you would expect.
+</p>
+<p>
+    The <span class="code">ListScope</span> property specifies the scope name to use when
+    setting values of type <span class="code">T</span> into the render context before
+    rendering the contents of the region.
+</p>
+<p>
+    This is a fairly advanced use case that alows you to for example render two different
+    instances of the same type within the region where one of them is the repeated data
+    and the other was added to the render context higher up the element tree.
+</p>
+
+<h3><span class="code">ChildTag</span></h3>
+<p>
+    Defines an Html container element to wrap around each instance of the region's content.
+    For example you might want to render the region with each repetition of the region's
+    content contained in a <span class="code">li</span> element.
+</p>
+
+<h3><span class="code">ChildClassNames</span></h3>
+<p>
+    Setting this property adds a <span span="code">class</span> attribute to
+    the container that is rendered around each child element.
+</p>
+<p>
+    You can include multiple class names separated by spaces.
+</p>
+<p>
+    If you are using CSS prefixes for package namespaces (recommended) then you
+    can add the appropriate package namespace prefix to your class names by
+    using the special <span class="code">{ns}_</span> marker in front of each
+    class name that you want to be prefixed.
+</p>
+
+<h3><span class="code">ChildStyle</span></h3>
+<p>
+    This property contains the style definition to attach to each child container.
+</p>

@@ -6,7 +6,7 @@
 </p>
 <p>
     Note that if many elements on the page depend on the same data, then
-    the data provider will only be called once on the page and all of the 
+    the data provider will only be called once on the page and all of the
     page elements can bind to the same data.
 </p>
 <p>
@@ -29,3 +29,31 @@
 internal class AddressRegion { }
 </pre>
 
+<p>
+    The <span class="code">[NeedsData()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">DataProviderName</span></h3>
+<p>
+    This allows you to define a dependency on a specific <a href="../Elements/dataprovider">Data Provider</a> using the
+    name property of the data provider. If the data provider is in a different
+    package then the name must be prefixed by the package namespace and a colon.
+</p>
+
+<h3><span class="code">DataType</span></h3>
+<p>
+    Defines a type of data that this element needs to be available at runtime
+    when rendering the page. The framework will locate an appropriate
+    <a href="../Elements/dataprovider">Data Provider</a> based on the other
+    data needs and the <a href="../Elements/dataprovider">Data Providers</a> that
+    are defined within the application.
+</p>
+
+<h3><span class="code">Scope</span></h3>
+<p>
+    This places additional constraits on the <a href="../Elements/dataprovider">Data Provider</a>
+    selection. If there is a <a href="../Elements/dataprovider">Data Provider</a> that specified
+    that is can supply this type of data in this scope then it will be selected. If there are
+    no matching Data Providers, then Data Providers will be matched based on data type only.
+</p>

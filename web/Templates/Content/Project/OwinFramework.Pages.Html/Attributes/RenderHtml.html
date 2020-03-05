@@ -4,3 +4,34 @@
     to a component or region to define the contents of that cmponent or
     region is localizable static Html.
 </p>
+
+<p>
+    The <span class="code">[RenderHtml()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">TextName</span></h3>
+<p>
+    This name is passed to the localization system to retrieve the locale
+    specific version of the Html to write. Every piece of localized text
+    must have a unique name, so you should come up with a naming convention
+    that makes this manageable.
+</p>
+
+<h3><span class="code">Html</span></h3>
+<p>
+    This default Html to render when there is no locale specific version of
+    the Html configured in the localization system.
+</p>
+
+<h3><span class="code">Order</span></h3>
+<p>
+    .Net does not preserve the order of attributes attached to classes, but
+    the order of rendering Html is obviously important in the case where
+    multiple <span class="code">[RenderHtml()]</span> attributes have been
+    attached to an element.
+</p>
+<p>
+    This property is required when there are multiple <span class="code">[RenderHtml()]</span> 
+    attributes attached to an element to define the order in which they will be rendered.
+</p>

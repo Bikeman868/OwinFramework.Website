@@ -24,3 +24,46 @@ internal class CustomerDataProvider : DataProvider
 }
 </pre>
 
+<p>
+    The <span class="code">[IsDataProvider()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">Name</span></h3>
+
+<p>
+    You can explicitly name your data providers and define data dependencies using
+    these names, however this is not the most common use case because specifying
+    data needs in terms of the type of data is much more powerful and flexible.
+</p>
+<p>
+    Even if you are not using the name of the data provider to define data needs,
+    it's still a good idea to set it because it will make diagnostic traces and
+    debug information more meaningful.
+</p>
+
+<h3><span class="code">Type</span></h3>
+
+<p>
+    Defines the type of data that this data provider can provide. This must be
+    either a C# class type, or an <span class="code">IList&lt;T></span> type.
+</p>
+
+<h3><span class="code">Scope</span></h3>
+
+<p>
+    Specifies a scope name. When this is set, this data provider will only be
+    considered as the supplier of data when the page element specifies that
+    it needs data in this specific scope.
+</p>
+<p>
+    When the scope name is not set, this means that this data provider can
+    provide this kind of data for all scopes. In this case this data provider
+    will only be used if there are no scope specific data providers that match
+    the request.
+</p>
+<p>
+    In the case where there are multiple data providers that can provide the
+    data, the one that will be selected depends on what other data is required
+    on the page, and the other types of data that each provider can provide.
+</p>

@@ -32,11 +32,57 @@ public class AddressLayout
 <p>
     Note that in this example the same address template is used in both
     zones of the address layout, and this template is data bound to the
-    <span class="code">IAddress</span> interface, but the zones will 
-    contain different addresses because of the <span class="code">[DataScope]</span> 
+    <span class="code">IAddress</span> interface, but the zones will
+    contain different addresses because of the <span class="code">[DataScope]</span>
     attributes attached to the regions.
 </p>
 <p>
     This is an important mechanism because it allows you to reuse the address
     template with different addresses even within the same layout.
+</p>
+
+<p>
+    The <span class="code">[DataScope()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">DataType</span></h3>
+
+<p>
+    This property defines the type of data to scope. The data type can be
+    any reference type or any <span class="code">IList&lt;T></span> type.
+</p>
+<p>
+    This property is required and must be passed to the constructor.
+</p>
+
+<h3><span class="code">Scope</span></h3>
+
+<p>
+    Specifies the name of the scope that should be resolved below this point
+    in the tree of elements on the page.
+</p>
+<p>
+    For example if I have a page element that binds to <span class="code">PersonViewModel</span>
+     with no scope name defined, this does not specify which person view model to bind
+    to. In this case the framework will locate a Data Provider that is a provider of
+    <span class="code">PersonViewModel</span> data and ask it to supply a 
+    <span class="code">PersonViewModel</span> with no scope name defined.
+</p>
+<p>
+    By adding a <span class="code">[DataScope()]</span> attribute to the page, or a region
+    within the page, we change this behavior. Lets assune we scope the <span class="code">PersonViewModel</span>
+    to <span class="code">logged-in-user</span> scope. What happens now is that the framework looks
+    for a Data Provider that advertises an ability to provide <span class="code">PersonViewModel</span> in
+    <span class="code">logged-in-user</span> scope, and asks it to set a <span class="code">PersonViewModel</span>
+    into the data binding context in this scope.
+</p>
+<p>
+    This mechanism allows you to create one data bound template for the <span class="code">PersonViewModel</span>
+    type, and reuse this template in different contexts by setting the scope name on the container that
+    contains the template.
+</p>
+<p>
+    By setting the data scope for different regions on the same page, the page can render
+    <span class="code">PersonViewModel</span> for different people on the same page using the same template.
 </p>

@@ -13,3 +13,20 @@ internal class AddressListRegion
 { }
 </pre>
 
+<p>
+    The <span class="code">[IsRegion()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">Name</span></h3>
+
+<p>
+    If you want to refer to your region by name in other page elements, then
+    you need to provide a unique name here. The name will be scoped by the
+    package it is in, so the name only has to be unique within the package.
+</p>
+<p>
+    If you want to refer to this region by name from a page element that is in
+    a different package, then you need to prefix the region name with the
+    package prefix and a colon, for example <span class="code">"regions:address_region"</span>
+</p>

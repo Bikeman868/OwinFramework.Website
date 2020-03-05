@@ -4,3 +4,24 @@
     of a permission that must be assigned to the calling identity. If the caller
     does not have this permission, then the caller will receive an access denied response.
 </p>
+
+<p>
+    The <span class="code">[RequiresPermission()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">PermissionName</span></h3>
+<p>
+    Specifies the name of the permission to check. This permission must be configured
+    in the Authorization middleware to be effective. If you do not configure any
+    Authorization middleware then this permission will not be checked and all users
+    will be able to access this page.
+</p>
+
+<h3><span class="code">ResourcePath</span></h3>
+<p>
+    Defines the optional path of the secure resource. See documentation on the 
+    <a href="/content/area/authorization/landing">Authorization sub-system</a> to 
+    understand how to set this property.
+</p>
+

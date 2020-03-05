@@ -15,3 +15,37 @@ public class MenuRegion
 {
 }
 </pre>
+
+<p>
+    The <span class="code">[ChildContainer()]</span> attribute has the following
+    properties you can set.
+</p>
+
+<h3><span class="code">Tag</span></h3>
+
+<p>
+    This property must contain the tag name of an Html container element. If you
+    attach a <span class="code">ChildContainer</span> attribute without setting 
+    the <span class="code">Tag</span> property, then it will default to <span class="code">&lt;div></span>.
+</p>
+<p>
+    If you do not attach a <span class="code">ChildContainer</span> attribute to
+    a page element that has children, then the children will be rendered bare, without
+    any container element.
+</p>
+
+<h3><span class="code">ClassNames</span></h3>
+
+<p>
+    Setting this property adds a <span span="code">class</span> attribute to
+    the container that is rendered around each child element.
+</p>
+<p>
+    You can include multiple class names separated by spaces.
+</p>
+<p>
+    If you are using CSS prefixes for package namespaces (recommended) then you
+    can add the appropriate package namespace prefix to your class names by
+    using the special <span class="code">{ns}_</span> marker in front of each 
+    class name that you want to be prefixed.
+</p>
