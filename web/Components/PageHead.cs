@@ -20,6 +20,7 @@ namespace Website.Components
             if (pageArea == PageArea.Head)
             {
                 context.Html.WriteElementLine("meta", null, "name", "viewport", "content", "width=device-width, initial-scale=1.0");
+                context.Html.WriteElementLine("meta", null, "name", "google-site-verification", "content", "PjvggteEimLNbI9ZWPiY9tm8iDszMPWjgoYmmVLrfp0");
                 context.Html.WriteElementLine("link", null, "rel", "stylesheet", "type", "text/css", "href", "/assets/styles/app{_v_}.css");
             }
             else if (pageArea == PageArea.Body)
