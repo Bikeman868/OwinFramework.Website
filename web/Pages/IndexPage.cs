@@ -14,5 +14,7 @@ namespace Website.Pages
     [Route("/content/index/*", Method.Get, Priority = -10)]
     [PageTitle("OWIN Framework Index")]
     [ZoneLayout("body", "index")]
-    public class IndexPage: NavigationMasterPage{ }
+    public class IndexPage: NavigationMasterPage
+    { 
+    }
 }

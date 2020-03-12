@@ -19,16 +19,27 @@ namespace Website.Components
         public ContentTemplate(IComponentDependenciesFactory dependencies)
             : base(dependencies)
         {
-            PageAreas = new [] { PageArea.Body };
+            PageAreas = new [] { PageArea.Body, PageArea.Head };
             _rootPath = new PathString();
         }
 
         public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
         {
-            if (pageArea == PageArea.Body)
+            var requestPath = context.OwinContext.Request.Path;
+            var relativePath = requestPath;
+
+            if (_rootPath.HasValue && !requestPath.StartsWithSegments(_rootPath, out relativePath))
+                return base.WritePageArea(context, pageArea);
+
+            if (pageArea == PageArea.Head)
             {
-                var requestPath = context.OwinContext.Request.Path;
-                PathString relativePath = requestPath;
+                context.Html.WriteUnclosedElement(
+                    "link", "rel", "canonical", "href", 
+                    "http://owinframework.net" + requestPath.ToString().ToLower());
+                context.Html.WriteLine();
+            }
+            else if (pageArea == PageArea.Body)
+            {
                 if (!_rootPath.HasValue || requestPath.StartsWithSegments(_rootPath, out relativePath))
                 {
                     var template = Dependencies.NameManager.ResolveTemplate(relativePath.Value);

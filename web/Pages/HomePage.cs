@@ -23,7 +23,7 @@ namespace Website.Pages
     [ZoneLayout("right", "homePage_RightColumn")]
     internal class HomePageLayout : FixedRightColumnLayout { }
 
-    [IsPage("home", "/home")]
+    [IsPage("home", "http://owinframework.net/")]
     [Route("/home", Method.Get, Priority = 100)]
     [Route("/", Method.Get, Priority = 100)]
     [PageTitle("OWIN Framework Home")]

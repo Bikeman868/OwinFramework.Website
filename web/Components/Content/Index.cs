@@ -29,20 +29,28 @@ namespace Website.Components.Content
             : base(dependencies)
         {
             _nameManager = nameManager;
+            PageAreas = new[] { PageArea.Head, PageArea.Body };
         }
 
         public override IWriteResult WritePageArea(IRenderContext context, PageArea pageArea)
         {
-            if (pageArea != PageArea.Body) return WriteResult.Continue();
+            if (pageArea == PageArea.Head)
+            {
+                context.Html.WriteUnclosedElement(
+                    "link", "rel", "canonical", "href", 
+                    "http://owinframework.net" + context.OwinContext.Request.Path.ToString().ToLower());
+                context.Html.WriteLine();
+            }
+            if (pageArea == PageArea.Body)
+            {
+                var area = GetContentArea(context);
+                if (area == null) return WriteResult.Continue();
 
-            var area = GetContentArea(context);
-            if (area == null) return WriteResult.Continue();
-
-            if (area == "area") ListFunctionalAreas(context);
-            else if (area == "project") ListProjects(context);
-            else if (area == "nuget") ListNuGet(context);
-            else if (area == "repository") ListRepositories(context);
-
+                if (area == "area") ListFunctionalAreas(context);
+                else if (area == "project") ListProjects(context);
+                else if (area == "nuget") ListNuGet(context);
+                else if (area == "repository") ListRepositories(context);
+            }
             return WriteResult.Continue();
         }
 
