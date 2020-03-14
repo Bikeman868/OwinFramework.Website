@@ -1,4 +1,5 @@
-﻿<h1>Microservice Walkthrough</h1>
+﻿<title>Microservice walkthrough | The OWIN Framework</title>
+<h1>Microservice Walkthrough</h1>
 
 <p>
     This is a step-by-step walkthrough of creating a simple microservice using the Owin Framework.
@@ -101,7 +102,7 @@
 </ol>
 <div class="app_hint">
     You do not have to use this "Empty Web Site" project template. Any ASP.NET project template
-    will work. However, other templates include a lot of things that you will not need for the 
+    will work. However, other templates include a lot of things that you will not need for the
     walkthrough which adds clutter to project.
 </div>
 
@@ -163,9 +164,9 @@ var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator))
 </p>
 
 <p>
-    An example of the type of code you will need to add to the <span class="code">Configuration</span> 
-    method of your <span class="code">Startup</span> class is shown below for reference. In a real 
-    application there are a number of ways that you can write this code. For this walkthrough you 
+    An example of the type of code you will need to add to the <span class="code">Configuration</span>
+    method of your <span class="code">Startup</span> class is shown below for reference. In a real
+    application there are a number of ways that you can write this code. For this walkthrough you
     can copy/paste if you like.
 </p>
 
@@ -787,7 +788,7 @@ public class UserServiceEndpoints
 </div>
 
 <p>
-    Now you can test your microservice. Press F5 then navigate to the page we just added. Register with 
+    Now you can test your microservice. Press F5 then navigate to the page we just added. Register with
     an email address and a password, then navigate to <span class="code">/auth/users</span> to see that
     the microservice now returns a list of users that are logged in.
 </p>
@@ -1099,7 +1100,7 @@ public class VueTemplatePageRegion { }
 <p>
     To add the packages we need for this tutorial we need to add the <span>Owin.Framework.Pages.Standard</span>
     NuGet package to the project and the <span>DotlessClientOnly</span> NuGet package that it depends on.
-    Now go back to the <span class="code">Startup.cs</span> file and register these packages with the fluent 
+    Now go back to the <span class="code">Startup.cs</span> file and register these packages with the fluent
     builder. The code to add to <span class="code">Startup.cs</span> looks like this:
 </p>
 <pre>ninject.Get&lt;OwinFramework.Pages.Framework.BuildEngine>().Install(fluentBuilder);

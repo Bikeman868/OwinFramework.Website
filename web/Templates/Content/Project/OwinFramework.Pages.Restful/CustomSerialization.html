@@ -1,4 +1,5 @@
-﻿<h2>Service Endpoint Response Serialization</h2>
+﻿<title>Custom response serialization with OWIN Framework Pages</title>
+<h2>Service Endpoint Response Serialization</h2>
 <p>
     Services and service endpoints can specify the response serializer
     to use when the service endpoint constructs a reply. The serializer
@@ -8,12 +9,12 @@
 </p>
 <p>
     The setting on the service is the default for all endpoints that
-    do not specify a serializer. If the service does not specify a 
+    do not specify a serializer. If the service does not specify a
     serializer then Json is the default.
 </p>
 <p>
     The serializer is specified as a class type to use. This class type
-    must implement the <span class="code">IResponseSerializer</span> 
+    must implement the <span class="code">IResponseSerializer</span>
     interface. There are implementations of this interface in the
     <span class="code">OwinFramework.Pages.Restful.Serializers</span>
     namespace.

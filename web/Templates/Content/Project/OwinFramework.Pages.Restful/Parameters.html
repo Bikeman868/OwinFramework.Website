@@ -1,15 +1,18 @@
-﻿<h2>Service Endpoint Parameters</h2>
+﻿<title>Endpoint parameter definition with OWIN Framework Pages</title>
+<h2>Service Endpoint Parameters</h2>
 
 <p>
     Generally speaking your service endpoints will have imputs that
     define their behavior. For example if your service endpoint produces
-    an invoice in PDF format, then it might take in the customer 
+    an invoice in PDF format, then it might take in the customer
     reference number and the invoice number.
 </p>
 <p>
-    This REST framework defines an 
-    <a href="attributes/endpointparameter"><span class="code">[EndpointParameter()]</span>
-    attribute</a> that you can apply to service endpoints or the arguments of
+    This REST framework defines an
+    <a href="attributes/endpointparameter">
+        <span class="code">[EndpointParameter()]</span>
+        attribute
+    </a> that you can apply to service endpoints or the arguments of
     an endpoint method to define the data type of the parameter, the validation
     rules for this parameter and the ways that the caller can pass this
     parameter to the service.

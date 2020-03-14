@@ -1,5 +1,6 @@
-﻿<p>
-    This package contains a Build Engine for services. If you want the fluent 
+﻿<title>The OwinFramework.Pages.Restful Project</title>
+<p>
+    This package contains a Build Engine for services. If you want the fluent
     builder to use this build engine you need to add a couple of lines to
     your startup code similar to:
 </p>
@@ -18,14 +19,14 @@
 <p>
     After adding this build engine to the fluent builder you can add web services
     to your application by writing classes that are decorated with attributes.
-    The fluent builder will discover these classes and use the attributes to configure 
+    The fluent builder will discover these classes and use the attributes to configure
     these services.
 </p>
 
 <h2>Sample Service</h2>
 <p>
-    The code below is taken from one of the sample applications. It is a 
-    service that exposes 4 endpoints that add, subtract, multiply and divide 
+    The code below is taken from one of the sample applications. It is a
+    service that exposes 4 endpoints that add, subtract, multiply and divide
     two numbers.
 </p>
 <p>
@@ -109,14 +110,14 @@ namespace Sample1.SampleServices
 </p>
 
 <div class="app_warning">
-    Methods decorated with the <span class="code">[Endpoint()]</span> attribute 
-    must have a return type of <span class="code">void</span> and the first 
+    Methods decorated with the <span class="code">[Endpoint()]</span> attribute
+    must have a return type of <span class="code">void</span> and the first
     argument must be of type <span class="code">IEndpointRequest</span>. Other
     arguments are optional as described below.
 </div>
 
 <p>
-    Endpoint methods can optionally be decorated with one or more 
+    Endpoint methods can optionally be decorated with one or more
     <span class="code">[EndpointParameter()]</span> attributes
     to define the parameters that can be passed to the method. These
     attributes also define the mechanisms that are supported for
@@ -125,13 +126,13 @@ namespace Sample1.SampleServices
 
 <p>
     Endpoint methods can optionally have additional arguments and these
-    arguments can be decorated with <span class="code">[EndpointParameter()]</span> 
+    arguments can be decorated with <span class="code">[EndpointParameter()]</span>
     attributes to define how parameters passed in the Html request are bound
     to those method arguments.
 </p>
 
 <p>
-    The two endpoints below will function identically to the caller of 
+    The two endpoints below will function identically to the caller of
     the Http endpoint. The first version produces slightly better API
     documentation and is the recommended syntax, but you can also use the
     second version of the syntax if you prefer.
@@ -169,7 +170,7 @@ public void Add(
         A root path is usually specified for the service. By default the method
         name will be used as a sub-path below this root. The URL is not
         case sensitive. You can override the default path to an endpoint by
-        passing a parameter to the <span class="code">[Endpoint()]</span> attribute. 
+        passing a parameter to the <span class="code">[Endpoint()]</span> attribute.
         This endpoint path can be relative to the service root or an absolute path
         within the website.
     </li>
@@ -181,7 +182,7 @@ public void Add(
         to the page rendering.
     </li>
     <li>
-        You can define a permission that the calling identity must have to be 
+        You can define a permission that the calling identity must have to be
         allowed to call this service and optionally restrict access further by
         passing the service/method name as a resource path when checking
         permissions. You can also override the service settings on each endpoint.
@@ -189,12 +190,12 @@ public void Add(
     <li>
         You can specify a request deserializer and a response serializer for
         the service, and you can override this for each service endpoint. If
-        you do not specify these then they default to Json using the NewtonSoft 
+        you do not specify these then they default to Json using the NewtonSoft
         library.
     </li>
     <li>
         Endpoint parameter attributes define the name of the parameter and
-        the parser to use. The parser is specified as a 
+        the parser to use. The parser is specified as a
         <span class="code">Type</span>. This <span class="code">Type</span> can
         be a value type like <span class="code">int</span> or <span class="code">double</span>
         which makes the parameter required, or it can be a nullable type like
@@ -214,7 +215,7 @@ public void Add(
         the query string, but you can have any combination of: query string, custom header
         form field or path element. When parameters are passed as path elements the
         url of the service must contain placeholders for the parameters. These
-        placeholders are the parameter name in curly braces - for example 
+        placeholders are the parameter name in curly braces - for example
         <span class="code">"/myservice/mymethod/{param1}/{param2}"</span>.
     </li>
 </ul>

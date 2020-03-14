@@ -1,7 +1,8 @@
-﻿<p>
+﻿<title>The OwinFramework.Dart Project</title>
+<p>
     This middleware will serve a UI written in Dart. Dart is a Google language that
-    compiles to Javascript for older browsers that can not run Dart code natively. 
-    This middleware detects browsers that support Dart natively and serves Dart code 
+    compiles to Javascript for older browsers that can not run Dart code natively.
+    This middleware detects browsers that support Dart natively and serves Dart code
     to them and compiled Javascript otherwise.
 </p>
 
@@ -12,7 +13,7 @@ builder.Register(ninject.Get&lt;OwinFramework.Dart.DartMiddleware>())
     .ConfigureWith(config, "/owinFramework/middleware/dart");    
 </pre>
 <div class="app_warning">
-    The assumes that you are using Ninject as your IoC container, and followed the 
+    The assumes that you are using Ninject as your IoC container, and followed the
     <a href="/content/general/walkthrough/helloworld">getting started walkthrough</a>. If this is not the case
     then you will need to adjust the code to work in your application.
 </div>

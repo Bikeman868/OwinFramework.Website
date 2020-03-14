@@ -1,20 +1,21 @@
-﻿<p>
+﻿<title>The OwinFramework.Configuration.ConfigurationManager Project</title>
+<p>
     The Microsoft <span class="code">ConfigurationManager</span> is extremely inflexible which means that when
     you configure the 'path' of the configuration data for your middleware this must
     be the name of a custom section in the config file.
 </p>
-<p>    
-    The Microsoft<span class="code">ConfigurationManager</span> requires each custom section to be backed 
-    by a class that conforms to strict patterns. These classes are very onerous to write so this 
+<p>
+    The Microsoft<span class="code">ConfigurationManager</span> requires each custom section to be backed
+    by a class that conforms to strict patterns. These classes are very onerous to write so this
     framework does not require middleware authors to write them, and this means that it falls to your
     application to do this. Additionally the class that backs the custom section will not be
     the class that the middleware component is expecting to contain its configuration
-    options, so this implementation uses <span class="code">AutoMapper</span> to map from the 
+    options, so this implementation uses <span class="code">AutoMapper</span> to map from the
     custom section class to the middleware configuration class. Your application must configure
     <span class="code">AutoMapper</span>to perform this mapping.
 </p>
 <p>
-    If all of this sounds like too much trouble then consider using another more flexible 
+    If all of this sounds like too much trouble then consider using another more flexible
     configuration mechanism (such as Urchin).
 </p>
 

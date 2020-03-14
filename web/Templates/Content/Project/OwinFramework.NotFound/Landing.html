@@ -1,17 +1,18 @@
-﻿<p>
+﻿<title>The OwinFramework.NotFound Project</title>
+<p>
     This middleware will return a 404 response always. It will place itself after all other
-    middleware in the pipeline so that when no other middleware handled the request a 404 
+    middleware in the pipeline so that when no other middleware handled the request a 404
     response will be returned to the client.
 </p>
 <p>
     If you want this behaviour only on certain routes through the OWIN pipeline then you can configure
     this middleware only on those routes. You can also add multiple instances of this middleware to
-    the OWIN pipeline to have different 404 templates for different routes. For example if you have 
+    the OWIN pipeline to have different 404 templates for different routes. For example if you have
     an API that returns JSON, you might want the API to also return JSON in the 404 case.
 </p>
 
 <div class="app_warning">
-    For this to work efficiently you should configure output caching. Without output caching 
+    For this to work efficiently you should configure output caching. Without output caching
     the .less file will be compiled on every request.
 </div>
 
@@ -54,7 +55,7 @@
         html file that is to be sent as the response. If you do not provide a
         template then the template embedded into the Not Found middleware assembly
         will be used. The setting you configure is passed to the
-        <span class="code">MapPath()</span> method so you can include 
+        <span class="code">MapPath()</span> method so you can include
         <span class="code">~</span> meaning the root folder of the website.
     </li>
 </ul>

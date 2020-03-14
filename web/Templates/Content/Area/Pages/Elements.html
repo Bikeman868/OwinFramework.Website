@@ -1,58 +1,59 @@
+<title>Page Elements Overview | The Owin Framework Pages</title>
 <h2>Elements</h2>
 
 <p>
     In the Pages Framework you build your web application by defining
-	elements. These elements are of specific types that fit into the
-	overall design of the Pages Framework. This page briefly describes
-	each type of element and provides a link to a page that provides
-	more detail.
+    elements. These elements are of specific types that fit into the
+    overall design of the Pages Framework. This page briefly describes
+    each type of element and provides a link to a page that provides
+    more detail.
 </p>
 
 <p>
     The Fluent Builder is the entry point for building elements, it is
-	used by the template parsers, CMS and other high level pieces that
-	help to define your web application.
+    used by the template parsers, CMS and other high level pieces that
+    help to define your web application.
 </p>
 <p>
     The fluent builder has a plug-in architecture allowing specific build
-	engines to be selected for each type of element. This documentation
-	describes the build engines that come with the Pages Framework itself.
-	If you configure a third party build engine for a specifc element type,
-	then you should refer to the third party documentation instead.
+    engines to be selected for each type of element. This documentation
+    describes the build engines that come with the Pages Framework itself.
+    If you configure a third party build engine for a specifc element type,
+    then you should refer to the third party documentation instead.
 </p>
 <p>
     You can also write a build engine as part of your application if you
-	want to change how elements are built, but still want to use the 
-	template languages or CMS features of the Pages Framework.
+    want to change how elements are built, but still want to use the
+    template languages or CMS features of the Pages Framework.
 </p>
 
 <h3><a href="pages">Page Elements</a></h3>
 <p>
     These elements are the html pages of your website. Each page element
-	can be dynamic and parameterized resulting in what appears to be many
-	pages to a visitor to your website. If you look at the source code for
-	this website you will see it contains very few Page Elements even though
-	this website contains many pages of content.
+    can be dynamic and parameterized resulting in what appears to be many
+    pages to a visitor to your website. If you look at the source code for
+    this website you will see it contains very few Page Elements even though
+    this website contains many pages of content.
 </p>
 <p>
     Every Page Element must specify a <a href="layouts">Layout Element</a>
-	that defines the arangement of content on the page. Several pages can
-	share the same layout but populate the regions of the layout differently.
+    that defines the arangement of content on the page. Several pages can
+    share the same layout but populate the regions of the layout differently.
 </p>
 
 <h3><a href="layouts">Layout Elements</a></h3>
 <p>
     These elements define a fixed arrangement of regions that can have
-	content placed in them. Each region of the layout must be named so that 
-	the contents of each region can be defined for the various places where 
-	the layout is used.
+    content placed in them. Each region of the layout must be named so that
+    the contents of each region can be defined for the various places where
+    the layout is used.
 </p>
 <div class="app_hint">
-    Note that the regions of a layout contain <a href="regions">Region Elements</a> 
-	but the name of	the regions within the layout do not have to match the name 
-	of the Region Element within it, and typically it is more readable if these 
-	names are different, for example:
-	<pre>
+    Note that the regions of a layout contain <a href="regions">Region Elements</a>
+    but the name of	the regions within the layout do not have to match the name
+    of the Region Element within it, and typically it is more readable if these
+    names are different, for example:
+    <pre>
     [IsLayout("two_column", "left,right")]
     [ZoneRegion("left", "fixed_left_region")]
     [ZoneRegion("right", "flexible_right_region")]
@@ -63,15 +64,15 @@
 </div>
 <p>
     The layout itself can also be named, and this name can be used to specify
-	which layout to use (for example on a specific page). Elements with name
-	references can be defined in any order - all of the name references are 
-	resolved after all of the elements are loaded.
+    which layout to use (for example on a specific page). Elements with name
+    references can be defined in any order - all of the name references are
+    resolved after all of the elements are loaded.
 </p>
 <p>
     Each region of the layout can contain one <a href="regions">Region Element</a>
-	that defines how this region of the layout behaves (alignment, wrapping, resizing etc).
-	The CSS and Javascript of the layout and the regions within it define how the layout
-	is rendered and how it interacts with content and with the user.
+    that defines how this region of the layout behaves (alignment, wrapping, resizing etc).
+    The CSS and Javascript of the layout and the regions within it define how the layout
+    is rendered and how it interacts with content and with the user.
 </p>
 <div>
     Read more about <a href="layouts">Layout Elements here</a>
@@ -79,23 +80,23 @@
 
 <h3><a href="regions">Region Elements</a></h3>
 <p>
-    These elements define the appearence and behavior of a rectangular 
-	area of your web pages. The same Region Element can be used in every
-	place where the same visual appearence and interaction behaviour is needed.
+    These elements define the appearence and behavior of a rectangular
+    area of your web pages. The same Region Element can be used in every
+    place where the same visual appearence and interaction behaviour is needed.
 </p>
 <p>
     Region Elements can be bound to a list of obejcts and will repeat the contents
-	of the region for each object in the list. Region Elements can also define
-	a data binding scope for everything inside the region.
+    of the region for each object in the list. Region Elements can also define
+    a data binding scope for everything inside the region.
 </p>
 <p>
     Each region can contain one of the following:
-	<ul>
-	    <li>A <a href="layouts">Layout Element</a></li>
-	    <li>A <a href="components">Component Element</a></li>
-	    <li><a href="localization">Localized HTML</a> that you can customize for each geographic locale</li>
-	    <li>A <a href="templates">template</a> that was loaded by the template loading and parsing system</li>
-	</ul>
+    <ul>
+        <li>A <a href="layouts">Layout Element</a></li>
+        <li>A <a href="components">Component Element</a></li>
+        <li><a href="localization">Localized HTML</a> that you can customize for each geographic locale</li>
+        <li>A <a href="templates">template</a> that was loaded by the template loading and parsing system</li>
+    </ul>
 </p>
 <div>
     Read more about <a href="regions">Region Elements here</a>
@@ -104,8 +105,8 @@
 <h3><a href="components">Component Elements</a></h3>
 <p>
     These elements render the majority of the html on the page. You would typically
-	write these as classes that inherit from the <span class="code">Component</span>
-	base class and override virtual methods to output html.
+    write these as classes that inherit from the <span class="code">Component</span>
+    base class and override virtual methods to output html.
 </p>
 <div class="app_hint">
     Note that you do not have to use components, you can use one of the template parsing
@@ -137,7 +138,7 @@
     to ensure that package namespaces do not clash.
 </p>
 <p>
-    As well as creating a Package Element, you can also attach the 
+    As well as creating a Package Element, you can also attach the
     <span class="code">[PartOf]</span> attribute to add them to a package namespace.
 </p>
 <p>
@@ -182,7 +183,7 @@
 <div class="app_hint">
     This is very different from most other element types which are built into a
     tree structure of layouts inside regions inside layouts etc. with a page
-    at the top. In the case of pages. the page renders all of the elements in 
+    at the top. In the case of pages. the page renders all of the elements in
     the tree to produce the response.
 </div>
 <div>

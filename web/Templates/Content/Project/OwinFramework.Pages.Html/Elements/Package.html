@@ -1,4 +1,5 @@
-﻿<h2>Package Elements</h2>
+﻿<title>Package element reference | The OWIN FRamework</title>
+<h2>Package Elements</h2>
 <p>
     Package elements define a namespace for Css and Javascript assets to avoid name conflicts.
     When importing a 3rd party package into your application you can change the namespace name
@@ -17,7 +18,7 @@
     put its assets into this namespace. In this case I decided to create a base
     class with the <a href="../attributes/partof"><span class="code">[PartOf()]</span> attribute</a>
     and have my region inherit that, so that I don't need to remember to add the
-    <a href="../attributes/partof"><span class="code">[PartOf()]</span> attribute</a> 
+    <a href="../attributes/partof"><span class="code">[PartOf()]</span> attribute</a>
     to each element that I define.
 </p>
 <pre>
@@ -50,8 +51,8 @@ internal class DivRegion : ApplicationElement { }
     compiling a shared assembly.
 </p>
 <p>
-    Below is the source code for the data package from the 
-    <span class="code">OwinFramework.Pages.Standard</span> project. This is a fairly simple 
+    Below is the source code for the data package from the
+    <span class="code">OwinFramework.Pages.Standard</span> project. This is a fairly simple
     package that creates a single component, which deploys a Javascript library. The Javascript
     is compiled into the DLL in this case, so you only need to copy a single file to include the
     functionallity into a website.

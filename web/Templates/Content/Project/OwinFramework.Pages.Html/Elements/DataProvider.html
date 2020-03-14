@@ -1,4 +1,5 @@
-﻿<h2>Data Provider Elements</h2>
+﻿<title>Data provider reference | The OWIN FRamework</title>
+<h2>Data Provider Elements</h2>
 <p>
     Data Provider elements add data to the rendering context so that
     other elements on the page can use this data.
@@ -60,13 +61,13 @@
     </li>
     <li>
         If the Data Provider inherits from the <span class="code">DataProvider</span> class, then it must
-        override the <span class="code">Supply()</span> method and call the <span class="code">Set()</span> 
+        override the <span class="code">Supply()</span> method and call the <span class="code">Set()</span>
         method of the Data Context.
     </li>
 </ul>
 <div class="app_warning">
     It is very important that the Data Provider actually provides the data that it claims to provide through its
-    <span class="code">IsDataProvider</span> attribute. It is OK for the Data Provider to set a 
+    <span class="code">IsDataProvider</span> attribute. It is OK for the Data Provider to set a
     <span class="code">null</span> value in the Data Context, but it must not return from the <span class="code">Supply()</span>
     method without setting any value, because this will result in an infinite loop in the code.
 </div>
@@ -83,7 +84,7 @@
         <p>
             When page elements need data they can specify a data context name. This can be used to differentiate
             between multiple providers of the same kind of data, or these contexts can all be handled by the
-            same data provider. 
+            same data provider.
         </p>
         <p>
             The <a href="../attributes/isdataprovider"><span class="code">IsDataProvider</span> attribute</a>
@@ -111,7 +112,7 @@
     Below is an example of a Data Provider that depend on other data. This
     is a more complex example where <span class="code">PersonListProvider</span> supplies
     a list of people and <span class="code">PersonAddressProvider</span> does not
-    directly depend on the data provided by <span class="code">PersonListProvider</span>, but 
+    directly depend on the data provided by <span class="code">PersonListProvider</span>, but
     depends on a single person. These Data Providers assume that there will be a repeating
     Region on the page that enumerates the people and places each person in context to
     fulfill the needs of the <span class="code">PersonAddressProvider</span>. These more

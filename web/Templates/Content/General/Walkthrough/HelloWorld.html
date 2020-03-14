@@ -1,7 +1,8 @@
-﻿<h1>Hello, world</h1>
+﻿<title>Hello World with the OWIN Framework</title>
+<h1>Hello, world</h1>
 
 <p>
-    If you want to jump straight to the solution, the end result of this 
+    If you want to jump straight to the solution, the end result of this
     walkthrough is available on <a href="https://github.com/Bikeman868/OwinFramework.Pages/tree/master/Sample2">GitHub</a>
 </p>
 
@@ -67,9 +68,9 @@ install-package Microsoft.Owin.Host.SystemWeb -version 2.1.0
         as an example of what this should look like.
     </li>
     <li>
-        In the root of your project add a new <span class="code">Startup.cs</span> file and under 
+        In the root of your project add a new <span class="code">Startup.cs</span> file and under
         the <span class="code">using</span> statements and above the namespace statement add
-        <pre>[assembly: OwinStartup(typeof(Startup))]</pre> 
+        <pre>[assembly: OwinStartup(typeof(Startup))]</pre>
         Resolve references and make sure it compiles.
     </li>
     <li>
@@ -117,13 +118,13 @@ var ninject = new StandardKernel(new Ioc.Modules.Ninject.Module(packageLocator))
 
 <p>
     You can review the <a href="/content/documentation/configuration/overview">documentation on Owin Framework configuration</a>, or you can look
-    at <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs"><span class="code">Startup.cs</span></a> 
+    at <a href="https://github.com/Bikeman868/OwinFramework.Pages/blob/master/Sample2/Startup.cs"><span class="code">Startup.cs</span></a>
     for a working example to copy from.
 </p>
 
 <p>
-    An example of the type of code you will need to add to your <span class="code">Startup</span> 
-    class is shown below for reference. In a real application there are a number of ways that you 
+    An example of the type of code you will need to add to your <span class="code">Startup</span>
+    class is shown below for reference. In a real application there are a number of ways that you
     can write this code. For this walkthrough you can copy/paste if you like.
 </p>
 
@@ -172,7 +173,7 @@ nameManager.Bind();</pre>
 
 <div class="app_hint">
     Note that there are a number of Build Engines included in the base libraries, and you can
-    also install third party Build Engines that provide alternate implementations. Build Engines 
+    also install third party Build Engines that provide alternate implementations. Build Engines
     are like factories that contruct and configure Pages, Layouts, Regions, Components, Templates etc.
 </div>
 
@@ -231,7 +232,7 @@ internal class HomePageLayout { }
 <p>
     You will see that the HTML contains comments to help you to identify
     the layouts, regions and components that were involved in constructing
-    the HTML. You can turn off these comments by configuring the Pages 
+    the HTML. You can turn off these comments by configuring the Pages
     middleware like this:
 </p>
 

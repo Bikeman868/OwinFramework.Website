@@ -1,4 +1,5 @@
-﻿<h2>Adding this middleware to the Owin pipeline</h2>
+﻿<title>The OwinFramework.DefaultDocument Project</title>
+<h2>Adding this middleware to the Owin pipeline</h2>
 <pre>
 builder.Register(ninject.Get&lt;OwinFramework.DefaultDocument.DefaultDocumentMiddleware>())
     .As("Default document")
@@ -6,7 +7,7 @@ builder.Register(ninject.Get&lt;OwinFramework.DefaultDocument.DefaultDocumentMid
 </pre>
 
 <div class="app_warning">
-    The assumes that you are using Ninject as your IoC container, and followed the 
+    The assumes that you are using Ninject as your IoC container, and followed the
     <a href="/content/general/walkthrough/helloworld">getting started walkthrough</a>. If this is not the case
     then you will need to adjust the code to work in your application.
 </div>

@@ -1,6 +1,7 @@
-﻿<p>
-    The <a href="/content/repository/OwinFramework.Authorization/readme">authorization repository readme</a> 
-    file contains documentation on the key concepts around authorization in the Owin Framework. It is strongly 
+﻿<title>The OwinFramework.Facilities.IdentityStore.Prius Project</title>
+<p>
+    The <a href="/content/repository/OwinFramework.Authorization/readme">authorization repository readme</a>
+    file contains documentation on the key concepts around authorization in the Owin Framework. It is strongly
     recommended that you read it before using this assembly.
 </p>
 
@@ -9,14 +10,14 @@
 </p>
 <ul>
     <li>
-        <span class="code">IIdentityStore</span> provides a persistence mechanism for agents that 
+        <span class="code">IIdentityStore</span> provides a persistence mechanism for agents that
         can identify themselves to the system. This includes username/password combinations, shared
         secrets, certificates and OAuth tokens.
     </li>
     <li>
-        <span class="code">IIdentityDirectory</span> provides a way for administrators to search for an 
-        identity so that they can assign permissions. For example you might want to search your Active 
-        Directory for users. In the case of this implementation it searches the SQL database that was 
+        <span class="code">IIdentityDirectory</span> provides a way for administrators to search for an
+        identity so that they can assign permissions. For example you might want to search your Active
+        Directory for users. In the case of this implementation it searches the SQL database that was
         populated by calls to the <span class="code">IIdentityStore</span> interface.
     </li>
     <li>

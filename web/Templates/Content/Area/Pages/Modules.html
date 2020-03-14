@@ -1,7 +1,8 @@
+<title>Modules Overview | The Owin Framework Pages</title>
 <h2>Module Elements</h2>
 
 <p>
-    Module elements define how Javascript and css assets are deployed on the
+	Module elements define how Javascript and css assets are deployed on the
 	website you are building. You can choose which module to associate with
 	each region, page, component etc and the assets produced by that element
 	will be deployed according to that module's configuration.
@@ -15,16 +16,16 @@
 	your website.
 </p>
 <div class="app_hint">
-    <p>
-        Note that elements inherit the module from their parent element by default so 
+	<p>
+		Note that elements inherit the module from their parent element by default so
 		you only need to override this at strategic points. The only exception to this
 		are pages (which have no parent element) and default to deploying assets
 		site wide without using modules.
 	</p>
 </div>
 <p>
-    Modules have an <span class="code">AssetDeployment</span> property that defines how the assets
-	associated with this module are deployed. The general idea is that every page element 
+	Modules have an <span class="code">AssetDeployment</span> property that defines how the assets
+	associated with this module are deployed. The general idea is that every page element
 	(region, layout, component etc) is configured to be part of a module and that module's
 	configuration determines how the Javascript and CSS for that page element will be
 	incorporated into the website

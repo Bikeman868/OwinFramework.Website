@@ -1,10 +1,11 @@
-﻿<p>
+﻿<title>The OwinFramework.StaticFiles Project</title>
+<p>
     This middleware serves static files. This middleware works with any output cache
     middleware that you have installed to ensure that files are cached both on the
     server and also by the browser.
 </p>
 <p>
-    Static files are files shipped with your website that contain content that can 
+    Static files are files shipped with your website that contain content that can
     be directly consumed by the browser. These are usually HTML, CSS, Javascript and
     image files, but can be any file that the browser can accept and process.
 </p>
@@ -58,8 +59,8 @@
 <h2>Configuration Notes</h2>
 <ul>
     <li>
-        You can restrict access to the static files by configuring 
-        the <span class="code">requiredPermission</span>. For this to 
+        You can restrict access to the static files by configuring
+        the <span class="code">requiredPermission</span>. For this to
         work you must add Authorization middleware to the Owin Pipeline.
     </li>
     <li>
@@ -75,7 +76,7 @@
     </li>
     <li>
         With the Owin Framework the same middleware can be added to the Owin
-        Pipeline multiple times with each instance having a different 
+        Pipeline multiple times with each instance having a different
         configuration. This is especially useful if you want to serve static
         files from different locations, or with different permissions.
     </li>

@@ -1,13 +1,14 @@
-﻿<p>
-    This middleware will improve the performance of your web site by adding 
-    a version number to the URLs of static assets and instructing the browser 
+﻿<title>The OwinFramework.Versioning Project</title>
+<p>
+    This middleware will improve the performance of your web site by adding
+    a version number to the URLs of static assets and instructing the browser
     to cache them indefinately.
 </p>
 <p>
     Each time you release a new version of your web site you should increment
-    the version number so that the browser sees them as new assets and fetches 
-    them from the server. Once the server has a particular version of an asset 
-    it will keep hold of it any not request it again, this improves the user 
+    the version number so that the browser sees them as new assets and fetches
+    them from the server. Once the server has a particular version of an asset
+    it will keep hold of it any not request it again, this improves the user
     experience and reduces load on your servers.
 </p>
 <p>
@@ -15,15 +16,15 @@
 </p>
 <ul>
     <li>
-        It will intercept HTML, CSS and JS output on its way out to the browser, replacing 
-        a special marker with the current version number. This marker must be placed immediately 
+        It will intercept HTML, CSS and JS output on its way out to the browser, replacing
+        a special marker with the current version number. This marker must be placed immediately
         before the file extension. For example <span class="code">&lt;img src="button{_v_}.png" /></span>
-        will be replaced with <span class="code">&lt;img src="button_v3.png" /></span> if the 
+        will be replaced with <span class="code">&lt;img src="button_v3.png" /></span> if the
         current version number is 3. This HTML, CSS and JS can be produced by any downstream middleware
         including Static Files and Pages.
     </li>
     <li>
-        It will intercept incomming requests for assets (based on file extension) and strip off the 
+        It will intercept incomming requests for assets (based on file extension) and strip off the
         version number before forwarding the request to the downstream middleware. This makes the
         versioning operation transparent to the middleware downstream.
     </li>
@@ -65,7 +66,7 @@
 <h2>Configuration Notes</h2>
 <ul>
     <li>
-        If you set the <span class="code">exactVersion</span> to 
+        If you set the <span class="code">exactVersion</span> to
         <span class="code">true</span> then requests for assets with
         the wrong version number will result in a 404 (not found) response
         to the browser. The default is to return the current content nomatter

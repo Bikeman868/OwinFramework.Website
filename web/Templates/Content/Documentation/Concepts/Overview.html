@@ -1,4 +1,5 @@
-﻿<h1>Conceptual Overview</h1>
+﻿<title>Conceptual Overview of The Owin Framework</title>
+<h1>Conceptual Overview</h1>
 
 <p>
     OWIN provides a set of standards for writing web applications that allow code from different authors to work together.
@@ -42,19 +43,19 @@ public interface IAppBuilder
 <h2>Microsoft OWIN</h2>
 
 <p>
-    The <span class="code">Microsoft.Owin.dll</span> assembly is layered on top 
+    The <span class="code">Microsoft.Owin.dll</span> assembly is layered on top
     of <span class="code">Owin.dll</span>. It wraps <span class="code">IAppBuilder.Properties</span> in
     <span class="code">IOwinContext</span> and defines the application as having a pipeline of middleware
     components chained through <span class="code">Func&lt;Task></span> references.
 </p>
 <p>
     The Microsoft OWIN package also contains an <span class="code">AppBuilder</span> class which is a concrete
-    implementation of <span class="code">IAppBuilder</span> and defines a set of <span class="code">Use</span> 
-	extension methods for <span class="code">IAppBuilder</span> that add middleware into a chain.
+    implementation of <span class="code">IAppBuilder</span> and defines a set of <span class="code">Use</span>
+    extension methods for <span class="code">IAppBuilder</span> that add middleware into a chain.
 </p>
 <p>
-    When writing middleware components using the Microsoft OWIN assembly the standard 
-    implementation pattern is to write a class with a public <span class="code">Build</span> method and private 
+    When writing middleware components using the Microsoft OWIN assembly the standard
+    implementation pattern is to write a class with a public <span class="code">Build</span> method and private
     <span class="code">Invoke</span> method like this:
 </p>
 <pre>
@@ -72,9 +73,9 @@ public class MyMiddleware
 }
 </pre>
 <p>
-    The middleware developer should also provide a <span class="code">Use</span> extension for 
-    <span class="code">IAppBuilder</span> that adds their middleware into the pipeline. This 
-	extension method typically looks like this:
+    The middleware developer should also provide a <span class="code">Use</span> extension for
+    <span class="code">IAppBuilder</span> that adds their middleware into the pipeline. This
+    extension method typically looks like this:
 </p>
 <pre>
 public static IAppBuilder Use(this IAppBuilder appBuilder, MyMiddleware myMiddleware)
@@ -98,7 +99,7 @@ public void Configuration(IAppBuilder app)
 <p>
     This works because each middleware defines an extension method on the
     <span class="code">IAppBuilder</span> interface called <span class="code">Use</span> that
-	returns the <span class="code">IAppBuilder</span> instance.
+    returns the <span class="code">IAppBuilder</span> instance.
 </p>
 <p>
     The world view of Microsoft OWIN (Katana) can be depicted like this:
@@ -110,39 +111,39 @@ public void Configuration(IAppBuilder app)
     Katana extends the base OWIN concept by defining the application as a pipeline of
     middleware components where each middleware can choose to process the incomming http request
     or not, can choose to process the outgoing http reply or not, and can pass the request to the
-	next middleware in the chain or not.
+    next middleware in the chain or not.
 </p>
 
 <h2>Owin Framework</h2>
 <p>
-    The <span class="code">OwinFramework.dll</span> assembly is layered on top the <span class="code">Microsoft.Owin.dll</span> 
-    assembly by adding standardization for common middleware functionality like identification, authorization, session etc. 
-	This standardization provides the following benefits:
+    The <span class="code">OwinFramework.dll</span> assembly is layered on top the <span class="code">Microsoft.Owin.dll</span>
+    assembly by adding standardization for common middleware functionality like identification, authorization, session etc.
+    This standardization provides the following benefits:
 </p>
 <ul>
     <li>
-        Application developers can seamlessly swap out any implementation of a particular type 
+        Application developers can seamlessly swap out any implementation of a particular type
         of middleware for any other implementation without breaking their OWIN pipeline.
     </li>
     <li>
-        Middleware developers can focus on doing a really good implementation of one piece 
-        of middleware and assume that other contributors will provide the other pieces needed to 
-		build a complete application.
+        Middleware developers can focus on doing a really good implementation of one piece
+        of middleware and assume that other contributors will provide the other pieces needed to
+        build a complete application.
     </li>
 </ul>
 <p>
-    This OWIN Framework also provides a routing mechanism, middleware dependency resolution and 
-	a flexible standardized way of configuring middleware components.
+    This OWIN Framework also provides a routing mechanism, middleware dependency resolution and
+    a flexible standardized way of configuring middleware components.
 </p>
 <p>
-    To take an existing middleware and make it work with the OWIN Framework the middleware 
-    developer needs to implement <span class="code">IMiddleware&lt;T></span> where <span class="code">T</span> 
-    defines if this is identification, authorization, session or whatever middleware. For generic 
-	middleware or application specific middleware <span class="code">T</span> can be <span class="code">object</span>.
+    To take an existing middleware and make it work with the OWIN Framework the middleware
+    developer needs to implement <span class="code">IMiddleware&lt;T></span> where <span class="code">T</span>
+    defines if this is identification, authorization, session or whatever middleware. For generic
+    middleware or application specific middleware <span class="code">T</span> can be <span class="code">object</span>.
 </p>
 <p>
     A minimal implementation of <span class="code">IMiddleware&lt;T></span> that can be chained
-	into the pipeline but does nothing, looks like this:
+    into the pipeline but does nothing, looks like this:
 </p>
 <pre>
 public class MyMiddleware: IMiddleware&lt;object>
@@ -159,23 +160,23 @@ public class MyMiddleware: IMiddleware&lt;object>
 }
 </pre>
 <p>
-    Notice that to change existing middleware to be compatible with the OWIN Framework all 
-    we have to do is add a couple of properties and make the existing <span class="code">Invoke</span> 
-    method public. These changes allow middleware to be named and have dependencies on other middleware. 
+    Notice that to change existing middleware to be compatible with the OWIN Framework all
+    we have to do is add a couple of properties and make the existing <span class="code">Invoke</span>
+    method public. These changes allow middleware to be named and have dependencies on other middleware.
     For example an implementation of identification might have a dependency on session.
 </p>
 <p>
-    If you want to use existing middleware that does not support the OWIN Framework and you don't have 
-    source code then there is a <span class="code">LegacyMiddlewareWrapper</span> class that will allow 
+    If you want to use existing middleware that does not support the OWIN Framework and you don't have
+    source code then there is a <span class="code">LegacyMiddlewareWrapper</span> class that will allow
     you to use it with the OWIN Framework.
 </p>
 <p>
-    If you are starting from scratch, you can copy the code above and use it as a starting point for 
-	any new middleware that you write.
+    If you are starting from scratch, you can copy the code above and use it as a starting point for
+    any new middleware that you write.
 </p>
 <p>
-    When using the Owin Framework, the code that the application developer writes to configure the 
-	pipeline of middleware changes to a fluent syntax like this:
+    When using the Owin Framework, the code that the application developer writes to configure the
+    pipeline of middleware changes to a fluent syntax like this:
 </p>
 <pre>
 public void Configuration(IAppBuilder app)
@@ -196,10 +197,10 @@ public void Configuration(IAppBuilder app)
 }
 </pre>
 <p>
-    Note that the <span class="code">Builder</span> class from the example above is middleware 
-    from the Katana world view perspective, and it contains its own mechanism for chaining middleware. 
-    One of the reasons why the Owin Framework does this is because it support dependency 
-    resolution between middleware, allows multiple routes to be configured, and has an upstram 
+    Note that the <span class="code">Builder</span> class from the example above is middleware
+    from the Katana world view perspective, and it contains its own mechanism for chaining middleware.
+    One of the reasons why the Owin Framework does this is because it support dependency
+    resolution between middleware, allows multiple routes to be configured, and has an upstram
     and downstream method for middleware to communicate about the request processing.
 </p>
 <p>

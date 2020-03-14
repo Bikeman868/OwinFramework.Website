@@ -1,4 +1,5 @@
-﻿<h2>Adding this middleware to the Owin pipeline</h2>
+﻿<title>The OwinFramework.Documenter Project</title>
+<h2>Adding this middleware to the Owin pipeline</h2>
 <pre>
 builder.Register(ninject.Get&lt;OwinFramework.Documenter.DocumenterMiddleware>())
     .As("Documenter")
@@ -6,7 +7,7 @@ builder.Register(ninject.Get&lt;OwinFramework.Documenter.DocumenterMiddleware>()
 </pre>
 
 <div class="app_warning">
-    The assumes that you are using Ninject as your IoC container, and followed the 
+    The assumes that you are using Ninject as your IoC container, and followed the
     <a href="/content/general/walkthrough/helloworld">getting started walkthrough</a>. If this is not the case
     then you will need to adjust the code to work in your application.
 </div>
@@ -33,8 +34,8 @@ builder.Register(ninject.Get&lt;OwinFramework.Documenter.DocumenterMiddleware>()
 <ul>
     <li>
         The "path" configuration specifies the relative URL within your web site
-        where the documentation will be available at run-time. If you are using 
-        routes in your Owin pipeline then you must make sure that the documenter 
+        where the documentation will be available at run-time. If you are using
+        routes in your Owin pipeline then you must make sure that the documenter
         middleware is on a route where it will receive requests for this URL.
     </li>
     <li>
