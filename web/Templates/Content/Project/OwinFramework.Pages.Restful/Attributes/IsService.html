@@ -1,4 +1,5 @@
-﻿<h2>The <span class="code">[IsService]</span> Attribute</h2>
+﻿<title>[IsService] attribute | The OWIN Framework Restful</title>
+<h2>The <span class="code">[IsService]</span> Attribute</h2>
 <p>
     Attach this attribute to a class to identify it as a web service.
     To register this service with the router and send requests to it you can get the
@@ -154,8 +155,8 @@ public class OrderService
 
 <p>
     Setting this property means that identities that call this endpoints
-    of this service will have to have this permission assigned to them in 
-    the authorization middleware. Setting this property on the service 
+    of this service will have to have this permission assigned to them in
+    the authorization middleware. Setting this property on the service
     makes it the default for all endpoints of the service. The value
     can be overidden for each enpoint if desired.
 </p>
@@ -182,8 +183,8 @@ public class OrderService
     This property defines the name of a parameter to the endpoint that
     will be passed to the authorization check at the asset value. For
     example you can have an endpoint that updates a users avatar that
-    takes <span class="code">userId</span> as a parameter, then you 
-    can set "userId" as the value of the 
+    takes <span class="code">userId</span> as a parameter, then you
+    can set "userId" as the value of the
     <span class="code">ParameterSpecificPermission</span>, in which case the
     value of the <span class="code">userId</span> parameter will be passed
     to the authorization middleware as the asset name, and you can configure

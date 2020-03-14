@@ -1,11 +1,12 @@
-﻿<h2>The <span class="code">[GenerateClientScript]</span> Attribute</h2>
+﻿<title>[GenerateClientScript] attribute | The OWIN Framework Restful</title>
+<h2>The <span class="code">[GenerateClientScript]</span> Attribute</h2>
 <p>
     Optionally attach this attribute to a web service to create a component
     that will render Javascript that makes it very easy to call the
     endpoints of the service.
 </p>
 <p>
-    Other page elements that will call this service can have the 
+    Other page elements that will call this service can have the
     <span class="code">[NeedsComponent]</span> attribute attached to them to
     indicate that they have a dependency on this Javascript and ensure that
     it is included on all pages where it is needed.
@@ -39,13 +40,13 @@ public class OrderRegion { }
 </p>
 <ul>
     <li>
-        Any page that includes the <span class="code">order-region</span> region knows 
+        Any page that includes the <span class="code">order-region</span> region knows
         that it must render the <span class="code">order-service-client</span> component
         because of the <span class="code">[NeedsComponent]</span> attribute on the region.
     </li>
     <li>
         The <span class="code">order-service-client</span> component will write Javascript
-        where it is accesible to the page. Where exactly it gets written depends on the 
+        where it is accesible to the page. Where exactly it gets written depends on the
         asset deployment mechanism that you configured.
     </li>
     <li>
@@ -75,7 +76,7 @@ public class OrderRegion { }
         call begins with <span class="code">ns.</span>
     </li>
     <li>
-        In this example I used <span class="code">myApp</span> as the namespace name. The actual 
+        In this example I used <span class="code">myApp</span> as the namespace name. The actual
         namespace that is required here is defined by your Package. You can have multiple application
         packages, but many websites will have only one. You should substitute <span class="code">myApp</span>
         in the example above with the namespace name of your application package.

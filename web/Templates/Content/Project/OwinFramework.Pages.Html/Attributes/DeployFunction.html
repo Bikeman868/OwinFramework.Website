@@ -1,4 +1,5 @@
-﻿<h2>The <span class="code">[DeployFunction]</span> Attribute</h2>
+﻿<title>[DeployFunction] attribute | The OWIN Framework Pages</title>
+<h2>The <span class="code">[DeployFunction]</span> Attribute</h2>
 <p>
     You can attach one or more of these attributes to any visual element and it will
     cause a Javascript function to be included in any page containing that element.
@@ -33,14 +34,14 @@ internal class MyComponent { }
 <h3><span class="code">FunctionName</span></h3>
 
 <p>
-    Must be a syntactically valid Javascript function name that is unique within the 
+    Must be a syntactically valid Javascript function name that is unique within the
     package namespace. The namespace is defined by the <a href="../attributes/partof"><span class="code">[PartOf()]</span> attribute</a>
     attached to the element.
 </p>
 <p>
     This function can be called directly from any other function in the same
     package namespace. To call this function from another namespace the
-    function name must be qualified with the <span class="code">ns.{namespace}.</span> 
+    function name must be qualified with the <span class="code">ns.{namespace}.</span>
     prefix, where <span class="code">{namespace}</span> is the namespace of the
     package containing the function you want to call.
 </p>

@@ -1,4 +1,5 @@
-﻿<h2>The <span class="code">[IsLayout]</span> Attribute</h2>
+﻿<title>[IsLayout] attribute | The OWIN Framework Pages</title>
+<h2>The <span class="code">[IsLayout]</span> Attribute</h2>
 <p>
     Attach this attribute to a class to identify it as a layout.
 </p>
@@ -42,7 +43,7 @@ internal class HomePageLayout { }
 </p>
 <p>
     For example if I set my <span class="code">ZoneNesting</span> property to
-    <span class="code">zone1,zone2</span> and I chose <span class="code">ul</span> 
+    <span class="code">zone1,zone2</span> and I chose <span class="code">ul</span>
     as my container tag, then I will get Html like this:
 </p>
 <pre>
@@ -54,7 +55,7 @@ internal class HomePageLayout { }
 
 <p>
     If I introduce a third zone, group it with zone 2 like this
-    <span class="code">zone1(zone2,zone3)</span> and choose <span class="code">li</span> 
+    <span class="code">zone1(zone2,zone3)</span> and choose <span class="code">li</span>
     as my child container tag, then I will get Html like this:
 </p>
 <pre>
@@ -71,7 +72,7 @@ internal class HomePageLayout { }
 </p>
 <p>
     If you want the layout to render some different nesting of containers,
-    or render some zones multiple times or any other specific behavior, 
+    or render some zones multiple times or any other specific behavior,
     then you need to make your Layout class class inherit
     from the built-in <span class="code">Layout</span> class as described
     in the <a href="../elements/layout">Layout element documentation</a>
