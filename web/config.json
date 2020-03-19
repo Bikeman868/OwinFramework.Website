@@ -67,7 +67,7 @@
       ]
     },
     "versioning": {
-      "version": 4,
+      "version": 5,
       "mimeTypes": [ "text/html", "text/css" ],
       "fileExtensions": [".css", ".js", ".ico", ".svg", ".png"],
       "browserCacheTime": "1",
