@@ -16,6 +16,31 @@
 @break4: 1400px;
 @full-width: 1600px;
 
+:root {
+    --body-height: ~"calc(100vh - 120px)";
+}
+@media only screen and (min-width: @break1) {
+    :root {
+        --body-height: ~"calc(100vh - 160px)";
+    }
+}
+@media only screen and (min-width: @break2) {
+    :root {
+        --body-height: ~"calc(100vh - 200px)";
+    }
+}
+@media only screen and (min-width: @break3) {
+    :root {
+        --body-height: ~"calc(100vh - 240px)";
+    }
+}
+@media only screen and (min-width: @break4) {
+    :root {
+        --body-height: ~"calc(100vh - 300px)";
+    }
+}
+@body-height: ~"var(--body-height)";
+
 @base-font-size: 16px;
 
 @heading-font-family: Arial, sans-serif;
@@ -81,6 +106,12 @@ div.app_footer-region {
     }
 }
 
+.app_left,.app_right {
+    height: @body-height;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
 div.app_body {
     overflow: hidden;
 
@@ -93,7 +124,7 @@ div.app_body {
     }
 
     div.app_sitemap-region {
-        height: ~"calc(100vh - 260px)";
+        height: @body-height;
         overflow: hidden;
         overflow-y: auto;
         float: left;
@@ -112,9 +143,6 @@ div.app_fixed-left-layout {
     font-family: Arial, sans-serif;
 
     div.app_left {
-        height: ~"calc(100vh - 260px)";
-        overflow: hidden;
-        overflow-y: auto;
         float: left;
         width: 250px;
         padding: 5px;
@@ -123,9 +151,6 @@ div.app_fixed-left-layout {
     }
 
     div.app_right {
-        height: ~"calc(100vh - 260px)";
-        overflow: hidden;
-        overflow-y: auto;
         margin-left: 260px;
         margin-top: -5px;
         background-color: @content-panel-background;
@@ -147,9 +172,6 @@ div.app_fixed-right-layout {
     font-family: Arial, sans-serif;
 
     div.app_left {
-        height: ~"calc(100vh - 260px)";
-        overflow: hidden;
-        overflow-y: auto;
         width: auto;
         background-color: @content-panel-background;
         border-left: 2px solid @fixed-panel-background;
@@ -158,9 +180,6 @@ div.app_fixed-right-layout {
     }
 
     div.app_right {
-        height: ~"calc(100vh - 260px)";
-        overflow: hidden;
-        overflow-y: auto;
         width: 250px;
         float: right;
         padding: 9px;

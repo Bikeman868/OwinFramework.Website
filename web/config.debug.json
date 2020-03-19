@@ -52,8 +52,8 @@
       "rootDirectory": "~\\assets\\styles",
       "enabled": true,
       "analyticsEnabled": false,
-      "minify": true,
-      "traceLog": false
+      "minify": false,
+      "traceLog": true
     },
     "outputCache": {
       "rules": [
@@ -83,7 +83,7 @@
         "defaultLanguage": "en-US",
         "debugLogging": true,
         "includeComments": true,
-        "indented": false,
+        "indented": true,
         "htmlFormat": "Html",
         "minifyCss": false,
         "minifyJavascript": false
