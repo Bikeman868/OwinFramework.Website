@@ -93,8 +93,9 @@ div.app_body {
     }
 
     div.app_sitemap-region {
-        height: ~"calc(100vh - 300px)";
-        overflow: scroll;
+        height: ~"calc(100vh - 260px)";
+        overflow: hidden;
+        overflow-y: auto;
         float: left;
         display: none;
     }
@@ -111,7 +112,9 @@ div.app_fixed-left-layout {
     font-family: Arial, sans-serif;
 
     div.app_left {
+        height: ~"calc(100vh - 260px)";
         overflow: hidden;
+        overflow-y: auto;
         float: left;
         width: 250px;
         padding: 5px;
@@ -120,7 +123,9 @@ div.app_fixed-left-layout {
     }
 
     div.app_right {
-        min-height: 400px;
+        height: ~"calc(100vh - 260px)";
+        overflow: hidden;
+        overflow-y: auto;
         margin-left: 260px;
         margin-top: -5px;
         background-color: @content-panel-background;
@@ -142,8 +147,9 @@ div.app_fixed-right-layout {
     font-family: Arial, sans-serif;
 
     div.app_left {
-        min-height: 400px;
+        height: ~"calc(100vh - 260px)";
         overflow: hidden;
+        overflow-y: auto;
         width: auto;
         background-color: @content-panel-background;
         border-left: 2px solid @fixed-panel-background;
@@ -152,6 +158,9 @@ div.app_fixed-right-layout {
     }
 
     div.app_right {
+        height: ~"calc(100vh - 260px)";
+        overflow: hidden;
+        overflow-y: auto;
         width: 250px;
         float: right;
         padding: 9px;
