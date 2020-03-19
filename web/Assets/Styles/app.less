@@ -99,10 +99,29 @@ div.app_header-region {
 }
 
 div.app_footer-region { 
-    height: 50px; width:100%; padding:5px; background: @header-background; color: @header-color; 
+    height: 30px; 
+    width:100%; 
+    padding:2px; 
+    background: @header-background; 
+    color: @header-color; 
     
     p {
-        font-weight:bold; font-size:10pt; text-align: right; margin-right: 15px;
+        font-weight:bold; 
+        font-size:10pt; 
+        text-align: right; 
+        margin-right: 15px;
+        margin-top: 5px;
+    }
+}
+@media only screen and (min-width: @break3) {
+    div.app_footer-region {
+        height: 50px;
+        padding: 5px;
+
+        p {
+            font-size: 14pt;
+            margin-top: 10px;
+        }
     }
 }
 
