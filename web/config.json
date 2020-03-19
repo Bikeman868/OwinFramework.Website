@@ -79,7 +79,7 @@
     "pages": {
       "framework": {
         "assetRootPath": "/assets",
-        "assetVersion": "4",
+        "assetVersion": "5",
         "defaultLanguage": "en-US",
         "debugLogging": false,
         "includeComments": false,
